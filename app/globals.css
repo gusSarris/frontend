@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+.top_section {
+  background-color: #f5d296;
+}
+:root {
+  --spore-brown: #6e4b3a;
+  --mycelium-white: #f4f1ed;
+  --mycelium-tint: #f9f7f4;
+  --golden-oyster: #f6be6b;
+  --forest-moss: #76846d;
+  --deep-brown: #281c0d;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
+  color: var(--deep-brown);
+}
+h1,
+h2,
+h3,
+h4,
+h5{
+  font-weight: bold;
+}
+a>h1:hover,
+a>h2:hover,
+a>h3:hover,
+a>h4:hover,
+a>h5:hover{
+  color: var(--golden-oyster);
+}
