@@ -1,103 +1,103 @@
-import Image from "next/image";
+// pages/index.jsx
+import Hero from "@/components/parts/home/HeroSection"
+import ContentGrid from "@/components/grids/ContentGrid"
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  // Data for the “Most Popular” section
+  const mostPopular = {
+    header: {
+      title: "Most Popular",
+      subtitle: null,
+      bgClass: "bg-[#F4F1ED] px-6 py-10 md:px-12"
+    },
+    featured: {
+      imageSrc: "/post.png",
+      imageAlt: "Bulk Substrate",
+      badge: "Technique",
+      headline: "Bulk Substrate Breakdown: What Grows Best & Why",
+      description:
+        "Tried straw? Tried coco coir? This post dives into the real difference in yields, prep time, and contamination risk.",
+    },
+    miniItems: [
+      {
+        imageSrc: "/postSmall.png",
+        imageAlt: "Agar",
+        badge: "Lab Hack",
+        title: "Cloning from the Grocery Store Shelf",
+        text: "Ever wondered if you can clone a store-bought mushroom? Spoiler: You totally can.",
+      },
+      {
+        imageSrc: "/postSmall.png",
+        imageAlt: "Misting",
+        badge: "Growing Tips",
+        title: "When to Mist, When to Leave It",
+        text: "Proper humidity keeps pins perky—but don’t overdo it. Here’s how.",
+      },
+      {
+        imageSrc: "/postSmall.png",
+        imageAlt: "Fruiting Chamber",
+        badge: "DIY Setup",
+        title: "How I Built a Fruiting Chamber in a Bookshelf",
+        text: "A cozy closet setup that works with no fancy gear.",
+      },
+    ],
+  }
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+  // Data for the “From Spores to Stories” section
+  const fromSpores = {
+    header: {
+      title: "From Spores to Stories",
+      subtitle:
+        "Tips, techniques, and tales from the world of mushroom cultivation.",
+      bgClass: "bg-[#F9F7F4]",
+    },
+    featured: {
+      imageSrc: "/postSmall.png",
+      imageAlt: "Agar plate",
+      badge: "Lab Hack",
+      headline: "Cloning from the Grocery Store Shelf",
+      description:
+        "Ever wondered if you can clone a store-bought mushroom? Spoiler: You totally can.",
+    },
+    miniItems: [
+      {
+        imageSrc: "/postSmall.png",
+        imageAlt: "Misting mushroom",
+        badge: "Growing Tips",
+        title: "When to Mist, When to Leave It",
+        text: "Proper humidity keeps pins perky—but don’t overdo it. Here’s how.",
+      },
+      {
+        imageSrc: "/postSmall.png",
+        imageAlt: "Fruiting chamber",
+        badge: "DIY Setup",
+        title: "How I Built a Fruiting Chamber in a Bookshelf",
+        text:
+          "A cozy closet setup that works with no fancy gear—just a little ingenuity.",
+      },
+      {
+        imageSrc: "/postSmall.png",
+        imageAlt: "Substrate",
+        badge: "Technique",
+        title: "Bulk Substrate Breakdown: What Grows Best",
+        text: "Straw, coco coir, sawdust—what works best for your setup and why?",
+      },
+    ],
+  }
+
+  return (
+    <main>
+      <div className="top_section">
+        <Hero />
+      </div>
+      
+
+      {/* Most Popular */}
+      <ContentGrid {...mostPopular}  />
+
+      {/* From Spores to Stories */}
+      <ContentGrid {...fromSpores} />
+    </main>
+  )
 }
+
