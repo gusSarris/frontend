@@ -1,7 +1,6 @@
 // pages/index.jsx
 import Hero from "@/components/parts/home/HeroSection"
 import ContentGrid from "@/components/grids/ContentGrid"
-
 export default function Home() {
   // Data for the “Most Popular” section
   const mostPopular = {
@@ -42,7 +41,6 @@ export default function Home() {
       },
     ],
   }
-
   // Data for the “From Spores to Stories” section
   const fromSpores = {
     header: {
@@ -84,20 +82,15 @@ export default function Home() {
       },
     ],
   }
-
   return (
     <main>
       <div className="top_section">
         <Hero />
       </div>
-      
-
       {/* Most Popular */}
       <ContentGrid {...mostPopular}  />
-
       {/* From Spores to Stories */}
       <ContentGrid {...fromSpores} />
     </main>
   )
 }
-

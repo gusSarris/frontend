@@ -1,6 +1,6 @@
-import SectionHeader from '@/components/shared/SectionHeader'
-import FeaturedArticle from '../parts/ui/FeaturedArticle'
-import MiniArticleCard from '../parts/ui/MiniArticleCard'
+import SectionHeader from "@/components/shared/SectionHeader";
+import FeaturedArticle from "../parts/ui/FeaturedArticle";
+import ArticleCard1 from "../parts/ui/ArticleCard1";
 
 export default function ContentGrid({ header, featured, miniItems }) {
   return (
@@ -11,11 +11,11 @@ export default function ContentGrid({ header, featured, miniItems }) {
           <FeaturedArticle {...featured} />
           <div className="space-y-6 lg:col-span-2 lg:ml-12">
             {miniItems.map((item, i) => (
-              <MiniArticleCard key={i} {...item} />
+              <ArticleCard1 key={i} {...item} />
             ))}
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }

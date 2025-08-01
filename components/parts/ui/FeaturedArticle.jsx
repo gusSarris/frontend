@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 export default function FeaturedArticle({ imageSrc, category, headline, description }) {
   return (
     <div className="lg:col-span-2 space-y-4">
@@ -16,12 +17,14 @@ export default function FeaturedArticle({ imageSrc, category, headline, descript
         </span>
       </div>
       <div>
+        <Link href="/">
         <h2 className="text-xl md:text-4xl font-semibold text-[#2F2E2C] my-8">
           {headline}
         </h2>
         <p className="mt-2 text-[#6E4B3A] text-sm md:text-base">
           {description}
         </p>
+        </Link>
       </div>
     </div>
   )
