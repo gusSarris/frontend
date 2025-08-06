@@ -1,6 +1,9 @@
 // pages/index.jsx
 import Hero from "@/components/parts/home/HeroSection"
 import ContentGrid from "@/components/grids/ContentGrid"
+import Hor_4cols from "@/components/grids/Hor_4cols"
+import SectionPart from "@/components/shared/SectionPart"
+
 export default function Home() {
   // Data for the “Most Popular” section
   const mostPopular = {
@@ -80,6 +83,13 @@ export default function Home() {
         title: "Bulk Substrate Breakdown: What Grows Best",
         text: "Straw, coco coir, sawdust—what works best for your setup and why?",
       },
+      {
+        imageSrc: "/postSmall.png",
+        imageAlt: "Misting mushroom",
+        badge: "Growing Tips",
+        title: "When to Mist, When to Leave It",
+        text: "Proper humidity keeps pins perky—but don’t overdo it. Here’s how.",
+      }
     ],
   }
   return (
@@ -88,9 +98,15 @@ export default function Home() {
         <Hero />
       </div>
       {/* Most Popular */}
-      <ContentGrid {...mostPopular}  />
+      <SectionPart title="Most Popular" classAttr={{ section: "bg-[#F4F1ED]" }}>
+         <ContentGrid {...mostPopular} />
+      </SectionPart>
+      
       {/* From Spores to Stories */}
-      <ContentGrid {...fromSpores} />
+      <SectionPart title="From Spores to stories" classAttr={{ section: "bg-[#F9F7F4]" }}>
+        <Hor_4cols {...fromSpores} />
+      </SectionPart>t
+
     </main>
   )
 }
