@@ -6,6 +6,7 @@ import SectionPart from "@/components/shared/SectionPart"
 
 export default function Home() {
   // Data for the “Most Popular” section
+  import {dummyposts} from '../dummyposts'
   const mostPopular = {
     header: {
       title: "Most Popular",
