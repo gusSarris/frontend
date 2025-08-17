@@ -15,12 +15,12 @@ export default function Home() {
       </div>
       {/* Most Popular */}
       <SectionPart title="Most Popular" classAttr={{ section: "bg-[#F4F1ED]" }}>
-         <ContentGrid posts={...fn.postsHomePage()} />
+         <ContentGrid posts={fn.postsHomePage()} />
       </SectionPart>
       
-       <SectionPart title="From Spores to stories" classAttr={{ section: "bg-[#F9F7F4]" }}>
-        <Hor_4cols {...fn.isPostFeatured()} />
-      </SectionPart>
+       {/* <SectionPart title="From Spores to stories" classAttr={{ section: "bg-[#F9F7F4]" }}>
+        <Hor_4cols {fn.isPostFeatured()} />
+      </SectionPart> */}
 
     </main>
   )
