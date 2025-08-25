@@ -6,15 +6,12 @@ import { getHome } from "@/lib/strapi";
 
 export default async function Home() {
   // Data for the “Most Popular” section
-  const { data } = await getHome();
-    console.log("HOME DATA:", data.blogs[0].herotop.body);
-
+  const { data } = await getHome()
   return (
     <main>
       <div className="top_section">
-        <Hero {...data.blogs[0].herotop} />
+        <Hero {...data.blogs[0].herotop} cta={data.blogs[0].herocta} />
       </div>
-      {/* Most Popular */}
       {/* <SectionPart title="Most Popular" classAttr={{ section: "bg-[#F4F1ED]" }}>
          <ContentGrid posts={fn.postsHomePage()} />
       </SectionPart> */}
