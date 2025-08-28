@@ -1,5 +1,4 @@
 export default function Socials({ socials }) {
-  console.log('socials', socials)
   return (
     <div>
       <h4 className="text-[var(--spore-brown)] font-semibold text-base mb-2">

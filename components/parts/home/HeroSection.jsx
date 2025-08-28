@@ -1,7 +1,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
-export default function HeroSection({title,subtitle,cta,imageSrc}) {
-  const {style,size,fullWidt,link}=cta[0]
+export default function HeroSection({heroTop,cta,strapiMediaURL}) {
+  const [ctaLabel,ctaURL]=[cta.label,cta.url]
+  const [title,subtitle,imageUrl,imageWidth,imageHeight,imageAlt]=[heroTop.title,heroTop.subtitle,strapiMediaURL(heroTop.imageSrc.url),heroTop.imageSrc.width,heroTop.imageSrc.height,heroTop.imageSrc.alternativeText]
   return (
     <section className="relative overflow-hidden">
       <div className="max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center gap-12 px-6 lg:px-10 py-20 md:py-32">
@@ -15,20 +16,20 @@ export default function HeroSection({title,subtitle,cta,imageSrc}) {
           </p>
           
           <Link
-             href={link.url}
+             href={ctaURL}
             className="inline-block rounded-full bg-[var(--golden-oyster)] px-8 py-3 font-semibold hover:bg-[var(--spore-brown)] hover:text-[var(--mycelium-white)] transition"
           >
-            { link.label}
+            { ctaLabel}
           </Link>
         </div>
 
         {/* Hero Illustration / Image */}
         <div className="w-full md:w-1/2 flex justify-center md:justify-end">
           <Image
-            src={"/"+imageSrc.name}
-            alt="Vintage mushroom illustration"
-            width={420}
-            height={420}     // adjust to your image's aspect ratio
+            src={imageUrl}
+            alt={imageAlt}
+            width={imageWidth}
+            height={imageHeight}     // adjust to your image's aspect ratio
             className="max-w-[420px] w-full h-auto select-none pointer-events-none"
             priority          // ensures it loads quickly
           />
