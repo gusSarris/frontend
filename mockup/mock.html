@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="el">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Glamour Nails - Smart Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    
+    <script>
+      // Προσαρμογή του Tailwind με τα χρώματα του brand σας (από το logo)
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                dark: '#633B39',    // Βαθύ Burgundy/Taupe (από τα γράμματα)
+                primary: '#9D6A65', // Rose/Taupe (από τα φύλλα)
+                light: '#EACCC2',   // Απαλό Rose Gold
+                bg: '#FCFAF8',      // Off-white/Cream (από το φόντο του logo)
+                surface: '#FFF',
+              }
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              serif: ['Playfair Display', 'serif'],
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body { background-color: #FCFAF8; }
+      /* Ομαλές μεταβάσεις για καλύτερο UX */
+      .transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 300ms; }
+      /* Απόκρυψη scrollbar για καθαρό UI στα φίλτρα */
+      .scrollbar-hide::-webkit-scrollbar { display: none; }
+      .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+  </head>
+  <body class="font-sans text-gray-800 antialiased">
+    
+    <nav class="bg-white border-b border-brand-light/30 px-8 py-4 flex justify-between items-center shadow-sm sticky top-0 z-40">
+      <div class="flex items-center gap-4">
+        <div class="w-14 h-14 rounded-full overflow-hidden border border-brand-light/50 shadow-sm flex items-center justify-center bg-brand-bg">
+          <img src="logo.png" alt="Glamour Nails Logo" class="w-full h-full object-cover transform scale-110">
+        </div>
+        <div>
+          <h1 class="text-2xl font-serif font-bold text-brand-dark tracking-wide">Glamour Nails</h1>
+          <p class="text-xs text-brand-primary tracking-widest uppercase font-medium mt-0.5">Manicure | Pedicure | Spa</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-8">
+        <div class="text-right border-r border-brand-light/40 pr-6">
+          <p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest mb-0.5">Μηνύματα SMS</p>
+          <p class="text-sm font-semibold text-brand-primary">50 Διαθέσιμα</p>
+        </div>
+        <div class="h-11 w-11 rounded-full bg-brand-light/20 flex items-center justify-center text-brand-primary border border-brand-light/50 cursor-pointer hover:bg-brand-light/40 transition-all">
+          <i class="fas fa-user text-lg"></i>
+        </div>
+      </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto p-8">
+      
+      <div class="mb-10">
+        <div class="flex gap-4 mb-4">
+          <div class="relative flex-1 group">
+            <span class="absolute inset-y-0 left-0 pl-5 flex items-center text-brand-primary/60 group-focus-within:text-brand-primary transition-colors">
+              <i class="fas fa-search text-lg"></i>
+            </span>
+            <input type="text" id="searchInput" placeholder="Αναζήτηση πελάτη ή 'Διαθέσιμα ραντεβού...'" class="block w-full pl-14 pr-4 py-4 border border-brand-light/40 bg-white rounded-2xl focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/10 text-lg shadow-sm transition-all outline-none" />
+          </div>
+          <button onclick="openModal()" class="bg-brand-dark hover:bg-brand-primary text-white px-8 py-4 rounded-2xl font-semibold flex items-center gap-3 shadow-lg shadow-brand-primary/20 hover:shadow-xl hover:-translate-y-0.5 transition-all">
+            <i class="fas fa-plus"></i> Νέο Ραντεβού
+          </button>
+        </div>
+
+        <div class="flex gap-3 px-1 overflow-x-auto pb-2 scrollbar-hide">
+          <button onclick="updateSearch('αύριο')" class="bg-brand-light/20 hover:bg-brand-light/40 text-brand-dark border border-brand-light/50 px-5 py-2.5 rounded-xl text-sm font-medium transition-all flex items-center gap-2 whitespace-nowrap">
+            <i class="fas fa-sparkles text-brand-primary text-xs"></i> Αύριο
+          </button>
+          <button onclick="updateSearch('πρωί')" class="bg-brand-light/20 hover:bg-brand-light/40 text-brand-dark border border-brand-light/50 px-5 py-2.5 rounded-xl text-sm font-medium transition-all flex items-center gap-2 whitespace-nowrap">
+            <i class="fas fa-sun text-brand-primary text-xs"></i> Πρωί
+          </button>
+          <button onclick="clearSearch()" class="ml-2 bg-gray-50 hover:bg-gray-100 text-gray-500 border border-gray-200 px-4 py-2.5 rounded-xl text-sm font-medium flex items-center justify-center transition-all">
+            Καθαρισμός
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+        <div class="lg:col-span-2 space-y-6">
+          
+          <div id="defaultView" class="animate-fadeIn">
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="text-2xl font-serif font-bold text-brand-dark">Σημερινά Ραντεβού</h2>
+              <span class="text-sm font-medium text-gray-500">7 Απριλίου</span>
+            </div>
+            
+            <div class="flex gap-3 mb-6 overflow-x-auto pb-2 scrollbar-hide">
+                <button class="bg-brand-dark text-white px-6 py-2 rounded-full font-bold shadow-md whitespace-nowrap transition-all">Όλοι</button>
+                <button class="bg-white text-gray-600 border border-brand-light/50 hover:bg-brand-light/10 hover:text-brand-dark hover:border-brand-primary px-6 py-2 rounded-full font-medium whitespace-nowrap transition-all">Μαρία</button>
+                <button class="bg-white text-gray-600 border border-brand-light/50 hover:bg-brand-light/10 hover:text-brand-dark hover:border-brand-primary px-6 py-2 rounded-full font-medium whitespace-nowrap transition-all">Γιάννης</button>
+                <button class="bg-white text-gray-600 border border-brand-light/50 hover:bg-brand-light/10 hover:text-brand-dark hover:border-brand-primary px-6 py-2 rounded-full font-medium whitespace-nowrap transition-all">Ελένη</button>
+            </div>
+
+            <div class="bg-white p-6 rounded-3xl border border-brand-light/30 shadow-sm hover:shadow-md transition-all flex items-center gap-6 relative overflow-hidden group">
+              <div class="absolute left-0 top-0 bottom-0 w-2 bg-brand-primary rounded-l-3xl"></div>
+              
+              <div class="text-center min-w-[80px] pl-2">
+                <p class="text-2xl font-bold text-brand-dark">10:00</p>
+                <div class="mt-2 flex items-center justify-center gap-1.5 text-xs text-gray-500 font-medium">
+                  <div class="w-6 h-6 rounded-full bg-brand-light/30 text-brand-dark flex items-center justify-center font-bold">M</div>
+                  Μαρία
+                </div>
+              </div>
+              
+              <div class="flex-1 border-l border-gray-100 pl-6 py-2">
+                <h3 class="text-lg font-bold text-gray-800 mb-1">Γιώργος Παπαδόπουλος</h3>
+                <p class="text-brand-primary font-medium flex items-center gap-2">
+                  <i class="fas fa-spa text-xs"></i> Spa Manicure
+                </p>
+              </div>
+              
+              <div class="pr-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                 <button class="w-10 h-10 rounded-full hover:bg-gray-50 flex items-center justify-center text-gray-400 hover:text-brand-dark transition-colors">
+                   <i class="fas fa-ellipsis-v"></i>
+                 </button>
+              </div>
+            </div>
+          </div>
+
+          <div id="searchResultsView" class="hidden animate-fadeIn">
+            <div class="flex justify-between items-center mb-6 pb-4 border-b border-brand-light/30">
+              <h2 class="text-2xl font-serif font-bold text-brand-dark flex items-center gap-3">
+                <i class="fas fa-search text-brand-primary/50 text-xl"></i> Αποτελέσματα: Αύριο Πρωί
+              </h2>
+              <span class="bg-brand-light/30 text-brand-dark px-4 py-1.5 rounded-full text-sm font-bold shadow-sm">13 Ιουνίου</span>
+            </div>
+
+            <p class="text-gray-500 mb-6 font-medium">Επιλέξτε διαθέσιμη ώρα για κράτηση:</p>
+
+            <div class="bg-white p-6 rounded-3xl border border-brand-light/30 shadow-sm mb-5">
+              <div class="flex items-center gap-4 mb-5 pb-4 border-b border-gray-50">
+                <div class="w-10 h-10 rounded-full bg-brand-light/40 text-brand-dark flex items-center justify-center font-bold text-lg">M</div>
+                <h3 class="text-lg font-bold text-gray-800">Μαρία</h3>
+              </div>
+              <div class="flex flex-wrap gap-3">
+                <button onclick="openModal('Μαρία', '2026-06-13T09:00')" class="bg-white hover:bg-brand-dark hover:text-white text-brand-primary border-2 border-brand-light px-5 py-2.5 rounded-xl font-bold text-lg transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5">09:00</button>
+                <button onclick="openModal('Μαρία', '2026-06-13T09:30')" class="bg-white hover:bg-brand-dark hover:text-white text-brand-primary border-2 border-brand-light px-5 py-2.5 rounded-xl font-bold text-lg transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5">09:30</button>
+                <button onclick="openModal('Μαρία', '2026-06-13T11:00')" class="bg-white hover:bg-brand-dark hover:text-white text-brand-primary border-2 border-brand-light px-5 py-2.5 rounded-xl font-bold text-lg transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5">11:00</button>
+              </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-3xl border border-brand-light/30 shadow-sm mb-5">
+              <div class="flex items-center gap-4 mb-5 pb-4 border-b border-gray-50">
+                <div class="w-10 h-10 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center font-bold text-lg">Γ</div>
+                <h3 class="text-lg font-bold text-gray-800">Γιάννης</h3>
+              </div>
+              <div class="flex flex-wrap gap-3">
+                <button onclick="openModal('Γιάννης', '2026-06-13T10:30')" class="bg-white hover:bg-brand-dark hover:text-white text-brand-primary border-2 border-brand-light px-5 py-2.5 rounded-xl font-bold text-lg transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5">10:30</button>
+                <button onclick="openModal('Γιάννης', '2026-06-13T11:30')" class="bg-white hover:bg-brand-dark hover:text-white text-brand-primary border-2 border-brand-light px-5 py-2.5 rounded-xl font-bold text-lg transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5">11:30</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-6 pt-2">
+          <div class="bg-brand-dark text-white p-8 rounded-[2rem] shadow-xl relative overflow-hidden">
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-white/5 rounded-full blur-2xl"></div>
+            
+            <h3 class="text-xl font-serif font-bold mb-4 flex items-center gap-3">
+              <i class="far fa-clock text-brand-light"></i> Επόμενα Κενά
+            </h3>
+            <div class="w-12 h-1 bg-brand-light/30 rounded-full mb-6"></div>
+            <p class="text-brand-light/80 text-sm leading-relaxed">
+              Εδώ παραμένει η γρήγορη ματιά για το σημερινό σας πρόγραμμα. Η διαχείριση της ημέρας γίνεται ευκολότερη.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div id="appointmentModal" class="fixed inset-0 bg-brand-dark/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+      <div class="bg-white rounded-[2rem] w-full max-w-lg shadow-2xl overflow-hidden transform scale-95 transition-all duration-300" id="modalContent">
+          
+          <div class="bg-brand-bg px-8 py-6 flex justify-between items-center border-b border-brand-light/30">
+              <h2 class="text-2xl font-serif font-bold text-brand-dark flex items-center gap-3">
+                  <i class="fas fa-calendar-alt text-brand-primary"></i> Νέο Ραντεβού
+              </h2>
+              <button onclick="closeModal()" class="w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:bg-gray-100 hover:text-brand-dark transition-colors">
+                  <i class="fas fa-times text-lg"></i>
+              </button>
+          </div>
+
+          <div class="p-8 space-y-6">
+              <div>
+                  <label class="block text-xs font-bold text-brand-primary mb-2.5 uppercase tracking-wider">Στοιχεια Πελατη</label>
+                  <div class="flex items-center gap-4 bg-gray-50/50 p-4 rounded-2xl border border-gray-100">
+                      <div class="w-12 h-12 rounded-full bg-brand-light/30 text-brand-dark flex items-center justify-center font-bold text-lg shadow-inner">
+                          ΓΠ
+                      </div>
+                      <div class="flex-1">
+                          <p class="font-bold text-gray-900">Γιώργος Παπαδόπουλος</p>
+                          <p class="text-sm text-gray-500 mt-0.5">6912345678</p>
+                      </div>
+                      <button class="text-brand-primary hover:text-brand-dark text-sm font-bold border-b border-transparent hover:border-brand-dark transition-all">Αλλαγή</button>
+                  </div>
+              </div>
+
+              <div>
+                  <label class="block text-xs font-bold text-brand-primary mb-2.5 uppercase tracking-wider">Επιλογη Υπηρεσιας</label>
+                  <div class="relative">
+                    <select id="modalService" class="block w-full pl-4 pr-10 py-3.5 border border-gray-200 rounded-xl focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/10 text-base bg-white font-medium text-gray-800 appearance-none outline-none transition-all">
+                        <option value="">Επιλέξτε Υπηρεσία...</option>
+                        <option value="s1">Spa Manicure - 15.00€</option>
+                        <option value="s2">Pedicure Ημιμόνιμο - 22.00€</option>
+                        <option value="s3">Τεχνητά Νύχια (Gel) - 35.00€</option>
+                    </select>
+                    <i class="fas fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-sm"></i>
+                  </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-5">
+                  <div>
+                      <label class="block text-xs font-bold text-brand-primary mb-2.5 uppercase tracking-wider">Υπαλληλος</label>
+                      <div class="relative">
+                        <select id="modalEmployee" class="block w-full pl-4 pr-10 py-3.5 border border-gray-200 rounded-xl focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/10 text-base bg-white font-medium text-gray-800 appearance-none outline-none transition-all">
+                            <option value="">Επιλέξτε...</option>
+                            <option value="Μαρία">Μαρία</option>
+                            <option value="Γιάννης">Γιάννης</option>
+                            <option value="Ελένη">Ελένη</option>
+                        </select>
+                        <i class="fas fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-sm"></i>
+                      </div>
+                  </div>
+                  <div>
+                      <label class="block text-xs font-bold text-brand-primary mb-2.5 uppercase tracking-wider">Ημερ. & Ωρα</label>
+                      <input type="datetime-local" id="modalTime" class="block w-full px-4 py-3.5 border border-gray-200 rounded-xl focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/10 text-sm bg-white font-medium text-gray-800 outline-none transition-all">
+                  </div>
+              </div>
+          </div>
+
+          <div class="bg-gray-50/80 px-8 py-5 border-t border-gray-100 flex justify-end gap-3">
+              <button onclick="closeModal()" class="px-6 py-3 rounded-xl font-bold text-gray-500 hover:text-gray-800 hover:bg-gray-200/50 transition-all">
+                  Ακύρωση
+              </button>
+              <button onclick="saveAppointment()" class="bg-brand-dark hover:bg-brand-primary text-white px-8 py-3 rounded-xl font-bold shadow-md hover:shadow-lg transition-all flex items-center gap-2">
+                  <i class="fas fa-check text-sm"></i> Αποθήκευση 
+              </button>
+          </div>
+      </div>
+    </div>
+
+    <script>
+      // Λογική Αναζήτησης
+      function updateSearch(word) {
+        const searchInput = document.getElementById("searchInput");
+        let currentText = searchInput.value.trim();
+
+        if (!currentText.startsWith("Διαθέσιμα ραντεβού")) {
+          currentText = "Διαθέσιμα ραντεβού";
+        }
+
+        const newText = currentText + " " + word;
+        searchInput.value = newText;
+
+        if (newText.includes("αύριο") && newText.includes("πρωί")) {
+          executeSearch();
+        }
+      }
+
+      function executeSearch() {
+        document.getElementById("defaultView").classList.add("hidden");
+        document.getElementById("searchResultsView").classList.remove("hidden");
+      }
+
+      function clearSearch() {
+        const searchInput = document.getElementById("searchInput");
+        searchInput.value = "";
+        document.getElementById("searchResultsView").classList.add("hidden");
+        document.getElementById("defaultView").classList.remove("hidden");
+      }
+
+      // UX Βελτίωση: Smooth Modal Animations
+      function openModal(employeeName = "", dateTime = "") {
+        const modal = document.getElementById("appointmentModal");
+        const modalContent = document.getElementById("modalContent");
+        
+        if (employeeName) document.getElementById("modalEmployee").value = employeeName;
+        else document.getElementById("modalEmployee").value = ""; 
+
+        if (dateTime) document.getElementById("modalTime").value = dateTime;
+        else document.getElementById("modalTime").value = ""; 
+
+        modal.classList.remove("hidden");
+        setTimeout(() => {
+          modal.classList.remove("opacity-0");
+          modalContent.classList.remove("scale-95");
+          modalContent.classList.add("scale-100");
+        }, 10);
+      }
+
+      function closeModal() {
+        const modal = document.getElementById("appointmentModal");
+        const modalContent = document.getElementById("modalContent");
+        
+        modal.classList.add("opacity-0");
+        modalContent.classList.remove("scale-100");
+        modalContent.classList.add("scale-95");
+        
+        setTimeout(() => {
+          modal.classList.add("hidden");
+        }, 300);
+      }
+
+      function saveAppointment() {
+        alert("Το ραντεβού αποθηκεύτηκε επιτυχώς και στάλθηκε SMS επιβεβαίωσης!");
+        closeModal();
+      }
+    </script>
+  </body>
+</html>
