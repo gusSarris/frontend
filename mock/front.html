@@ -1,0 +1,1376 @@
+<!doctype html>
+<html lang="el" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Glamour Nails — Πίνακας Ελέγχου</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700;9..40,900&display=swap" rel="stylesheet"/>
+
+  <style>
+    /* ══════════════════════════════════════
+       1. DESIGN TOKENS — LIGHT
+    ══════════════════════════════════════ */
+    :root {
+      --c-bg:       #F9F6F3;
+      --c-surface:  #FFFFFF;
+      --c-dark:     #2E1A18;
+      --c-mid:      #6B3F3A;
+      --c-primary:  #9D6A65;
+      --c-accent:   #C4874F;
+      --c-light:    #E8C9BC;
+      --c-muted:    #F0EAE6;
+      --c-shadow:   rgba(46,26,24,0.10);
+
+      --s-active:   #C4874F;
+      --s-next:     #4A7FA5;
+      --s-done:     #5A8A6A;
+      --s-urgent:   #B85450;
+
+      --r-xs:6px; --r-sm:10px; --r-md:14px; --r-lg:20px; --r-xl:28px;
+      --sidebar-w:240px; --sidebar-w-col:64px;
+      --focus-ring: 0 0 0 3px rgba(196,135,79,0.4);
+
+      --sk-base:#ede8e4; --sk-shine:#f7f3f0;
+      --sb-bg:#2E1A18;
+    }
+
+    /* ══════════════════════════════════════
+       1. DARK MODE
+    ══════════════════════════════════════ */
+    [data-theme="dark"] {
+      --c-bg:      #1A1210;
+      --c-surface: #231815;
+      --c-dark:    #F2EBE6;
+      --c-mid:     #C4A49F;
+      --c-primary: #B08A85;
+      --c-accent:  #D49A60;
+      --c-light:   #4A2E2A;
+      --c-muted:   #2E1E1B;
+      --c-shadow:  rgba(0,0,0,0.4);
+      --sk-base:   #2a1c19;
+      --sk-shine:  #3a2825;
+      --sb-bg:     #150e0d;
+    }
+
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:'DM Sans',sans-serif; background:var(--c-bg); color:var(--c-dark); min-height:100vh; display:flex; overflow:hidden; transition:background .3s, color .3s; }
+
+    /* ══════════════════════════════════════
+       3. FOCUS STATES
+    ══════════════════════════════════════ */
+    .sr-only { position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0; }
+    .skip-link { position:absolute;top:-100%;left:16px;background:var(--c-accent);color:#fff;padding:8px 16px;border-radius:var(--r-sm);font-weight:700;font-size:13px;z-index:9999;text-decoration:none;transition:top .2s; }
+    .skip-link:focus { top:8px; }
+    :focus { outline:none; }
+    :focus-visible { box-shadow:var(--focus-ring) !important; outline:none; border-radius:var(--r-xs); }
+
+    /* ══════════════════════════════════════
+       SIDEBAR
+    ══════════════════════════════════════ */
+    .sidebar { width:var(--sidebar-w); min-height:100vh; background:var(--sb-bg); display:flex; flex-direction:column; flex-shrink:0; position:relative; transition:width .3s cubic-bezier(.4,0,.2,1), background .3s; overflow:hidden; z-index:50; }
+    .sidebar.collapsed { width:var(--sidebar-w-col); }
+    .sidebar-logo { padding:24px 16px; display:flex; align-items:center; gap:12px; border-bottom:1px solid rgba(232,201,188,0.1); min-height:80px; }
+    .logo-img-wrap { width:40px; height:40px; border-radius:10px; overflow:hidden; flex-shrink:0; border:1.5px solid rgba(196,135,79,0.4); }
+    .logo-img-wrap img { width:100%; height:100%; object-fit:cover; }
+    .logo-text { white-space:nowrap; transition:opacity .2s; }
+    .sidebar.collapsed .logo-text { opacity:0; pointer-events:none; }
+    .logo-brand { font-family:'Cormorant Garamond',serif; font-size:17px; font-weight:700; color:var(--c-bg); }
+    .logo-tagline { font-size:9px; font-weight:700; color:var(--c-accent); text-transform:uppercase; margin-top:2px; }
+    .nav-section { padding:12px; }
+    .nav-label { font-size:9px; font-weight:900; letter-spacing:.2em; text-transform:uppercase; color:rgba(249,246,243,0.2); padding:12px 8px 6px; white-space:nowrap; }
+    .sidebar.collapsed .nav-label { opacity:0; }
+    .nav-item { display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:var(--r-sm); cursor:pointer; transition:background .2s; position:relative; text-decoration:none; margin-bottom:4px; }
+    .nav-item:hover { background:rgba(249,246,243,0.07); }
+    .nav-item.active { background:rgba(196,135,79,0.15); }
+    .nav-item.active::before { content:''; position:absolute; left:0; top:8px; bottom:8px; width:3px; background:var(--c-accent); border-radius:0 3px 3px 0; }
+    .nav-icon { width:24px; height:24px; display:flex; align-items:center; justify-content:center; font-size:14px; color:rgba(249,246,243,0.35); flex-shrink:0; }
+    .nav-item.active .nav-icon { color:var(--c-accent); }
+    .nav-lbl { font-size:13px; font-weight:500; color:rgba(249,246,243,0.8); transition:opacity .2s; white-space:nowrap; }
+    .nav-item.active .nav-lbl { color:var(--c-bg); font-weight:700; }
+    .sidebar.collapsed .nav-lbl { opacity:0; pointer-events:none; width:0; }
+    .nav-badge { margin-left:auto; min-width:18px; height:18px; padding:0 5px; border-radius:99px; background:var(--c-accent); color:#fff; font-size:9px; font-weight:900; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:opacity .2s; }
+    .sidebar.collapsed .nav-badge { opacity:0; }
+    .nav-tip { position:absolute; left:70px; top:50%; transform:translateY(-50%); background:var(--sb-bg); color:white; padding:6px 12px; border-radius:6px; font-size:12px; font-weight:600; white-space:nowrap; opacity:0; pointer-events:none; transition:all .2s; border:1px solid rgba(255,255,255,0.1); box-shadow:0 4px 12px rgba(0,0,0,0.3); z-index:100; }
+    .sidebar.collapsed .nav-item:hover .nav-tip { opacity:1; left:60px; }
+    .collapse-btn { position:absolute; top:28px; right:-12px; width:24px; height:24px; border-radius:50%; background:var(--c-accent); border:2px solid var(--c-bg); color:#fff; font-size:9px; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:60; box-shadow:0 2px 8px rgba(0,0,0,0.2); outline:none; }
+    .sidebar.collapsed .collapse-btn .arrow { transform:rotate(180deg); display:inline-block; }
+    .sidebar-spacer { flex:1; }
+    .credits-bar { margin:8px 12px; padding:12px 14px; border-radius:var(--r-md); background:rgba(249,246,243,0.04); border:1px solid rgba(232,201,188,0.1); overflow:hidden; transition:opacity .2s; }
+    .sidebar.collapsed .credits-bar { opacity:0; pointer-events:none; }
+    .credits-label { font-size:9px; font-weight:900; letter-spacing:.15em; text-transform:uppercase; color:rgba(249,246,243,0.3); margin-bottom:6px; }
+    .credits-value { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:600; color:var(--c-bg); line-height:1; }
+    .credits-sub { font-size:10px; color:var(--c-accent); opacity:.7; margin-top:2px; }
+    .credits-track { height:3px; background:rgba(249,246,243,0.08); border-radius:99px; margin-top:10px; }
+    .credits-fill { height:100%; width:65%; background:var(--c-accent); border-radius:99px; opacity:.6; }
+
+    /* ══════════════════════════════════════
+       TOPBAR
+    ══════════════════════════════════════ */
+    .main-wrap { flex:1; display:flex; flex-direction:column; overflow:hidden; min-width:0; }
+    .topbar { height:60px; background:rgba(249,246,243,0.88); backdrop-filter:blur(24px) saturate(160%); border-bottom:1px solid rgba(232,201,188,0.45); display:flex; align-items:center; padding:0 28px; gap:16px; flex-shrink:0; position:sticky; top:0; z-index:30; transition:background .3s, border-color .3s; }
+    [data-theme="dark"] .topbar { background:rgba(26,18,16,0.92); border-color:rgba(74,46,42,0.5); }
+    .topbar-title { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:600; color:var(--c-dark); flex:1; }
+    .topbar-actions { display:flex; gap:8px; align-items:center; }
+    .btn-topbar { height:36px; padding:0 14px; border-radius:var(--r-sm); border:1.5px solid var(--c-light); background:var(--c-surface); color:var(--c-mid); font-family:inherit; font-size:12px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:7px; transition:all .2s; outline:none; }
+    .btn-topbar:hover { border-color:var(--c-dark); color:var(--c-dark); box-shadow:0 2px 8px var(--c-shadow); }
+    .btn-topbar:focus-visible { box-shadow:var(--focus-ring); }
+    .notif-btn { width:36px; height:36px; border-radius:var(--r-sm); border:1.5px solid var(--c-light); background:var(--c-surface); color:var(--c-mid); cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:14px; position:relative; transition:all .2s; outline:none; }
+    .notif-btn:hover { border-color:var(--c-primary); color:var(--c-dark); }
+    .notif-btn:focus-visible { box-shadow:var(--focus-ring); }
+    .notif-dot { position:absolute; top:6px; right:6px; width:7px; height:7px; border-radius:50%; background:var(--s-urgent); border:1.5px solid var(--c-bg); }
+    .theme-btn { width:36px; height:36px; border-radius:var(--r-sm); border:1.5px solid var(--c-light); background:var(--c-surface); color:var(--c-mid); cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:14px; transition:all .2s; outline:none; }
+    .theme-btn:hover { border-color:var(--c-accent); color:var(--c-accent); }
+    .theme-btn:focus-visible { box-shadow:var(--focus-ring); }
+    .cmd-btn { height:36px; padding:0 12px; border-radius:var(--r-sm); border:1.5px solid var(--c-light); background:var(--c-surface); color:var(--c-mid); font-family:inherit; font-size:12px; cursor:pointer; display:flex; align-items:center; gap:8px; transition:all .2s; outline:none; }
+    .cmd-btn:hover { border-color:var(--c-dark); color:var(--c-dark); }
+    .cmd-btn:focus-visible { box-shadow:var(--focus-ring); }
+    .cmd-kbd { font-size:10px; background:var(--c-muted); border-radius:4px; padding:1px 5px; color:var(--c-primary); }
+    .topbar-account { display:flex; align-items:center; gap:10px; padding-left:16px; border-left:1px solid var(--c-light); cursor:pointer; position:relative; }
+    .topbar-account .user-av { width:34px; height:34px; border-radius:var(--r-xs); background:rgba(196,135,79,0.2); border:1.5px solid rgba(196,135,79,0.3); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:900; color:var(--c-accent); font-family:'Cormorant Garamond',serif; }
+    .topbar-account .user-name { font-size:12px; font-weight:700; color:var(--c-dark); }
+    .topbar-account .user-role { font-size:10px; color:var(--c-primary); opacity:0.8; margin-top:1px; }
+    .user-logout { margin-left:8px; border:none; background:transparent; color:var(--c-primary); font-size:13px; cursor:pointer; padding:4px; border-radius:4px; outline:none; transition:color .2s; }
+    .user-logout:hover { color:var(--s-urgent); }
+    .user-logout:focus-visible { box-shadow:var(--focus-ring); }
+
+    .page-content { flex:1; overflow-y:auto; padding:28px; padding-bottom:100px; }
+
+    /* ══════════════════════════════════════
+       6. KPI RIBBON WITH SPARKLINES
+    ══════════════════════════════════════ */
+    .kpi-ribbon { display:flex; align-items:stretch; gap:0; background:var(--c-surface); border:1.5px solid var(--c-light); border-radius:var(--r-md); margin-bottom:24px; overflow:hidden; animation:fadeUp .4s ease both; }
+    .kpi-stat { display:flex; align-items:center; gap:14px; padding:16px 24px; flex:1; position:relative; }
+    .kpi-stat + .kpi-stat { border-left:1px solid var(--c-muted); }
+    .kpi-icon-wrap { width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .kpi-icon-accent { background:rgba(196,135,79,0.12); color:var(--c-accent); }
+    .kpi-icon-done { background:rgba(90,138,106,0.12); color:var(--s-done); }
+    .kpi-icon-dark { background:rgba(46,26,24,0.08); color:var(--c-dark); }
+    .kpi-text { flex:1; }
+    .kpi-stat-val { font-size:22px; font-weight:900; color:var(--c-dark); line-height:1; }
+    .kpi-stat-lbl { font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--c-primary); opacity:.7; margin-top:2px; }
+    .kpi-spark { flex-shrink:0; }
+
+    /* ══════════════════════════════════════
+       CONTENT PANEL
+    ══════════════════════════════════════ */
+    .content-panel { background:var(--c-surface); border:1.5px solid var(--c-light); border-radius:var(--r-xl); overflow:hidden; transition:background .3s, border-color .3s; }
+    .panel-header { padding:18px 22px; border-bottom:1px solid var(--c-muted); display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+    .panel-title { font-family:'Cormorant Garamond',serif; font-size:17px; font-weight:600; color:var(--c-dark); }
+    .panel-subtitle { font-size:11px; color:var(--c-primary); opacity:.6; margin-top:2px; }
+    .filter-select { appearance:none; background:transparent; border:none; font-family:inherit; font-size:11px; font-weight:700; color:var(--c-mid); cursor:pointer; outline:none; padding-right:18px; }
+    .filter-wrapper { position:relative; display:flex; align-items:center; }
+    .filter-wrapper::after { content:'\f078'; font-family:'Font Awesome 6 Free'; font-weight:900; position:absolute; right:0; font-size:9px; color:var(--c-mid); pointer-events:none; }
+    .dropdown-container { position:relative; display:inline-block; }
+    .dropdown-menu { position:absolute; top:100%; right:0; margin-top:6px; background:var(--c-surface); border:1.5px solid var(--c-light); border-radius:var(--r-md); box-shadow:0 10px 24px rgba(46,26,24,0.1); padding:8px; display:none; flex-direction:column; gap:4px; min-width:200px; z-index:100; }
+    .dropdown-menu.show { display:flex; animation:fadeUp 0.2s ease; }
+    .chk-item { display:flex; align-items:center; gap:10px; padding:6px 10px; border-radius:6px; cursor:pointer; font-size:12px; font-weight:600; color:var(--c-dark); transition:background .2s; user-select:none; }
+    .chk-item:hover { background:rgba(249,246,243,0.8); }
+    .chk-item input[type="checkbox"] { accent-color:var(--c-dark); width:14px; height:14px; cursor:pointer; }
+
+    /* ══════════════════════════════════════
+       TIMELINE
+    ══════════════════════════════════════ */
+    .timeline-wrap { padding:16px 24px; display:flex; flex-direction:column; overflow-x:auto; position:relative; }
+    .timeline-inner { min-width:500px; position:relative; }
+    .current-time-line { position:absolute; left:67px; right:0; top:180px; height:2px; background:var(--s-urgent); z-index:10; pointer-events:none; }
+    .current-time-line::before { content:''; position:absolute; left:-5px; top:-4px; width:10px; height:10px; border-radius:50%; background:var(--s-urgent); box-shadow:0 0 0 4px rgba(184,84,80,0.2); }
+
+    /* 10. Employee avatars in header */
+    .timeline-header-grid { display:grid; grid-template-columns:55px 1fr 1fr; gap:16px; padding-bottom:12px; border-bottom:2px solid var(--c-muted); margin-bottom:8px; }
+    .th-cell { display:flex; align-items:center; justify-content:center; gap:8px; font-size:13px; font-weight:700; color:var(--c-dark); }
+    .th-av { width:28px; height:28px; border-radius:8px; overflow:hidden; display:flex; align-items:center; justify-content:center; font-size:11px; font-family:'Cormorant Garamond',serif; font-weight:700; flex-shrink:0; }
+    .th-av img { width:100%; height:100%; object-fit:cover; }
+
+    /* 9. STAGGER on timeline rows */
+    .timeline-row { display:grid; grid-template-columns:55px 1fr 1fr; gap:16px; min-height:64px; border-bottom:1px solid var(--c-muted); align-items:stretch; padding:4px 0; animation:fadeUp .4s ease both; }
+    .timeline-row:nth-child(2) { animation-delay:50ms; }
+    .timeline-row:nth-child(3) { animation-delay:100ms; }
+    .timeline-row:nth-child(4) { animation-delay:150ms; }
+    .timeline-row:nth-child(5) { animation-delay:200ms; }
+    .timeline-row:nth-child(6) { animation-delay:250ms; }
+    .timeline-row:last-child { border-bottom:none; }
+    .timeline-time { font-size:12px; font-weight:700; color:var(--c-primary); opacity:.6; padding-top:10px; text-align:right; padding-right:12px; border-right:1px solid var(--c-muted); }
+
+    /* ── Slots ── */
+    .timeline-slot { border-radius:var(--r-sm); padding:10px 14px; display:flex; flex-direction:column; justify-content:center; transition:.2s; position:relative; }
+
+    /* 4. Empty state for empty slots */
+    .timeline-slot.empty { background:transparent; border:1.5px dashed rgba(196,135,79,0.15); color:var(--c-accent); cursor:pointer; align-items:center; justify-content:center; font-size:14px; opacity:0; transition:opacity .2s, background .2s, border-color .2s; }
+    .timeline-slot.empty:hover { background:rgba(196,135,79,0.05); opacity:1; border-color:rgba(196,135,79,0.4); border-style:solid; }
+    .timeline-slot.drag-over.empty { opacity:1; }
+
+    /* 8. DRAG states */
+    .timeline-slot.booked { background:rgba(196,135,79,0.05); border:1px solid rgba(196,135,79,0.2); border-left:4px solid var(--s-active); cursor:grab; display:flex; flex-direction:column; gap:6px; justify-content:flex-start; }
+    .timeline-slot.booked:hover { box-shadow:0 4px 12px rgba(196,135,79,0.15); transform:translateX(2px); }
+    .timeline-slot.booked:active { cursor:grabbing; }
+    .timeline-slot.dragging { opacity:0.4; transform:scale(0.98); }
+    .timeline-slot.drag-over { background:rgba(196,135,79,0.12) !important; border:2px dashed var(--c-accent) !important; transform:none !important; }
+
+    .border-completed { border-left-color:var(--s-done) !important; background:rgba(90,138,106,0.05) !important; }
+    .border-canceled { border-left-color:var(--s-urgent) !important; background:rgba(184,84,80,0.05) !important; opacity:.7; }
+
+    .ts-top { display:flex; justify-content:space-between; align-items:flex-start; width:100%; }
+    .ts-info { flex:1; }
+    .ts-title { font-size:13px; font-weight:700; color:var(--c-dark); display:flex; align-items:center; gap:5px; flex-wrap:wrap; }
+    .ts-sub { font-size:10.5px; color:var(--c-primary); opacity:.85; margin-top:2px; display:flex; align-items:center; }
+    .emp-badge { display:inline-flex; align-items:center; background:rgba(196,135,79,0.15); color:var(--c-dark); padding:2px 6px; border-radius:4px; font-weight:700; font-size:9px; margin-right:6px; letter-spacing:.05em; }
+    .ts-right { display:flex; flex-direction:column; align-items:flex-end; gap:4px; }
+    .btn-dots { background:transparent; border:none; color:var(--c-mid); opacity:.5; cursor:pointer; padding:2px 6px; border-radius:4px; transition:.2s; outline:none; }
+    .btn-dots:hover { background:rgba(46,26,24,0.08); opacity:1; color:var(--c-dark); }
+    .btn-dots:focus-visible { box-shadow:var(--focus-ring); }
+    .ts-tags { display:flex; gap:4px; flex-wrap:wrap; }
+    .tag { font-size:9px; font-weight:700; padding:3px 6px; border-radius:4px; letter-spacing:.05em; display:inline-flex; align-items:center; gap:4px; }
+    .tag-red { background:#fde8e8; color:#c81e1e; }
+    .tag-green { background:#def7ec; color:#03543f; }
+    .tag-blue { background:#e1effe; color:#1e429f; }
+    .tag-yellow { background:#fdf6b2; color:#723b13; }
+    .icon-vip { color:#D4AF37; font-size:11px; }
+    .inline-status { appearance:none; background:transparent; border:1px solid var(--c-muted); border-radius:6px; font-family:inherit; font-size:9px; font-weight:700; padding:2px 14px 2px 6px; cursor:pointer; outline:none; transition:.2s; }
+    .inline-status:hover { background:var(--c-surface); border-color:var(--c-light); }
+    .inline-status:focus-visible { box-shadow:var(--focus-ring); }
+    .inline-status-wrap { position:relative; display:inline-flex; align-items:center; }
+    .inline-status-wrap::after { content:'\f0d7'; font-family:'Font Awesome 6 Free'; font-weight:900; position:absolute; right:6px; font-size:8px; pointer-events:none; }
+    .status-scheduled { color:var(--s-active); }
+    .status-completed { color:var(--s-done); border-color:rgba(90,138,106,0.3); background:var(--c-surface); }
+    .status-canceled { color:var(--s-urgent); border-color:rgba(184,84,80,0.3); background:var(--c-surface); }
+
+    /* ══════════════════════════════════════
+       2. SKELETON LOADING
+    ══════════════════════════════════════ */
+    @keyframes shimmer { 0%{background-position:-400px 0} 100%{background-position:400px 0} }
+    .sk { background:linear-gradient(90deg,var(--sk-base) 25%,var(--sk-shine) 50%,var(--sk-base) 75%); background-size:800px 100%; animation:shimmer 1.4s infinite; border-radius:6px; }
+    .sk-kpi { height:56px; flex:1; border-radius:var(--r-md); }
+    .sk-slot { border-radius:var(--r-sm); }
+
+    /* ══════════════════════════════════════
+       WAITLIST slide-over
+    ══════════════════════════════════════ */
+    .slide-overlay { position:fixed; inset:0; background:rgba(46,26,24,0.4); backdrop-filter:blur(2px); z-index:80; opacity:0; pointer-events:none; transition:opacity .3s; }
+    .slide-overlay.show { opacity:1; pointer-events:auto; }
+    .slide-panel { position:fixed; top:0; right:0; bottom:0; width:380px; max-width:100%; background:var(--c-bg); z-index:90; transform:translateX(100%); transition:transform .3s cubic-bezier(.34,1.56,.64,1); display:flex; flex-direction:column; box-shadow:-8px 0 32px rgba(46,26,24,0.1); }
+    .slide-panel.show { transform:translateX(0); }
+    .slide-header { padding:24px; border-bottom:1px solid var(--c-muted); display:flex; align-items:center; justify-content:space-between; background:var(--c-surface); }
+    .slide-body { flex:1; overflow-y:auto; padding:24px; display:flex; flex-direction:column; gap:16px; }
+    .waitlist-card { background:var(--c-surface); border:1px solid var(--c-light); border-radius:var(--r-sm); padding:16px; }
+    .waitlist-card-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; }
+    .waitlist-notify-btn { width:100%; padding:8px; border-radius:6px; background:rgba(196,135,79,0.1); color:var(--c-dark); border:1px solid rgba(196,135,79,0.2); font-family:inherit; font-size:11px; font-weight:700; cursor:pointer; transition:background .2s; outline:none; }
+    .waitlist-notify-btn:hover { background:rgba(196,135,79,0.2); }
+    .waitlist-notify-btn:focus-visible { box-shadow:var(--focus-ring); }
+
+    /* FAB */
+    .fab-new-appt { position:fixed; bottom:24px; right:24px; height:52px; padding:0 22px; border-radius:26px; background:var(--c-dark); color:var(--c-bg); border:none; font-size:13px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:10px; box-shadow:0 8px 24px rgba(46,26,24,0.3); transition:all .25s cubic-bezier(.34,1.56,.64,1); z-index:70; outline:none; }
+    .fab-new-appt:hover { background:var(--c-accent); transform:translateY(-3px) scale(1.03); box-shadow:0 12px 32px rgba(196,135,79,0.4); }
+    .fab-new-appt:focus-visible { box-shadow:var(--focus-ring); }
+
+    /* ══════════════════════════════════════
+       MODAL
+    ══════════════════════════════════════ */
+    .modal-overlay { position:fixed; inset:0; background:rgba(46,26,24,0.6); backdrop-filter:blur(4px); z-index:100; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity .3s; padding:20px; }
+    .modal-overlay.show { opacity:1; pointer-events:auto; }
+    .modal-content { background:var(--c-surface); width:100%; max-width:520px; border-radius:var(--r-xl); box-shadow:0 20px 40px rgba(46,26,24,0.15); transform:translateY(20px) scale(0.95); transition:all .3s cubic-bezier(.34,1.56,.64,1); display:flex; flex-direction:column; max-height:90vh; }
+    .modal-overlay.show .modal-content { transform:translateY(0) scale(1); }
+    .modal-header { padding:20px 24px; border-bottom:1px solid var(--c-muted); display:flex; align-items:center; justify-content:space-between; }
+    .modal-title { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:700; color:var(--c-dark); }
+    .btn-close { width:32px; height:32px; border-radius:50%; background:var(--c-bg); border:1px solid var(--c-light); color:var(--c-mid); font-size:14px; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all .2s; outline:none; }
+    .btn-close:hover { background:rgba(184,84,80,0.1); color:var(--s-urgent); border-color:rgba(184,84,80,0.2); transform:rotate(90deg); }
+    .btn-close:focus-visible { box-shadow:var(--focus-ring); }
+    .modal-body { padding:24px; overflow-y:auto; display:flex; flex-direction:column; gap:16px; }
+    .form-row { display:flex; gap:16px; align-items:flex-start; }
+    .form-group { display:flex; flex-direction:column; gap:6px; flex:1; position:relative; }
+    .form-label { font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--c-primary); }
+    .form-label.required::after { content:'*'; color:var(--s-urgent); margin-left:3px; }
+    .form-input, .form-select, .form-textarea { width:100%; background:var(--c-bg); border:1.5px solid var(--c-light); border-radius:var(--r-sm); padding:0 14px; font-family:inherit; font-size:13px; color:var(--c-dark); transition:all .2s; outline:none; }
+    .form-input, .form-select { height:42px; }
+    .form-textarea { padding:12px 14px; resize:vertical; min-height:80px; }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color:var(--c-accent); background:var(--c-surface); box-shadow:0 0 0 3px rgba(196,135,79,0.15); }
+    .btn-walkin { font-size:10px; padding:4px 8px; border-radius:4px; background:rgba(74,127,165,.1); color:var(--s-next); border:none; cursor:pointer; font-weight:700; text-transform:uppercase; transition:background .2s; outline:none; }
+    .btn-walkin:hover { background:rgba(74,127,165,.2); }
+    .slot-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(65px,1fr)); gap:8px; }
+    .time-slot { border:1.5px solid var(--c-light); background:var(--c-bg); color:var(--c-mid); padding:8px 0; text-align:center; border-radius:var(--r-xs); font-size:13px; font-weight:700; cursor:pointer; transition:all .2s; user-select:none; outline:none; }
+    .time-slot:hover { border-color:var(--c-accent); color:var(--c-dark); }
+    .time-slot:focus-visible { box-shadow:var(--focus-ring); }
+    .time-slot.selected { background:var(--c-accent); color:white; border-color:var(--c-accent); box-shadow:0 4px 10px rgba(196,135,79,0.25); }
+    .quick-rebook { display:none; background:rgba(90,138,106,0.1); border:1px solid rgba(90,138,106,0.2); border-radius:var(--r-sm); padding:10px 14px; margin-top:4px; align-items:center; justify-content:space-between; animation:fadeUp .3s ease; }
+    .quick-rebook-text { font-size:12px; color:var(--s-done); font-weight:500; }
+    .btn-rebook { background:var(--s-done); color:white; border:none; padding:4px 10px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer; transition:.2s; outline:none; }
+    .btn-rebook:hover { background:#4a7558; }
+    .overlap-alert { display:none; background:rgba(184,84,80,0.1); border:1px solid rgba(184,84,80,0.2); border-radius:var(--r-sm); padding:12px 14px; align-items:flex-start; gap:10px; animation:fadeUp .3s ease; }
+    .overlap-icon { color:var(--s-urgent); font-size:16px; margin-top:2px; }
+    .overlap-content { flex:1; }
+    .overlap-title { font-size:13px; font-weight:700; color:var(--s-urgent); }
+    .overlap-text { font-size:12px; color:var(--c-mid); margin-top:4px; }
+    .btn-accept-overlap { background:var(--s-urgent); color:white; border:none; padding:6px 12px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer; transition:.2s; margin-top:8px; outline:none; }
+    .modal-footer { padding:16px 24px; border-top:1px solid var(--c-muted); background:rgba(249,246,243,0.5); display:flex; align-items:center; justify-content:flex-end; gap:12px; border-radius:0 0 var(--r-xl) var(--r-xl); }
+    .btn-cancel { height:40px; padding:0 20px; border-radius:var(--r-sm); background:transparent; border:1px solid transparent; color:var(--c-mid); font-family:inherit; font-size:13px; font-weight:700; cursor:pointer; transition:all .2s; outline:none; }
+    .btn-cancel:hover { background:rgba(46,26,24,0.05); }
+    .btn-save { height:40px; padding:0 24px; border-radius:var(--r-sm); background:var(--c-dark); color:var(--c-bg); border:none; font-family:inherit; font-size:13px; font-weight:700; cursor:pointer; transition:all .2s; display:flex; align-items:center; gap:8px; outline:none; }
+    .btn-save:hover { background:var(--c-accent); box-shadow:0 4px 14px rgba(196,135,79,.35); transform:translateY(-1px); }
+    .btn-save:focus-visible { box-shadow:var(--focus-ring); }
+
+    /* ══════════════════════════════════════
+       CUSTOMER SEARCH DROPDOWN (NEW)
+    ══════════════════════════════════════ */
+    .search-wrap { position:relative; }
+    .search-input { width:100%; height:42px; background:var(--c-bg); border:1.5px solid var(--c-light); border-radius:var(--r-sm); padding:0 36px 0 14px; font-family:inherit; font-size:13px; color:var(--c-dark); transition:all .2s; outline:none; }
+    .search-input:focus { border-color:var(--c-accent); background:var(--c-surface); box-shadow:0 0 0 3px rgba(196,135,79,0.15); }
+    .search-input::placeholder { color:var(--c-primary); opacity:.5; }
+    .search-icon { position:absolute; right:12px; top:50%; transform:translateY(-50%); font-size:12px; color:var(--c-primary); opacity:.5; pointer-events:none; }
+    .search-dropdown { position:absolute; top:100%; left:0; right:0; margin-top:4px; background:var(--c-surface); border:1.5px solid var(--c-light); border-radius:var(--r-md); box-shadow:0 12px 32px rgba(46,26,24,0.15); max-height:220px; overflow-y:auto; z-index:110; display:none; }
+    .search-dropdown.show { display:block; animation:fadeUp .15s ease; }
+    .search-item { display:flex; align-items:center; gap:12px; padding:10px 14px; cursor:pointer; transition:background .15s; border-bottom:1px solid var(--c-muted); }
+    .search-item:last-child { border-bottom:none; }
+    .search-item:hover, .search-item.highlighted { background:rgba(196,135,79,0.08); }
+    .search-item-av { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:900; font-family:'Cormorant Garamond',serif; flex-shrink:0; }
+    .search-item-info { flex:1; min-width:0; }
+    .search-item-name { font-size:13px; font-weight:700; color:var(--c-dark); }
+    .search-item-name mark { background:rgba(196,135,79,0.25); color:inherit; border-radius:2px; padding:0 1px; }
+    .search-item-detail { font-size:11px; color:var(--c-primary); opacity:.7; margin-top:1px; }
+    .search-item-points { font-size:10px; font-weight:700; color:var(--s-done); background:rgba(90,138,106,0.1); padding:2px 6px; border-radius:4px; white-space:nowrap; }
+
+    /* ══════════════════════════════════════
+       EMPLOYEE FILTER TABS (NEW)
+    ══════════════════════════════════════ */
+    .emp-tabs { display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+    .emp-tab { display:flex; align-items:center; gap:6px; padding:5px 12px; border-radius:99px; border:1.5px solid var(--c-light); background:transparent; cursor:pointer; font-family:inherit; font-size:11px; font-weight:700; color:var(--c-mid); transition:all .2s; outline:none; white-space:nowrap; }
+    .emp-tab:hover { border-color:var(--c-primary); color:var(--c-dark); }
+    .emp-tab.active { background:var(--c-dark); color:var(--c-bg); border-color:var(--c-dark); }
+    .emp-tab .emp-tab-av { width:20px; height:20px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:900; font-family:'Cormorant Garamond',serif; flex-shrink:0; }
+    .emp-tab.active .emp-tab-av { border:1.5px solid rgba(255,255,255,0.3); }
+
+    /* ══════════════════════════════════════
+       MOBILE EMPLOYEE LABEL (NEW)
+    ══════════════════════════════════════ */
+    .mobile-emp-label { display:none; }
+    @media (max-width:768px) {
+      .mobile-emp-label { display:inline-flex; align-items:center; gap:4px; background:rgba(196,135,79,0.1); color:var(--c-dark); padding:3px 8px; border-radius:4px; font-size:10px; font-weight:700; margin-bottom:4px; }
+      .mobile-emp-label .mobile-emp-av { width:16px; height:16px; border-radius:4px; display:inline-flex; align-items:center; justify-content:center; font-size:8px; font-weight:900; font-family:'Cormorant Garamond',serif; }
+      .emp-tabs { justify-content:flex-start; overflow-x:auto; flex-wrap:nowrap; padding-bottom:4px; }
+    }
+
+    /* ══════════════════════════════════════
+       5. TOAST SYSTEM
+    ══════════════════════════════════════ */
+    #toastContainer { position:fixed; bottom:24px; right:24px; z-index:9999; display:flex; flex-direction:column; gap:8px; pointer-events:none; }
+    .toast { display:flex; align-items:center; gap:12px; padding:12px 16px; border-radius:var(--r-md); background:var(--c-dark); color:var(--c-bg); font-size:13px; font-weight:600; min-width:240px; box-shadow:0 8px 32px rgba(0,0,0,0.25); pointer-events:all; cursor:pointer; animation:toastIn .35s cubic-bezier(.34,1.56,.64,1) both; }
+    .toast.removing { animation:toastOut .25s ease forwards; }
+    .toast-icon { font-size:15px; flex-shrink:0; }
+    .toast.success .toast-icon { color:#6ec97a; }
+    .toast.error .toast-icon { color:var(--s-urgent); }
+    .toast.info .toast-icon { color:var(--c-accent); }
+    .toast-msg { flex:1; }
+
+    /* ══════════════════════════════════════
+       7. COMMAND PALETTE
+    ══════════════════════════════════════ */
+    .cmd-overlay { position:fixed; inset:0; background:rgba(46,26,24,0.45); backdrop-filter:blur(4px); z-index:8000; display:flex; align-items:flex-start; justify-content:center; padding-top:15vh; animation:fadeIn .15s ease; }
+    .cmd-palette { background:var(--c-surface); border-radius:var(--r-xl); width:560px; max-width:90vw; box-shadow:0 24px 64px rgba(46,26,24,0.3); border:1.5px solid var(--c-light); overflow:hidden; animation:cmdIn .2s cubic-bezier(.34,1.3,.64,1); }
+    .cmd-search-wrap { display:flex; align-items:center; gap:12px; padding:16px 20px; border-bottom:1px solid var(--c-muted); }
+    .cmd-input { flex:1; background:transparent; border:none; outline:none; font-family:inherit; font-size:15px; color:var(--c-dark); }
+    .cmd-input::placeholder { color:var(--c-primary); opacity:.5; }
+    .cmd-esc { font-size:10px; background:var(--c-muted); border-radius:4px; padding:2px 6px; color:var(--c-primary); white-space:nowrap; }
+    .cmd-section-lbl { font-size:10px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--c-mid); padding:10px 20px 4px; opacity:.6; }
+    .cmd-item { display:flex; align-items:center; gap:12px; padding:10px 20px; cursor:pointer; transition:background .15s; }
+    .cmd-item:hover, .cmd-item.selected { background:rgba(196,135,79,0.08); }
+    .cmd-item-icon { width:32px; height:32px; border-radius:8px; background:var(--c-bg); display:flex; align-items:center; justify-content:center; font-size:13px; color:var(--c-primary); flex-shrink:0; }
+    .cmd-item-name { font-size:13px; font-weight:600; color:var(--c-dark); }
+    .cmd-item-sub { font-size:11px; color:var(--c-primary); opacity:.7; }
+    .cmd-footer { padding:10px 20px; border-top:1px solid var(--c-muted); display:flex; gap:16px; }
+    .cmd-hint { font-size:10px; color:var(--c-primary); opacity:.5; display:flex; align-items:center; gap:4px; }
+
+    /* ══════════════════════════════════════
+       ANIMATIONS
+    ══════════════════════════════════════ */
+    @keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    @keyframes toastIn { from{opacity:0;transform:translateY(12px) scale(0.95)} to{opacity:1;transform:none} }
+    @keyframes toastOut { to{opacity:0;transform:translateY(8px) scale(0.96)} }
+    @keyframes cmdIn { from{opacity:0;transform:translateY(-12px) scale(0.97)} to{opacity:1;transform:none} }
+
+    /* ══════════════════════════════════════
+       MOBILE
+    ══════════════════════════════════════ */
+    .mobile-overlay { display:none; position:fixed; inset:0; background:rgba(46,26,24,.5); z-index:40; backdrop-filter:blur(2px); }
+    .mobile-overlay.show { display:block; }
+    .mobile-menu-btn { display:none; width:36px; height:36px; border-radius:var(--r-sm); border:1.5px solid var(--c-light); background:var(--c-surface); color:var(--c-mid); font-size:14px; cursor:pointer; align-items:center; justify-content:center; flex-shrink:0; outline:none; }
+
+    @media (max-width:768px) {
+      :root { --sidebar-w:260px; }
+      .sidebar { position:fixed; left:0; top:0; bottom:0; transform:translateX(-100%); transition:transform .3s cubic-bezier(.4,0,.2,1); box-shadow:none; }
+      .sidebar.mobile-open { transform:translateX(0); box-shadow:8px 0 48px rgba(46,26,24,.3); }
+      .mobile-overlay.show { display:block; }
+      .kpi-ribbon { flex-direction:column; }
+      .kpi-stat + .kpi-stat { border-left:none; border-top:1px solid var(--c-muted); }
+      .topbar { padding:0 16px; gap:8px; }
+      .topbar-account .user-name, .topbar-account .user-role { display:none; }
+      .page-content { padding:16px; padding-bottom:90px; }
+      .collapse-btn { display:none; }
+      .mobile-menu-btn { display:flex !important; }
+      .cmd-btn { display:none; }
+      .slide-panel { width:100%; }
+      .timeline-inner { min-width:100%; }
+      .timeline-header-grid { display:none; }
+      .timeline-row { display:flex; flex-direction:column; gap:8px; border-bottom:none; min-height:auto; padding-bottom:20px; animation:none; }
+      .timeline-time { width:100%; text-align:left; padding:0 0 4px 0; border-right:none; border-bottom:1.5px solid var(--c-muted); font-size:14px; font-weight:900; color:var(--c-dark); opacity:1; margin-bottom:4px; }
+      .timeline-slot.empty { display:none !important; }
+      .current-time-line { display:none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- A11Y: Skip link -->
+<a href="#mainContent" class="skip-link">Μετάβαση στο περιεχόμενο</a>
+
+<div id="toastContainer" role="status" aria-live="polite" aria-atomic="false"></div>
+
+<div class="mobile-overlay" id="mobileOverlay" onclick="closeMobile()"></div>
+
+<!-- 7. COMMAND PALETTE -->
+<div class="cmd-overlay" id="cmdOverlay" style="display:none" onclick="closePalette(event)" role="dialog" aria-modal="true" aria-label="Γρήγορη ενέργεια">
+  <div class="cmd-palette" onclick="event.stopPropagation()">
+    <div class="cmd-search-wrap">
+      <i class="fas fa-search" style="color:var(--c-primary);font-size:15px;opacity:.6;flex-shrink:0"></i>
+      <input class="cmd-input" id="cmdInput" placeholder="Αναζήτηση ενέργειας ή πελάτη..." oninput="renderPalette()" onkeydown="paletteKey(event)" autocomplete="off"/>
+      <span class="cmd-esc">ESC</span>
+    </div>
+    <div id="cmdResults" style="max-height:340px;overflow-y:auto;"></div>
+    <div class="cmd-footer">
+      <span class="cmd-hint"><kbd style="background:var(--c-muted);padding:1px 4px;border-radius:3px;font-size:9px">↑↓</kbd> πλοήγηση</span>
+      <span class="cmd-hint"><kbd style="background:var(--c-muted);padding:1px 4px;border-radius:3px;font-size:9px">↵</kbd> επιλογή</span>
+      <span class="cmd-hint"><kbd style="background:var(--c-muted);padding:1px 4px;border-radius:3px;font-size:9px">ESC</kbd> κλείσιμο</span>
+    </div>
+  </div>
+</div>
+
+<aside class="sidebar" id="sidebar" role="navigation" aria-label="Κύρια πλοήγηση">
+  <button class="collapse-btn" onclick="toggleCollapse()" aria-label="Σύμπτυξη/Ανάπτυξη sidebar"><span class="arrow">‹</span></button>
+  <div class="sidebar-logo">
+    <div class="logo-img-wrap"><img src="./logo.png" alt="Glamour Nails"/></div>
+    <div class="logo-text">
+      <div class="logo-brand">Glamour Nails</div>
+      <div class="logo-tagline">Management</div>
+    </div>
+  </div>
+  <nav class="nav-section">
+    <div class="nav-label">Κύρια</div>
+    <a href="front.html" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-chart-line"></i></div>
+      <span class="nav-lbl">Πίνακας Ελέγχου</span>
+      <span class="nav-tip">Πίνακας Ελέγχου</span>
+    </a>
+    <a href="front.html" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-calendar-check"></i></div>
+      <span class="nav-lbl">Ραντεβού</span>
+      <span class="nav-badge">10</span>
+      <span class="nav-tip">Ραντεβού</span>
+    </a>
+    <a href="customer.html" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-user-heart"></i></div>
+      <span class="nav-lbl">Πελάτες</span>
+      <span class="nav-tip">Πελάτες</span>
+    </a>
+    <a href="services.html" class="nav-item active" aria-current="page">
+      <div class="nav-icon"><i class="fas fa-spa"></i></div>
+      <span class="nav-lbl">Υπηρεσίες</span>
+      <span class="nav-tip">Υπηρεσίες</span>
+    </a>
+    <a href="notifications.html" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-spa"></i></div>
+      <span class="nav-lbl">Μήνυματα</span>
+      <span class="nav-tip">Μήνυματα</span>
+    </a>
+  </nav>
+  <div class="sidebar-spacer"></div>
+  <nav class="nav-section">
+    <div class="nav-label">Διαχείριση</div>
+    <a href="#" class="nav-item"><div class="nav-icon"><i class="fas fa-store"></i></div><span class="nav-lbl">Καταστήματα</span><span class="nav-tip">Καταστήματα</span></a>
+    <a href="#" class="nav-item"><div class="nav-icon"><i class="fas fa-bell"></i></div><span class="nav-lbl">Ειδοποιήσεις</span><span class="nav-tip">Ειδοποιήσεις</span></a>
+  </nav>
+  <div class="credits-bar">
+    <div class="credits-label">SMS Credits</div>
+    <div class="credits-value">325</div>
+    <div class="credits-sub">από 500 διαθέσιμα</div>
+    <div class="credits-track"><div class="credits-fill" style="width:65%"></div></div>
+  </div>
+</aside>
+<div class="main-wrap">
+  <header class="topbar">
+    <button class="mobile-menu-btn" onclick="openMobile()" aria-label="Άνοιγμα μενού"><i class="fas fa-bars" aria-hidden="true"></i></button>
+    <div class="topbar-title" id="topbarTitle">
+      <span id="liveClock" style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;opacity:0.5"></span>
+    </div>
+    <div class="topbar-actions">
+      <!-- 7. Command palette -->
+      <button class="cmd-btn" onclick="openPalette()" title="⌘K">
+        <i class="fas fa-search" style="font-size:12px"></i>
+        Γρήγορη ενέργεια
+        <span class="cmd-kbd">⌘K</span>
+      </button>
+      <button class="notif-btn" onclick="openWaitlist()" aria-label="Λίστα αναμονής, 2 πελάτες">
+        <i class="fas fa-bell"></i>
+        <span class="notif-dot" style="width:16px;height:16px;font-size:8px;font-weight:900;display:flex;align-items:center;justify-content:center;top:4px;right:4px">2</span>
+      </button>
+      <!-- 1. Dark mode toggle -->
+      <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" aria-label="Εναλλαγή σκοτεινού/φωτεινού θέματος">
+        <i class="fas fa-moon" id="themeIcon"></i>
+      </button>
+      <div class="topbar-account">
+        <div class="user-av">ΜΚ</div>
+        <div class="user-info">
+          <div class="user-name">Μαρία Κωνσταντίνου</div>
+          <div class="user-role">Ιδιοκτήτρια</div>
+        </div>
+        <button class="user-logout" onclick="showToast('Αποσύνδεση...','info')" title="Αποσύνδεση"><i class="fas fa-sign-out-alt"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-content" id="mainContent">
+
+    <!-- 6. KPI RIBBON WITH SPARKLINES -->
+    <div class="kpi-ribbon" id="kpiRibbon">
+      <div class="kpi-stat">
+        <div class="kpi-icon-wrap kpi-icon-accent"><i class="fas fa-calendar-check" style="font-size:16px"></i></div>
+        <div class="kpi-text">
+          <div class="kpi-stat-val">10</div>
+          <div class="kpi-stat-lbl">Ραντεβού Σήμερα</div>
+        </div>
+        <div class="kpi-spark" id="spark1"></div>
+      </div>
+      <div class="kpi-stat">
+        <div class="kpi-icon-wrap kpi-icon-done"><i class="fas fa-check-circle" style="font-size:16px"></i></div>
+        <div class="kpi-text">
+          <div class="kpi-stat-val">3</div>
+          <div class="kpi-stat-lbl">Ολοκληρωμένα</div>
+        </div>
+        <div class="kpi-spark" id="spark2"></div>
+      </div>
+      <div class="kpi-stat">
+        <div class="kpi-icon-wrap kpi-icon-dark"><i class="fas fa-euro-sign" style="font-size:16px"></i></div>
+        <div class="kpi-text">
+          <div class="kpi-stat-val">315€</div>
+          <div class="kpi-stat-lbl">Πρόβλεψη Εσόδων</div>
+        </div>
+        <div class="kpi-spark" id="spark3"></div>
+      </div>
+    </div>
+
+    <div class="content-panel" style="animation:fadeUp .4s ease .1s both">
+      <div class="panel-header" style="padding-bottom:12px">
+        <div>
+          <div class="panel-title">Ημερήσιο Πλάνο</div>
+          <div class="panel-subtitle" id="panelSubtitle">Όλοι οι υπάλληλοι · Σήμερα</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <!-- Employee filter tabs (NEW) -->
+          <div class="emp-tabs" id="empTabs" role="tablist" aria-label="Φιλτράρισμα υπαλλήλων"></div>
+          <!-- Date navigation -->'
+
+          <div style="display:flex;align-items:center;background:var(--c-bg);border:1.5px solid var(--c-light);border-radius:var(--r-sm);height:32px;">
+            <button class="btn-topbar" style="height:100%;border:none;border-radius:var(--r-sm) 0 0 var(--r-sm);padding:0 10px;background:transparent" onclick="navigateDate(-1)" title="Προηγούμενη μέρα"><i class="fas fa-chevron-left" style="font-size:10px;color:var(--c-mid)"></i></button>
+            <div style="width:1px;height:16px;background:var(--c-light)"></div>
+            <button class="btn-topbar" style="height:100%;border:none;border-radius:0;padding:0 12px;background:transparent">
+              <i class="far fa-calendar-alt" style="font-size:11px;color:var(--c-primary);margin-right:4px"></i>
+              <span id="dateLabel">Σήμερα, 8 Απρ</span>
+            </button>
+            <div style="width:1px;height:16px;background:var(--c-light)"></div>
+            <button class="btn-topbar" style="height:100%;border:none;border-radius:0 var(--r-sm) var(--r-sm) 0;padding:0 10px;background:transparent" onclick="navigateDate(1)" title="Επόμενη μέρα"><i class="fas fa-chevron-right" style="font-size:10px;color:var(--c-mid)"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-wrap">
+        <div class="timeline-inner" id="timelineInner">
+          <div class="current-time-line"></div>
+          <div class="timeline-header-grid">
+            <div></div>
+            <!-- 10. Employee avatars -->
+            <div class="th-cell">
+              <div class="th-av" style="background:rgba(196,135,79,0.15);color:var(--c-accent)">Χ</div>
+              Χαρά · Μανικιούρ
+            </div>
+            <div class="th-cell">
+              <div class="th-av" style="background:rgba(74,127,165,0.15);color:var(--s-next)">Ε</div>
+              Ελένη · Πεντικιούρ
+            </div>
+          </div>
+
+          <!-- 8. DRAG-TO-RESCHEDULE — draggable booked slots, droppable empty slots -->
+          <!-- 9. STAGGER via nth-child CSS -->
+
+          <div class="timeline-row">
+            <div class="timeline-time">10:00</div>
+            <div class="timeline-slot booked" draggable="true" data-appt="anna" onclick="openApptModal()" ondragstart="dragStart(event,'anna','slot-chara-10')" id="slot-chara-10">
+              <div class="mobile-emp-label"><span class="mobile-emp-av" style="background:rgba(196,135,79,0.15);color:var(--c-accent)">Χ</span> Χαρά</div>
+              <div class="ts-top">
+                <div class="ts-info">
+                  <div class="ts-title">Άννα Γεωργίου</div>
+                  <div class="ts-sub"><span class="emp-badge">Χαρά</span> Ημιμόνιμο (30')</div>
+                </div>
+                <div class="ts-right">
+                  <button class="btn-dots" onclick="event.stopPropagation();showToast('Μενού ενεργειών','info')"><i class="fas fa-ellipsis-v"></i></button>
+                </div>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:4px">
+                <div class="ts-tags"><span class="tag tag-green"><i class="fas fa-sparkles"></i> ΝΕΑ ΠΕΛΑΤΙΣΣΑ</span></div>
+                <div class="inline-status-wrap" onclick="event.stopPropagation()">
+                  <select class="inline-status status-scheduled" onchange="updateStatusColor(this)">
+                    <option value="SCHEDULED">ΠΡΟΓΡΑΜΜΑΤΙΣΜΕΝΟ</option>
+                    <option value="COMPLETED">ΟΛΟΚΛΗΡΩΘΗΚΕ</option>
+                    <option value="CANCELED">ΑΚΥΡΩΘΗΚΕ</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="timeline-slot booked" draggable="true" data-appt="maria" onclick="openApptModal()" ondragstart="dragStart(event,'maria','slot-eleni-10')" id="slot-eleni-10">
+              <div class="mobile-emp-label"><span class="mobile-emp-av" style="background:rgba(74,127,165,0.15);color:var(--s-next)">Ε</span> Ελένη</div>
+              <div class="ts-top">
+                <div class="ts-info">
+                  <div class="ts-title">Μαρία Κωνσταντίνου <i class="fas fa-star icon-vip"></i></div>
+                  <div class="ts-sub"><span class="emp-badge">Ελένη</span> Spa Πεντικιούρ (45')</div>
+                </div>
+                <div class="ts-right">
+                  <i class="fas fa-euro-sign" style="font-size:10px;color:var(--s-done)" title="Πληρωμένο"></i>
+                  <button class="btn-dots" onclick="event.stopPropagation();showToast('Μενού ενεργειών','info')"><i class="fas fa-ellipsis-v"></i></button>
+                </div>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:4px">
+                <div class="ts-tags"><span class="tag tag-red"><i class="fas fa-triangle-exclamation"></i> ΟΧΙ ΑΣΕΤΟΝ</span></div>
+                <div class="inline-status-wrap" onclick="event.stopPropagation()">
+                  <select class="inline-status status-scheduled" onchange="updateStatusColor(this)">
+                    <option value="SCHEDULED">ΠΡΟΓΡΑΜΜΑΤΙΣΜΕΝΟ</option>
+                    <option value="COMPLETED">ΟΛΟΚΛΗΡΩΘΗΚΕ</option>
+                    <option value="CANCELED">ΑΚΥΡΩΘΗΚΕ</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-row">
+            <div class="timeline-time">11:00</div>
+            <div class="timeline-slot booked border-completed" draggable="true" ondragstart="dragStart(event,'katerina','slot-chara-11')" id="slot-chara-11" onclick="openApptModal()">
+              <div class="mobile-emp-label"><span class="mobile-emp-av" style="background:rgba(74,127,165,0.15);color:var(--s-next)">Ε</span> Ελένη</div>
+              <div class="ts-top">
+                <div class="ts-info">
+                  <div class="ts-title">Κατερίνα Λ.</div>
+                  <div class="ts-sub"><span class="emp-badge">Ελένη</span> Απλό Μανικιούρ (30')</div>
+                </div>
+                <div class="ts-right"><button class="btn-dots" onclick="event.stopPropagation();showToast('Μενού ενεργειών','info')"><i class="fas fa-ellipsis-v"></i></button></div>
+              </div>
+              <div style="display:flex;justify-content:flex-end;margin-top:4px">
+                <div class="inline-status-wrap" onclick="event.stopPropagation()">
+                  <select class="inline-status status-completed" onchange="updateStatusColor(this)">
+                    <option value="SCHEDULED">ΠΡΟΓΡΑΜΜΑΤΙΣΜΕΝΟ</option>
+                    <option value="COMPLETED" selected>ΟΛΟΚΛΗΡΩΘΗΚΕ</option>
+                    <option value="CANCELED">ΑΚΥΡΩΘΗΚΕ</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="timeline-slot booked" draggable="true" ondragstart="dragStart(event,'ioanna','slot-eleni-11')" id="slot-eleni-11" onclick="openApptModal()">
+              <div class="mobile-emp-label"><span class="mobile-emp-av" style="background:rgba(196,135,79,0.15);color:var(--c-accent)">Χ</span> Χαρά</div>
+              <div class="ts-top">
+                <div class="ts-info">
+                  <div class="ts-title">Ιωάννα Μ.</div>
+                  <div class="ts-sub"><span class="emp-badge">Χαρά</span> Ημιμόνιμο Ποδιών (30')</div>
+                </div>
+                <div class="ts-right"><button class="btn-dots" onclick="event.stopPropagation();showToast('Μενού ενεργειών','info')"><i class="fas fa-ellipsis-v"></i></button></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:4px">
+                <div class="ts-tags"><span class="tag tag-blue"><i class="fas fa-clock"></i> ΒΙΑΣΤΙΚΗ</span></div>
+                <div class="inline-status-wrap" onclick="event.stopPropagation()">
+                  <select class="inline-status status-scheduled" onchange="updateStatusColor(this)">
+                    <option value="SCHEDULED">ΠΡΟΓΡΑΜΜΑΤΙΣΜΕΝΟ</option>
+                    <option value="COMPLETED">ΟΛΟΚΛΗΡΩΘΗΚΕ</option>
+                    <option value="CANCELED">ΑΚΥΡΩΘΗΚΕ</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-row">
+            <div class="timeline-time">12:00</div>
+            <div class="timeline-slot booked" draggable="true" ondragstart="dragStart(event,'georgia','slot-chara-12')" id="slot-chara-12" onclick="openApptModal()">
+              <div class="mobile-emp-label"><span class="mobile-emp-av" style="background:rgba(196,135,79,0.15);color:var(--c-accent)">Χ</span> Χαρά</div>
+              <div class="ts-top">
+                <div class="ts-info">
+                  <div class="ts-title">Γεωργία Παππά <i class="fas fa-star icon-vip"></i></div>
+                  <div class="ts-sub"><span class="emp-badge">Χαρά</span> Τεχνητά Νύχια (60')</div>
+                </div>
+                <div class="ts-right"><button class="btn-dots" onclick="event.stopPropagation();showToast('Μενού ενεργειών','info')"><i class="fas fa-ellipsis-v"></i></button></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:4px">
+                <div class="ts-tags"><span class="tag tag-red"><i class="fas fa-notes-medical"></i> ΑΛΛΕΡΓΙΑ UV</span></div>
+                <div class="inline-status-wrap" onclick="event.stopPropagation()">
+                  <select class="inline-status status-scheduled" onchange="updateStatusColor(this)">
+                    <option value="SCHEDULED">ΠΡΟΓΡΑΜΜΑΤΙΣΜΕΝΟ</option>
+                    <option value="COMPLETED">ΟΛΟΚΛΗΡΩΘΗΚΕ</option>
+                    <option value="CANCELED">ΑΚΥΡΩΘΗΚΕ</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="timeline-slot empty" onclick="openApptModal('12:00')" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropOn(event,'slot-eleni-12')" id="slot-eleni-12">
+              <i class="fas fa-plus" style="font-size:11px"></i>
+            </div>
+          </div>
+
+          <div class="timeline-row">
+            <div class="timeline-time">13:00</div>
+            <div class="timeline-slot booked border-completed" draggable="true" ondragstart="dragStart(event,'giorgos','slot-chara-13')" id="slot-chara-13" onclick="openApptModal()">
+              <div class="mobile-emp-label"><span class="mobile-emp-av" style="background:rgba(196,135,79,0.15);color:var(--c-accent)">Χ</span> Χαρά</div>
+              <div class="ts-top">
+                <div class="ts-info">
+                  <div class="ts-title">Γιώργος Παπαδόπουλος</div>
+                  <div class="ts-sub"><span class="emp-badge">Χαρά</span> Ανδρικό Μανικιούρ (30')</div>
+                </div>
+                <div class="ts-right">
+                  <i class="fas fa-euro-sign" style="font-size:10px;color:var(--s-done)"></i>
+                  <button class="btn-dots" onclick="event.stopPropagation();showToast('Μενού ενεργειών','info')"><i class="fas fa-ellipsis-v"></i></button>
+                </div>
+              </div>
+              <div style="display:flex;justify-content:flex-end;margin-top:4px">
+                <div class="inline-status-wrap" onclick="event.stopPropagation()">
+                  <select class="inline-status status-completed" onchange="updateStatusColor(this)">
+                    <option value="SCHEDULED">ΠΡΟΓΡΑΜΜΑΤΙΣΜΕΝΟ</option>
+                    <option value="COMPLETED" selected>ΟΛΟΚΛΗΡΩΘΗΚΕ</option>
+                    <option value="CANCELED">ΑΚΥΡΩΘΗΚΕ</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="timeline-slot booked" draggable="true" ondragstart="dragStart(event,'sofia','slot-eleni-13')" id="slot-eleni-13" onclick="openApptModal()">
+              <div class="mobile-emp-label"><span class="mobile-emp-av" style="background:rgba(74,127,165,0.15);color:var(--s-next)">Ε</span> Ελένη</div>
+              <div class="ts-top">
+                <div class="ts-info">
+                  <div class="ts-title">Σοφία Κ. <i class="fas fa-star icon-vip"></i></div>
+                  <div class="ts-sub"><span class="emp-badge">Ελένη</span> Spa Πεντικιούρ (45')</div>
+                </div>
+                <div class="ts-right"><button class="btn-dots" onclick="event.stopPropagation();showToast('Μενού ενεργειών','info')"><i class="fas fa-ellipsis-v"></i></button></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:4px">
+                <div class="ts-tags"><span class="tag tag-yellow"><i class="fas fa-baby"></i> ΕΓΚΥΟΣ</span></div>
+                <div class="inline-status-wrap" onclick="event.stopPropagation()">
+                  <select class="inline-status status-scheduled" onchange="updateStatusColor(this)">
+                    <option value="SCHEDULED">ΠΡΟΓΡΑΜΜΑΤΙΣΜΕΝΟ</option>
+                    <option value="COMPLETED">ΟΛΟΚΛΗΡΩΘΗΚΕ</option>
+                    <option value="CANCELED">ΑΚΥΡΩΘΗΚΕ</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-row">
+            <div class="timeline-time">14:00</div>
+            <div class="timeline-slot booked" draggable="true" ondragstart="dragStart(event,'eleni-t','slot-chara-14')" id="slot-chara-14" onclick="openApptModal()">
+              <div class="mobile-emp-label"><span class="mobile-emp-av" style="background:rgba(74,127,165,0.15);color:var(--s-next)">Ε</span> Ελένη</div>
+              <div class="ts-top">
+                <div class="ts-info">
+                  <div class="ts-title">Ελένη Τ.</div>
+                  <div class="ts-sub"><span class="emp-badge">Ελένη</span> Ημιμόνιμο (30')</div>
+                </div>
+                <div class="ts-right"><button class="btn-dots" onclick="event.stopPropagation();showToast('Μενού ενεργειών','info')"><i class="fas fa-ellipsis-v"></i></button></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:4px">
+                <div class="ts-tags"><span class="tag tag-green">ΝΕΑ</span><span class="tag tag-red">ΟΧΙ ΑΣΕΤΟΝ</span></div>
+                <div class="inline-status-wrap" onclick="event.stopPropagation()">
+                  <select class="inline-status status-scheduled" onchange="updateStatusColor(this)">
+                    <option value="SCHEDULED">ΠΡΟΓΡΑΜΜΑΤΙΣΜΕΝΟ</option>
+                    <option value="COMPLETED">ΟΛΟΚΛΗΡΩΘΗΚΕ</option>
+                    <option value="CANCELED">ΑΚΥΡΩΘΗΚΕ</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="timeline-slot empty" onclick="openApptModal('14:00')" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropOn(event,'slot-eleni-14')" id="slot-eleni-14">
+              <i class="fas fa-plus" style="font-size:11px"></i>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <button class="fab-new-appt" onclick="openApptModal()" aria-label="Νέο Ραντεβού, Ctrl+Space">
+    <i class="fas fa-plus"></i> <span>Νέο Ραντεβού</span>
+  </button>
+</div>
+
+<!-- Waitlist -->
+<div class="slide-overlay" id="waitlistOverlay" onclick="closeWaitlist()"></div>
+<div class="slide-panel" id="waitlistPanel" role="dialog" aria-modal="true" aria-label="Λίστα αναμονής">
+  <div class="slide-header">
+    <div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--c-dark)">Λίστα Αναμονής</div>
+      <div style="font-size:11px;color:var(--c-primary);opacity:.8;margin-top:2px">2 πελάτες αναζητούν κενό</div>
+    </div>
+    <button class="btn-close" onclick="closeWaitlist()"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="slide-body">
+    <div class="waitlist-card">
+      <div class="waitlist-card-header">
+        <div>
+          <div style="font-size:14px;font-weight:700;color:var(--c-dark)">Άννα Γεωργίου</div>
+          <div style="font-size:11px;color:var(--c-mid);margin-top:4px"><i class="far fa-clock" style="margin-right:4px"></i> Οποιαδήποτε ώρα μετά τις 15:00</div>
+        </div>
+        <button class="btn-dots"><i class="fas fa-ellipsis-v"></i></button>
+      </div>
+      <button class="waitlist-notify-btn" onclick="showToast('Ειδοποίηση στάλθηκε στην Άννα Γεωργίου!','success')">
+        <i class="fas fa-paper-plane" style="margin-right:4px"></i> Ειδοποίηση για Κενό
+      </button>
+    </div>
+    <div class="waitlist-card">
+      <div class="waitlist-card-header">
+        <div>
+          <div style="font-size:14px;font-weight:700;color:var(--c-dark)">Κατερίνα Λ.</div>
+          <div style="font-size:11px;color:var(--c-mid);margin-top:4px"><i class="far fa-clock" style="margin-right:4px"></i> Πρωί (10:00–12:00) · Spa Πεντικιούρ</div>
+        </div>
+        <button class="btn-dots"><i class="fas fa-ellipsis-v"></i></button>
+      </div>
+      <button class="waitlist-notify-btn" onclick="showToast('Ειδοποίηση στάλθηκε στην Κατερίνα Λ.!','success')">
+        <i class="fas fa-paper-plane" style="margin-right:4px"></i> Ειδοποίηση για Κενό
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="apptModal" onclick="closeApptModal(event)" role="dialog" aria-modal="true" aria-labelledby="apptModalTitle">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-title" id="apptModalTitle">Νέο Ραντεβού</div>
+      <button class="btn-close" onclick="closeApptModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <label class="form-label required" id="custLabel">Πελάτης</label>
+          <button type="button" class="btn-walkin" onclick="selectCustomer({id:'walkin',name:'Walk-in',mobile:'—',points:0})">+ Περαστικός</button>
+        </div>
+        <div class="search-wrap" id="custSearchWrap">
+          <input type="text" class="search-input" id="custSearch" placeholder="Αναζήτηση με όνομα ή τηλέφωνο..." autocomplete="off" role="combobox" aria-expanded="false" aria-controls="custDropdown" aria-labelledby="custLabel"/>
+          <i class="fas fa-search search-icon" aria-hidden="true"></i>
+          <div class="search-dropdown" id="custDropdown" role="listbox"></div>
+        </div>
+        <input type="hidden" id="apptCustomerIRI" value="">
+        <div class="quick-rebook" id="quickRebookBox">
+          <div class="quick-rebook-text"><i class="fas fa-history" style="margin-right:4px"></i>Τελευταία: <b>Ημιμόνιμο Μανικιούρ</b> (21 μέρες πριν)</div>
+          <button class="btn-rebook" onclick="applyRebook()">Επανακράτηση</button>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group" style="flex:2">
+          <label class="form-label required">Υπηρεσία</label>
+          <select class="form-select" id="apptService" onchange="handleServiceChange()">
+            <option value="" disabled selected data-price="" data-duration="0">Επιλέξτε...</option>
+            <option value="/api/services/1" data-price="15.00" data-duration="30">Ημιμόνιμο Μανικιούρ (15€ - 30')</option>
+            <option value="/api/services/2" data-price="25.00" data-duration="45">Spa Πεντικιούρ (25€ - 45')</option>
+          </select>
+        </div>
+        <div class="form-group" style="flex:1.5">
+          <label class="form-label">Υπάλληλος</label>
+          <select class="form-select" id="apptEmployee">
+            <option value="eleni">Ελένη</option>
+            <option value="chara">Χαρά</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row" style="margin-bottom:4px">
+        <div class="form-group" style="flex:1">
+          <label class="form-label required">Ημερομηνία</label>
+          <input type="date" class="form-input" id="apptDate" value="2026-04-08">
+        </div>
+        <div class="form-group" style="flex:2">
+          <label class="form-label required">Διαθέσιμες Ώρες</label>
+          <div class="slot-grid">
+            <div class="time-slot" onclick="selectTime(this,'10:00')">10:00</div>
+            <div class="time-slot" onclick="selectTime(this,'10:30')">10:30</div>
+            <div class="time-slot" id="slot-1100" onclick="selectTime(this,'11:00')">11:00</div>
+            <div class="time-slot selected" id="slot-1130" onclick="selectTime(this,'11:30')">11:30</div>
+            <div class="time-slot" id="slot-1200" onclick="selectTime(this,'12:00')">12:00</div>
+            <div class="time-slot" onclick="selectTime(this,'14:00')" id="slot-1400">14:00</div>
+            <div class="time-slot" onclick="selectTime(this,'15:30')">15:30</div>
+            <div class="time-slot" id="slot-1630" onclick="selectTime(this,'16:30')">16:30</div>
+          </div>
+          <input type="hidden" id="apptStartTime" value="11:30">
+          <input type="hidden" id="apptEndTime" value="12:00">
+          <div style="font-size:10px;color:var(--c-primary);margin-top:6px;opacity:.8" id="apptDurationText" aria-live="polite">Επιλέξτε υπηρεσία για να υπολογιστεί η λήξη.</div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Τελική Τιμή (€)</label>
+          <input type="number" step="0.5" min="0" class="form-input" id="apptPrice" placeholder="π.χ. 15.00">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Πηγή Κράτησης</label>
+          <select class="form-select">
+            <option>Τηλέφωνο</option>
+            <option>Google / Website</option>
+            <option>Instagram</option>
+            <option>Walk-in</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Σημειώσεις</label>
+        <textarea class="form-textarea" placeholder="Ιδιαιτερότητες, αλλεργίες, προτιμήσεις..."></textarea>
+      </div>
+      <div class="overlap-alert" id="overlapBox" role="alert">
+        <div class="overlap-icon"><i class="fas fa-exclamation-triangle"></i></div>
+        <div class="overlap-content">
+          <div class="overlap-title">Σύγκρουση Ωραρίου</div>
+          <div class="overlap-text">Ο υπάλληλος έχει ήδη ραντεβού εκείνη την ώρα. Επόμενη ελεύθερη θυρίδα: <b>16:30</b>.</div>
+          <button class="btn-accept-overlap" onclick="resolveOverlap()">Επιλογή 16:30</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeApptModal()">Ακύρωση</button>
+      <button class="btn-save" onclick="mockSave()"><i class="fas fa-check"></i> Αποθήκευση</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ════════════════════════════════════
+   1. DARK MODE
+════════════════════════════════════ */
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  localStorage.setItem('gnTheme', isDark ? 'light' : 'dark');
+  document.getElementById('themeIcon').className = isDark ? 'fas fa-moon' : 'fas fa-sun';
+  showToast(isDark ? 'Light mode ενεργό' : 'Dark mode ενεργό', 'info');
+}
+(function initTheme() {
+  const saved = localStorage.getItem('gnTheme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const theme = saved || (prefersDark ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', theme);
+  const icon = document.getElementById('themeIcon');
+  if (icon) icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+})();
+
+/* ════════════════════════════════════
+   5. TOAST SYSTEM
+════════════════════════════════════ */
+function showToast(msg, type = 'success') {
+  const icons = { success:'fa-check-circle', error:'fa-circle-xmark', info:'fa-circle-info' };
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.innerHTML = `<i class="fas ${icons[type]} toast-icon"></i><span class="toast-msg">${msg}</span><i class="fas fa-xmark" style="opacity:.4;font-size:12px;flex-shrink:0"></i>`;
+  t.onclick = () => removeToast(t);
+  document.getElementById('toastContainer').appendChild(t);
+  setTimeout(() => removeToast(t), 3500);
+}
+function removeToast(t) { t.classList.add('removing'); setTimeout(() => t.remove(), 250); }
+
+/* ════════════════════════════════════
+   6. SPARKLINES
+════════════════════════════════════ */
+function makeSpark(data, color) {
+  const w=80, h=28, p=2;
+  const min=Math.min(...data), max=Math.max(...data), range=max-min||1;
+  const pts = data.map((v,i) => {
+    const x = p + (i/(data.length-1))*(w-p*2);
+    const y = p + (1-(v-min)/range)*(h-p*2);
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(' ');
+  const last = pts.split(' ').pop().split(',');
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" fill="none" aria-hidden="true">
+    <polyline points="${pts}" stroke="${color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="${last[0]}" cy="${last[1]}" r="2.5" fill="${color}"/>
+  </svg>`;
+}
+document.getElementById('spark1').innerHTML = makeSpark([7,9,8,10,11,9,10],'#C4874F');
+document.getElementById('spark2').innerHTML = makeSpark([2,3,2,4,3,3,3],'#5A8A6A');
+document.getElementById('spark3').innerHTML = makeSpark([220,280,260,310,290,300,315],'#2E1A18');
+
+/* ════════════════════════════════════
+   2. SKELETON on date navigation
+════════════════════════════════════ */
+const dates = ['7 Απρ', '8 Απρ', '9 Απρ', '10 Απρ', '11 Απρ'];
+let dateIdx = 1;
+function navigateDate(dir) {
+  dateIdx = Math.max(0, Math.min(dates.length-1, dateIdx + dir));
+  const lbl = document.getElementById('dateLabel');
+  const timeline = document.getElementById('timelineInner');
+
+  lbl.textContent = dateIdx === 1 ? `Σήμερα, ${dates[dateIdx]}` : dates[dateIdx];
+  document.getElementById('panelSubtitle').textContent = `Όλοι οι υπάλληλοι · ${dates[dateIdx]}`;
+
+  /* Show skeleton */
+  const rows = timeline.querySelectorAll('.timeline-row');
+  rows.forEach(r => {
+    r.querySelectorAll('.timeline-slot').forEach(s => {
+      s._originalHTML = s.innerHTML;
+      s._originalClass = s.className;
+      if (s.classList.contains('booked')) {
+        s.innerHTML = `<div class="sk sk-slot" style="height:48px;width:100%"></div>`;
+      }
+    });
+  });
+
+  setTimeout(() => {
+    rows.forEach(r => {
+      r.querySelectorAll('.timeline-slot').forEach(s => {
+        if (s._originalHTML) s.innerHTML = s._originalHTML;
+      });
+    });
+    showToast(`Πλάνο ${dates[dateIdx]} φορτώθηκε`, 'info');
+  }, 500);
+}
+
+/* ════════════════════════════════════
+   8. DRAG TO RESCHEDULE
+════════════════════════════════════ */
+let draggedSlotId = null;
+let draggedAppt = null;
+
+function dragStart(event, apptName, slotId) {
+  draggedSlotId = slotId;
+  draggedAppt = apptName;
+  event.dataTransfer.effectAllowed = 'move';
+  setTimeout(() => { document.getElementById(slotId)?.classList.add('dragging'); }, 0);
+}
+function dragOver(event) {
+  event.preventDefault();
+  event.dataTransfer.dropEffect = 'move';
+  event.currentTarget.classList.add('drag-over');
+}
+function dragLeave(event) {
+  event.currentTarget.classList.remove('drag-over');
+}
+function dropOn(event, targetSlotId) {
+  event.preventDefault();
+  event.currentTarget.classList.remove('drag-over');
+  if (!draggedSlotId || draggedSlotId === targetSlotId) { cleanup(); return; }
+
+  const src = document.getElementById(draggedSlotId);
+  const tgt = document.getElementById(targetSlotId);
+  if (!src || !tgt) { cleanup(); return; }
+
+  /* Swap inner HTML */
+  const srcHTML = src.innerHTML;
+  const srcClass = src.className;
+
+  src.className = tgt.className.replace('drag-over','');
+  src.innerHTML = `<i class="fas fa-plus" style="font-size:11px"></i>`;
+  src.setAttribute('onclick', `openApptModal()`);
+  src.removeAttribute('draggable');
+
+  tgt.className = srcClass.replace('dragging','');
+  tgt.innerHTML = srcHTML;
+  tgt.setAttribute('draggable','true');
+
+  cleanup();
+  showToast(`Ραντεβού μετακινήθηκε επιτυχώς!`, 'success');
+}
+function cleanup() {
+  if (draggedSlotId) document.getElementById(draggedSlotId)?.classList.remove('dragging');
+  draggedSlotId = null; draggedAppt = null;
+}
+document.addEventListener('dragend', cleanup);
+
+/* ════════════════════════════════════
+   7. COMMAND PALETTE
+════════════════════════════════════ */
+const quickActions = [
+  { icon:'fa-plus', label:'Νέο Ραντεβού', sub:'Ctrl+Space για γρήγορο άνοιγμα', action:() => openApptModal() },
+  { icon:'fa-user-heart', label:'Πελατολόγιο', sub:'Μετάβαση στη σελίδα πελατών', action:() => window.location.href='customer_v2.html' },
+  { icon:'fa-hourglass-half', label:'Λίστα Αναμονής', sub:'Δείτε 2 πελάτες που αναμένουν', action:() => openWaitlist() },
+  { icon:'fa-moon', label:'Dark / Light Mode', sub:'Εναλλαγή θέματος', action:() => { toggleTheme(); closePalette(); } },
+  { icon:'fa-chevron-left', label:'Προηγούμενη Μέρα', sub:'', action:() => navigateDate(-1) },
+  { icon:'fa-chevron-right', label:'Επόμενη Μέρα', sub:'', action:() => navigateDate(1) },
+];
+let paletteIdx = 0;
+
+function openPalette() {
+  document.getElementById('cmdOverlay').style.display = 'flex';
+  setTimeout(() => document.getElementById('cmdInput').focus(), 50);
+  paletteIdx = 0; renderPalette();
+}
+function closePalette(e) {
+  if (!e || e.target === document.getElementById('cmdOverlay'))
+    document.getElementById('cmdOverlay').style.display = 'none';
+}
+function renderPalette() {
+  const q = document.getElementById('cmdInput').value.toLowerCase().trim();
+  const matched = q ? quickActions.filter(a => a.label.toLowerCase().includes(q)) : quickActions;
+  let html = matched.length ? '<div class="cmd-section-lbl">Ενέργειες</div>' : '';
+  html += matched.map((a,i) =>
+    `<div class="cmd-item${i===paletteIdx?' selected':''}" onclick="cmdRun(${quickActions.indexOf(a)})">
+      <div class="cmd-item-icon"><i class="fas ${a.icon}"></i></div>
+      <div><div class="cmd-item-name">${a.label}</div>${a.sub?`<div class="cmd-item-sub">${a.sub}</div>`:''}</div>
+    </div>`
+  ).join('');
+  if (!html) html = '<div style="padding:24px;text-align:center;color:var(--c-primary);opacity:.5;font-size:13px">Δεν βρέθηκαν αποτελέσματα</div>';
+  document.getElementById('cmdResults').innerHTML = html;
+}
+function cmdRun(idx) {
+  document.getElementById('cmdOverlay').style.display = 'none';
+  document.getElementById('cmdInput').value = '';
+  quickActions[idx].action();
+}
+function paletteKey(e) {
+  const items = document.querySelectorAll('.cmd-item');
+  if (e.key==='ArrowDown') { e.preventDefault(); paletteIdx=Math.min(paletteIdx+1,items.length-1); renderPalette(); }
+  if (e.key==='ArrowUp') { e.preventDefault(); paletteIdx=Math.max(paletteIdx-1,0); renderPalette(); }
+  if (e.key==='Enter') { e.preventDefault(); items[paletteIdx]?.click(); }
+  if (e.key==='Escape') closePalette();
+}
+
+/* ════════════════════════════════════
+   SIDEBAR & MOBILE
+════════════════════════════════════ */
+function toggleCollapse() {
+  const s = document.getElementById('sidebar');
+  s.classList.toggle('collapsed');
+  localStorage.setItem('sidebar-collapsed', s.classList.contains('collapsed'));
+}
+function openMobile() {
+  document.getElementById('sidebar').classList.add('mobile-open');
+  document.getElementById('mobileOverlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobile() {
+  document.getElementById('sidebar').classList.remove('mobile-open');
+  document.getElementById('mobileOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+/* Waitlist */
+function openWaitlist() { document.getElementById('waitlistPanel').classList.add('show'); document.getElementById('waitlistOverlay').classList.add('show'); document.body.style.overflow='hidden'; }
+function closeWaitlist() { document.getElementById('waitlistPanel').classList.remove('show'); document.getElementById('waitlistOverlay').classList.remove('show'); document.body.style.overflow=''; }
+
+/* ── Live clock ── */
+(function liveClock() {
+  function tick() {
+    const now = new Date();
+    const days = ['Κυριακή','Δευτέρα','Τρίτη','Τετάρτη','Πέμπτη','Παρασκευή','Σάββατο'];
+    const months = ['Ιαν','Φεβ','Μαρ','Απρ','Μαΐ','Ιουν','Ιουλ','Αυγ','Σεπ','Οκτ','Νοε','Δεκ'];
+    const h = String(now.getHours()).padStart(2,'0');
+    const m = String(now.getMinutes()).padStart(2,'0');
+    const el = document.getElementById('liveClock');
+    if (el) el.textContent = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} · ${h}:${m}`;
+  }
+  tick();
+  setInterval(tick, 30000);
+})();
+
+/* Status color */
+function updateStatusColor(sel) {
+  const card = sel.closest('.timeline-slot.booked');
+  sel.classList.remove('status-scheduled','status-completed','status-canceled');
+  if (card) { card.classList.remove('border-completed','border-canceled'); const title=card.querySelector('.ts-title'); if(title) title.style.textDecoration='none'; }
+  if (sel.value==='SCHEDULED') sel.classList.add('status-scheduled');
+  else if (sel.value==='COMPLETED') { sel.classList.add('status-completed'); if(card) card.classList.add('border-completed'); showToast('Ραντεβού ολοκληρώθηκε!','success'); }
+  else if (sel.value==='CANCELED') { sel.classList.add('status-canceled'); if(card) { card.classList.add('border-canceled'); const title=card.querySelector('.ts-title'); if(title) title.style.textDecoration='line-through'; } showToast('Ραντεβού ακυρώθηκε','error'); }
+}
+
+/* Modal */
+function openApptModal(timeStr=null, empId=null) {
+  const modal = document.getElementById('apptModal');
+  modal.classList.add('show');
+  document.body.style.overflow='hidden';
+  setupFocusTrap(modal);
+  setTimeout(() => { const fi = modal.querySelector('input:not([type=hidden]),select'); if(fi) fi.focus(); }, 100);
+  document.getElementById('overlapBox').style.display='none';
+  if (timeStr) { const slot=document.getElementById('slot-'+timeStr.replace(':','')); if(slot) selectTime(slot,timeStr); }
+  if (empId) document.getElementById('apptEmployee').value=empId;
+  handleServiceChange();
+}
+function closeApptModal(event) { if (!event||event.target.id==='apptModal') { const m=document.getElementById('apptModal'); m.classList.remove('show'); document.body.style.overflow=''; removeFocusTrap(m); } }
+function applyRebook() { document.getElementById('apptService').value='/api/services/1'; handleServiceChange(); document.getElementById('quickRebookBox').style.display='none'; }
+function handleServiceChange() {
+  const opt = document.getElementById('apptService').options[document.getElementById('apptService').selectedIndex];
+  if (!opt.value) return;
+  const price=opt.getAttribute('data-price'), dur=opt.getAttribute('data-duration');
+  if (price) document.getElementById('apptPrice').value=price;
+  updateEndTimeDisplay(dur);
+}
+function selectTime(el, timeStr) {
+  document.querySelectorAll('.time-slot').forEach(t=>t.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('apptStartTime').value=timeStr;
+  document.getElementById('overlapBox').style.display='none';
+  const opt=document.getElementById('apptService').options[document.getElementById('apptService').selectedIndex];
+  updateEndTimeDisplay(opt.value ? opt.getAttribute('data-duration') : '30', timeStr);
+}
+function updateEndTimeDisplay(durStr, customStart) {
+  const dur=parseInt(durStr,10); if(isNaN(dur)) return;
+  const start=customStart||document.getElementById('apptStartTime').value; if(!start) return;
+  const [h,m]=start.split(':').map(Number);
+  const d=new Date(); d.setHours(h,m+dur,0,0);
+  const end=`${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+  document.getElementById('apptEndTime').value=end;
+  document.getElementById('apptDurationText').textContent=`Διάρκεια: ${dur} λεπτά (Λήξη στις ${end})`;
+}
+function mockSave() {
+  const time=document.getElementById('apptStartTime').value;
+  if (time==='14:00') { document.getElementById('overlapBox').style.display='flex'; }
+  else { showToast('Ραντεβού αποθηκεύτηκε επιτυχώς!','success'); closeApptModal(); }
+}
+function resolveOverlap() { const slot=document.getElementById('slot-1630'); selectTime(slot,'16:30'); }
+
+/* Keyboard shortcuts */
+document.addEventListener('keydown', e => {
+  if ((e.metaKey||e.ctrlKey) && e.key==='k') { e.preventDefault(); openPalette(); }
+  if (e.ctrlKey && e.code==='Space') { e.preventDefault(); openApptModal(); }
+  if (e.key==='Escape') { closeApptModal(); closeWaitlist(); closePalette(); }
+});
+
+
+
+/* ════════════════════════════════════
+   MOCK DATA (NEW — centralized)
+════════════════════════════════════ */
+const MOCK_CUSTOMERS = [
+  { id:'/api/customers/1', name:'Μαρία Κωνσταντίνου', mobile:'6912345678', points:125, vip:true, lastService:'Ημιμόνιμο Μανικιούρ', lastDaysAgo:21 },
+  { id:'/api/customers/2', name:'Γιώργος Παπαδόπουλος', mobile:'6998765432', points:80, vip:false },
+  { id:'/api/customers/3', name:'Άννα Γεωργίου', mobile:'6944556677', points:30, vip:false },
+  { id:'/api/customers/4', name:'Κατερίνα Λιάπη', mobile:'6933221100', points:45, vip:false },
+  { id:'/api/customers/5', name:'Σοφία Κωστοπούλου', mobile:'6977889900', points:200, vip:true },
+  { id:'/api/customers/6', name:'Ιωάννα Μαρκοπούλου', mobile:'6955443322', points:15, vip:false },
+  { id:'/api/customers/7', name:'Ελένη Τσιγαρίδα', mobile:'6966778899', points:55, vip:false },
+  { id:'/api/customers/8', name:'Γεωργία Παππά', mobile:'6988112233', points:310, vip:true },
+];
+
+const MOCK_EMPLOYEES = [
+  { id:'emp-chara', name:'Χαρά', initials:'Χ', specialty:'Μανικιούρ', color:'rgba(196,135,79,0.15)', textColor:'var(--c-accent)' },
+  { id:'emp-eleni', name:'Ελένη', initials:'Ε', specialty:'Πεντικιούρ', color:'rgba(74,127,165,0.15)', textColor:'var(--s-next)' },
+  { id:'emp-nikos', name:'Νίκος', initials:'Ν', specialty:'Nail Art', color:'rgba(90,138,106,0.15)', textColor:'var(--s-done)' },
+];
+
+/* ════════════════════════════════════
+   EMPLOYEE TABS (NEW)
+════════════════════════════════════ */
+let activeEmpFilter = 'all';
+
+function renderEmpTabs() {
+  const c = document.getElementById('empTabs');
+  if (!c) return;
+  let h = '<button class="emp-tab '+(activeEmpFilter==='all'?'active':'')+'" onclick="filterEmp(\'all\')" role="tab" aria-selected="'+(activeEmpFilter==='all')+'">Όλοι</button>';
+  MOCK_EMPLOYEES.forEach(emp => {
+    const act = activeEmpFilter === emp.id;
+    h += '<button class="emp-tab '+(act?'active':'')+'" onclick="filterEmp(\''+emp.id+'\')" role="tab" aria-selected="'+act+'"><span class="emp-tab-av" style="background:'+emp.color+';color:'+emp.textColor+'">'+emp.initials+'</span>'+emp.name+'</button>';
+  });
+  c.innerHTML = h;
+}
+
+function filterEmp(empId) {
+  activeEmpFilter = empId;
+  renderEmpTabs();
+  /* In full implementation, this would re-render the timeline filtered by employee */
+  const empName = empId === 'all' ? 'Όλοι οι υπάλληλοι' : MOCK_EMPLOYEES.find(e=>e.id===empId).name;
+  document.getElementById('panelSubtitle').textContent = empName + ' · ' + (dateIdx===1 ? 'Σήμερα' : dates[dateIdx]);
+  showToast('Φίλτρο: ' + empName, 'info');
+}
+
+/* ════════════════════════════════════
+   CUSTOMER SEARCH (NEW — fuzzy)
+════════════════════════════════════ */
+let custSearchIdx = -1;
+
+function initCustSearch() {
+  const input = document.getElementById('custSearch');
+  if (!input) return;
+  const dropdown = document.getElementById('custDropdown');
+
+  input.addEventListener('input', () => renderCustResults(input.value));
+  input.addEventListener('focus', () => renderCustResults(input.value || ''));
+
+  input.addEventListener('keydown', (e) => {
+    const items = dropdown.querySelectorAll('.search-item');
+    if (e.key==='ArrowDown') { e.preventDefault(); custSearchIdx=Math.min(custSearchIdx+1,items.length-1); hlCust(items); }
+    else if (e.key==='ArrowUp') { e.preventDefault(); custSearchIdx=Math.max(custSearchIdx-1,-1); hlCust(items); }
+    else if (e.key==='Enter' && custSearchIdx>=0) { e.preventDefault(); items[custSearchIdx]?.click(); }
+    else if (e.key==='Escape') closeCustDD();
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!document.getElementById('custSearchWrap')?.contains(e.target)) closeCustDD();
+  });
+}
+
+function renderCustResults(query) {
+  const dropdown = document.getElementById('custDropdown');
+  const q = query.toLowerCase().trim();
+  custSearchIdx = -1;
+  let results = MOCK_CUSTOMERS;
+  if (q) results = MOCK_CUSTOMERS.filter(c => c.name.toLowerCase().includes(q) || c.mobile.includes(q));
+
+  let html = '';
+  results.forEach(c => {
+    const ini = c.name.split(' ').map(w=>w[0]).join('').slice(0,2);
+    const avBg = c.vip ? 'rgba(212,175,55,0.15)' : 'rgba(196,135,79,0.1)';
+    const avCol = c.vip ? '#D4AF37' : 'var(--c-accent)';
+    const escaped = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const nameFmt = q ? c.name.replace(new RegExp('('+escaped+')','gi'),'<mark>$1</mark>') : c.name;
+    const idx = MOCK_CUSTOMERS.indexOf(c);
+    html += '<div class="search-item" role="option" data-idx="'+idx+'" onclick="pickCust('+idx+')"><div class="search-item-av" style="background:'+avBg+';color:'+avCol+'">'+ini+'</div><div class="search-item-info"><div class="search-item-name">'+nameFmt+(c.vip?' <i class=\'fas fa-star icon-vip\'></i>':'')+'</div><div class="search-item-detail">'+c.mobile+'</div></div>'+(c.points?'<span class="search-item-points">'+c.points+' pts</span>':'')+'</div>';
+  });
+  html += '<div class="search-item" role="option" onclick="pickCust(-1)"><div class="search-item-av" style="background:rgba(90,138,106,0.1);color:var(--s-done)"><i class="fas fa-plus" style="font-size:11px"></i></div><div class="search-item-info"><div class="search-item-name" style="color:var(--s-done)">+ Νέος Πελάτης</div><div class="search-item-detail">Δημιουργία νέου πελάτη</div></div></div>';
+
+  if (!results.length && q) html = '<div style="padding:16px;text-align:center;color:var(--c-primary);opacity:.5;font-size:13px">Δεν βρέθηκε «'+q+'»</div>' + html;
+
+  dropdown.innerHTML = html;
+  dropdown.classList.add('show');
+  document.getElementById('custSearch').setAttribute('aria-expanded','true');
+}
+
+function hlCust(items) { items.forEach((el,i)=>el.classList.toggle('highlighted',i===custSearchIdx)); if(custSearchIdx>=0) items[custSearchIdx]?.scrollIntoView({block:'nearest'}); }
+
+function pickCust(idx) {
+  const input = document.getElementById('custSearch');
+  if (idx === -1) { input.value=''; showToast('Φόρμα νέου πελάτη (mock)','info'); closeCustDD(); return; }
+  const c = MOCK_CUSTOMERS[idx];
+  input.value = c.name;
+  document.getElementById('apptCustomerIRI').value = c.id;
+  closeCustDD();
+  const rb = document.getElementById('quickRebookBox');
+  if (c.lastService) { rb.querySelector('.quick-rebook-text').innerHTML='<i class="fas fa-history" style="margin-right:4px"></i>Τελευταία: <b>'+c.lastService+'</b> ('+c.lastDaysAgo+' μέρες πριν)'; rb.style.display='flex'; }
+  else { rb.style.display='none'; }
+}
+
+function selectCustomer(c) { document.getElementById('custSearch').value=c.name||'Walk-in'; document.getElementById('apptCustomerIRI').value=c.id; closeCustDD(); document.getElementById('quickRebookBox').style.display='none'; }
+
+function closeCustDD() { document.getElementById('custDropdown')?.classList.remove('show'); document.getElementById('custSearch')?.setAttribute('aria-expanded','false'); custSearchIdx=-1; }
+
+/* ════════════════════════════════════
+   FOCUS TRAP for modals (NEW)
+════════════════════════════════════ */
+function setupFocusTrap(modalEl) {
+  modalEl._focusTrap = (e) => {
+    if (e.key !== 'Tab') return;
+    const focusable = modalEl.querySelectorAll('input,select,textarea,button:not([disabled]),[tabindex]:not([tabindex="-1"])');
+    if (!focusable.length) return;
+    const first = focusable[0], last = focusable[focusable.length-1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  };
+  modalEl.addEventListener('keydown', modalEl._focusTrap);
+}
+function removeFocusTrap(modalEl) {
+  if (modalEl._focusTrap) { modalEl.removeEventListener('keydown', modalEl._focusTrap); modalEl._focusTrap = null; }
+}
+
+/* Init */
+window.addEventListener('DOMContentLoaded', () => {
+  if (localStorage.getItem('sidebar-collapsed')==='true' && window.innerWidth>768)
+    document.getElementById('sidebar').classList.add('collapsed');
+
+  /* NEW: Init employee tabs + customer search */
+  renderEmpTabs();
+  initCustSearch();
+});
+</script>
+</body>
+</html>

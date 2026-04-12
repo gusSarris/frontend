@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="el" data-theme="light">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Glamour Nails — Promotion Creator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet"/>
+    <style>
+        :root {
+            --c-bg: #F9F6F3;
+            --c-surface: #FFFFFF;
+            --c-dark: #2E1A18;
+            --c-mid: #6B3F3A;
+            --c-primary: #9D6A65;
+            --c-accent: #C4874F;
+            --c-light: #E8C9BC;
+            --c-muted: #F0EAE6;
+            --c-shadow: rgba(46, 26, 24, 0.08);
+            --font-main: 'DM Sans', sans-serif;
+            --font-title: 'Cormorant Garamond', serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: var(--c-bg); font-family: var(--font-main); color: var(--c-dark); line-height: 1.6; }
+
+        /* Layout */
+        .app-container { display: flex; min-height: 100vh; }
+        
+        /* Sidebar (Minimal) */
+        .sidebar { width: 260px; background: var(--c-surface); border-right: 1px solid var(--c-muted); padding: 2rem; }
+        .logo { font-family: var(--font-title); font-size: 1.5rem; font-weight: 700; color: var(--c-primary); margin-bottom: 2rem; }
+        .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px; color: var(--c-mid); text-decoration: none; border-radius: 8px; transition: 0.2s; margin-bottom: 8px; }
+        .nav-item.active { background: var(--c-primary); color: white; }
+
+        /* Main Content */
+        .main-content { flex: 1; padding: 3rem 2rem; display: flex; justify-content: center; }
+        .promo-card { background: var(--c-surface); width: 100%; max-width: 700px; border-radius: 24px; padding: 40px; box-shadow: 0 20px 40px var(--c-shadow); height: fit-content; }
+
+        header h1 { font-family: var(--font-title); font-size: 2.5rem; margin-bottom: 8px; color: var(--c-dark); }
+        header p { color: var(--c-mid); margin-bottom: 32px; font-size: 0.95rem; }
+
+        .group-badge { background: #E8F5E9; color: #2E7D32; padding: 4px 12px; border-radius: 20px; font-weight: 600; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 6px; }
+
+        /* Form Elements */
+        .form-section { margin-bottom: 32px; }
+        label { display: block; font-weight: 700; margin-bottom: 12px; color: var(--c-dark); text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; }
+
+        /* Channel Selector Icons */
+        .channel-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .channel-option { position: relative; cursor: pointer; }
+        .channel-option input { position: absolute; opacity: 0; }
+        .channel-box { 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            padding: 20px; border: 2px solid var(--c-muted); border-radius: 16px; transition: 0.3s;
+        }
+        .channel-box i { font-size: 1.5rem; margin-bottom: 8px; }
+        .channel-option input:checked + .channel-box { 
+            border-color: var(--c-primary); background: #FDF8F7; color: var(--c-primary); 
+        }
+
+        /* Message Box */
+        textarea { 
+            width: 100%; border: 2px solid var(--c-muted); border-radius: 12px; padding: 16px; 
+            font-family: inherit; font-size: 1rem; resize: vertical; min-height: 120px; transition: 0.3s;
+        }
+        textarea:focus { outline: none; border-color: var(--c-primary); }
+        .counter-container { display: flex; justify-content: flex-end; margin-top: 8px; font-size: 0.8rem; color: #888; }
+
+        /* Date Picker Custom */
+        .date-input { 
+            width: 100%; border: 2px solid var(--c-muted); border-radius: 12px; padding: 14px; 
+            font-family: inherit; font-size: 1rem; cursor: pointer; color: var(--c-dark);
+        }
+
+        /* Buttons */
+        .actions { display: flex; gap: 16px; margin-top: 40px; }
+        .btn-primary { 
+            flex: 2; background: var(--c-primary); color: white; border: none; padding: 18px; 
+            border-radius: 12px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: 0.3s;
+        }
+        .btn-primary:hover { background: var(--c-mid); transform: translateY(-2px); }
+        .btn-secondary { 
+            flex: 1; background: var(--c-muted); color: var(--c-mid); border: none; 
+            padding: 18px; border-radius: 12px; font-weight: 600; cursor: pointer; 
+        }
+
+        /* Toast Message */
+        #toast { 
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: var(--c-dark); color: white; padding: 12px 24px; border-radius: 30px;
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); opacity: 0;
+        }
+        #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .promo-card { padding: 24px; border-radius: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <aside class="sidebar">
+        <div class="logo">Glamour Nails</div>
+        <a href="#" class="nav-item"><i class="fas fa-calendar"></i> Ραντεβού</a>
+        <a href="#" class="nav-item"><i class="fas fa-users"></i> Πελάτες</a>
+        <a href="#" class="nav-item active"><i class="fas fa-bullhorn"></i> Campaigns</a>
+        <a href="#" class="nav-item"><i class="fas fa-cog"></i> Ρυθμίσεις</a>
+    </aside>
+
+    <main class="main-content">
+        <div class="promo-card">
+            <header>
+                <h1>Νέα Προσφορά</h1>
+                <p>Στοχευμένη αποστολή στο <span class="group-badge"><i class="fas fa-user-check"></i> Marketing Group (Subscribed)</span></p>
+            </header>
+
+            <form id="promoForm">
+                <div class="form-section">
+                    <label>Επιλογή Καναλιών</label>
+                    <div class="channel-grid">
+                        <label class="channel-option">
+                            <input type="checkbox" name="channel" value="sms" checked>
+                            <div class="channel-box"><i class="fas fa-sms"></i><span>SMS</span></div>
+                        </label>
+                        <label class="channel-option">
+                            <input type="checkbox" name="channel" value="viber" checked>
+                            <div class="channel-box"><i class="fab fa-viber"></i><span>Viber</span></div>
+                        </label>
+                        <label class="channel-option">
+                            <input type="checkbox" name="channel" value="email">
+                            <div class="channel-box"><i class="fas fa-envelope"></i><span>Email</span></div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <label>Περιεχόμενο Μηνύματος</label>
+                    <textarea id="message" placeholder="Γράψε εδώ την προσφορά σου (π.χ. -20% σε όλα τα Manicure!)..." required></textarea>
+                    <div class="counter-container">
+                        <span id="charCount">0</span> / 160 χαρακτήρες
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <label>Προγραμματισμός Αποστολής</label>
+                    <input type="datetime-local" id="sendDate" class="date-input" required>
+                </div>
+
+                <div class="actions">
+                    <button type="button" class="btn-secondary">Αποθήκευση Draft</button>
+                    <button type="submit" class="btn-primary">Προγραμματισμός Αποστολής</button>
+                </div>
+            </form>
+        </div>
+    </main>
+</div>
+
+<div id="toast">Η καμπάνια προγραμματίστηκε με επιτυχία!</div>
+
+<script>
+    // Logic για τον μετρητή χαρακτήρων
+    const textarea = document.getElementById('message');
+    const charCount = document.getElementById('charCount');
+
+    textarea.addEventListener('input', () => {
+        const length = textarea.value.length;
+        charCount.textContent = length;
+        
+        // Οπτική ειδοποίηση αν ξεπεράσει το 1 SMS
+        if (length > 160) {
+            charCount.style.color = '#B85450';
+            charCount.style.fontWeight = 'bold';
+        } else {
+            charCount.style.color = '#888';
+            charCount.style.fontWeight = 'normal';
+        }
+    });
+
+    // Form Submit Handling
+    document.getElementById('promoForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const channels = Array.from(document.querySelectorAll('input[name="channel"]:checked')).map(el => el.value);
+        const date = document.getElementById('sendDate').value;
+
+        if (channels.length === 0) {
+            alert('Παρακαλώ επιλέξτε τουλάχιστον ένα κανάλι (SMS, Viber ή Email)');
+            return;
+        }
+
+        // Εμφάνιση Toast
+        const toast = document.getElementById('toast');
+        toast.classList.add('show');
+        
+        setTimeout(() => {
+            toast.classList.remove('show');
+            // Εδώ θα μπορούσε να γίνει ανακατεύθυνση ή καθαρισμός φόρμας
+            console.log("Campaign Sent:", {
+                message: textarea.value,
+                channels: channels,
+                scheduledFor: date
+            });
+        }, 3000);
+    });
+
+    // Θέτουμε ως default ημερομηνία την τρέχουσα στιγμή
+    const now = new Date();
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+    document.getElementById('sendDate').value = now.toISOString().slice(0, 16);
+</script>
+
+</body>
+</html>

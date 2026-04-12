@@ -1,0 +1,808 @@
+<!doctype html>
+<html lang="el" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Glamour Nails — Υπηρεσίες</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700;9..40,900&display=swap" rel="stylesheet"/>
+  <style>
+    /* ══════════════════════════════════════
+       DESIGN TOKENS
+    ══════════════════════════════════════ */
+    :root {
+      --c-bg:      #F9F6F3;
+      --c-surface: #FFFFFF;
+      --c-dark:    #2E1A18;
+      --c-mid:     #6B3F3A;
+      --c-primary: #9D6A65;
+      --c-accent:  #C4874F;
+      --c-light:   #E8C9BC;
+      --c-muted:   #F0EAE6;
+      --c-shadow:  rgba(46,26,24,0.10);
+
+      --s-active:  #C4874F;
+      --s-next:    #4A7FA5;
+      --s-done:    #5A8A6A;
+      --s-urgent:  #B85450;
+
+      --r-xs:6px; --r-sm:10px; --r-md:14px; --r-lg:20px; --r-xl:28px;
+      --sidebar-w:240px; --sidebar-w-col:64px;
+      --focus-ring: 0 0 0 3px rgba(196,135,79,0.4);
+      --sk-base:#ede8e4; --sk-shine:#f7f3f0;
+      --sb-bg:#2E1A18;
+    }
+    [data-theme="dark"] {
+      --c-bg:      #1A1210;
+      --c-surface: #231815;
+      --c-dark:    #F2EBE6;
+      --c-mid:     #C4A49F;
+      --c-primary: #B08A85;
+      --c-accent:  #D49A60;
+      --c-light:   #4A2E2A;
+      --c-muted:   #2E1E1B;
+      --c-shadow:  rgba(0,0,0,0.4);
+      --sk-base:   #2a1c19; --sk-shine:#3a2825;
+      --sb-bg:     #150e0d;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'DM Sans',sans-serif;background:var(--c-bg);color:var(--c-dark);min-height:100vh;display:flex;overflow:hidden;transition:background .3s,color .3s;}
+
+    /* A11Y */
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+    .skip-link{position:absolute;top:-100%;left:16px;background:var(--c-accent);color:#fff;padding:8px 16px;border-radius:var(--r-sm);font-weight:700;font-size:13px;z-index:9999;text-decoration:none;transition:top .2s;}
+    .skip-link:focus{top:8px;}
+    :focus{outline:none;}
+    :focus-visible{box-shadow:var(--focus-ring) !important;outline:none;border-radius:var(--r-xs);}
+
+    /* ══ SIDEBAR ══ */
+    .sidebar{width:var(--sidebar-w);min-height:100vh;background:var(--sb-bg);display:flex;flex-direction:column;flex-shrink:0;position:relative;transition:width .3s cubic-bezier(.4,0,.2,1),background .3s;overflow:hidden;z-index:50;}
+    .sidebar.collapsed{width:var(--sidebar-w-col);}
+    .sidebar-logo{padding:24px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(232,201,188,0.1);min-height:80px;}
+    .logo-img-wrap{width:40px;height:40px;border-radius:10px;overflow:hidden;flex-shrink:0;border:1.5px solid rgba(196,135,79,0.4);}
+    .logo-img-wrap img{width:100%;height:100%;object-fit:cover;}
+    .logo-text{white-space:nowrap;transition:opacity .2s;}
+    .sidebar.collapsed .logo-text{opacity:0;pointer-events:none;}
+    .logo-brand{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;color:var(--c-bg);}
+    .logo-tagline{font-size:9px;font-weight:700;color:var(--c-accent);text-transform:uppercase;margin-top:2px;}
+    .nav-section{padding:12px;}
+    .nav-label{font-size:9px;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:rgba(249,246,243,0.2);padding:12px 8px 6px;white-space:nowrap;}
+    .sidebar.collapsed .nav-label{opacity:0;}
+    .nav-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--r-sm);cursor:pointer;transition:background .2s;position:relative;text-decoration:none;margin-bottom:4px;}
+    .nav-item:hover{background:rgba(249,246,243,0.07);}
+    .nav-item.active{background:rgba(196,135,79,0.15);}
+    .nav-item.active::before{content:'';position:absolute;left:0;top:8px;bottom:8px;width:3px;background:var(--c-accent);border-radius:0 3px 3px 0;}
+    .nav-icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:14px;color:rgba(249,246,243,0.35);flex-shrink:0;}
+    .nav-item.active .nav-icon{color:var(--c-accent);}
+    .nav-lbl{font-size:13px;font-weight:500;color:rgba(249,246,243,0.8);transition:opacity .2s;white-space:nowrap;}
+    .nav-item.active .nav-lbl{color:var(--c-bg);font-weight:700;}
+    .sidebar.collapsed .nav-lbl{opacity:0;pointer-events:none;width:0;}
+    .nav-badge{margin-left:auto;min-width:18px;height:18px;padding:0 5px;border-radius:99px;background:var(--c-accent);color:#fff;font-size:9px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:opacity .2s;}
+    .sidebar.collapsed .nav-badge{opacity:0;}
+    .nav-tip{position:absolute;left:70px;top:50%;transform:translateY(-50%);background:var(--sb-bg);color:white;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;white-space:nowrap;opacity:0;pointer-events:none;transition:all .2s;border:1px solid rgba(255,255,255,0.1);box-shadow:0 4px 12px rgba(0,0,0,0.3);z-index:100;}
+    .sidebar.collapsed .nav-item:hover .nav-tip{opacity:1;left:60px;}
+    .collapse-btn{position:absolute;top:28px;right:-12px;width:24px;height:24px;border-radius:50%;background:var(--c-accent);border:2px solid var(--c-bg);color:#fff;font-size:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:60;box-shadow:0 2px 8px rgba(0,0,0,0.2);outline:none;}
+    .sidebar.collapsed .collapse-btn .arrow{transform:rotate(180deg);display:inline-block;}
+    .sidebar-spacer{flex:1;}
+    .credits-bar{margin:8px 12px;padding:12px 14px;border-radius:var(--r-md);background:rgba(249,246,243,0.04);border:1px solid rgba(232,201,188,0.1);overflow:hidden;transition:opacity .2s;}
+    .sidebar.collapsed .credits-bar{opacity:0;pointer-events:none;}
+    .credits-label{font-size:9px;font-weight:900;letter-spacing:.15em;text-transform:uppercase;color:rgba(249,246,243,0.3);margin-bottom:6px;}
+    .credits-value{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--c-bg);line-height:1;}
+    .credits-sub{font-size:10px;color:var(--c-accent);opacity:.7;margin-top:2px;}
+    .credits-track{height:3px;background:rgba(249,246,243,0.08);border-radius:99px;margin-top:10px;}
+    .credits-fill{height:100%;width:65%;background:var(--c-accent);border-radius:99px;opacity:.6;}
+
+    /* ══ TOPBAR ══ */
+    .main-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
+    .topbar{height:60px;background:rgba(249,246,243,0.88);backdrop-filter:blur(24px) saturate(160%);border-bottom:1px solid rgba(232,201,188,0.45);display:flex;align-items:center;padding:0 28px;gap:16px;flex-shrink:0;position:sticky;top:0;z-index:30;transition:background .3s,border-color .3s;}
+    [data-theme="dark"] .topbar{background:rgba(26,18,16,0.92);border-color:rgba(74,46,42,0.5);}
+    .topbar-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--c-dark);flex:1;}
+    .topbar-actions{display:flex;gap:8px;align-items:center;}
+    .btn-topbar{height:36px;padding:0 14px;border-radius:var(--r-sm);border:1.5px solid var(--c-light);background:var(--c-surface);color:var(--c-mid);font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:7px;transition:all .2s;outline:none;}
+    .btn-topbar:hover{border-color:var(--c-dark);color:var(--c-dark);box-shadow:0 2px 8px var(--c-shadow);}
+    .btn-topbar.primary{background:var(--c-dark);color:var(--c-bg);border-color:var(--c-dark);}
+    .btn-topbar.primary:hover{background:var(--c-mid);border-color:var(--c-mid);}
+    .theme-btn{width:36px;height:36px;border-radius:var(--r-sm);border:1.5px solid var(--c-light);background:var(--c-surface);color:var(--c-mid);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s;outline:none;}
+    .theme-btn:hover{border-color:var(--c-accent);color:var(--c-accent);}
+    .topbar-account{display:flex;align-items:center;gap:10px;padding-left:16px;border-left:1px solid var(--c-light);cursor:pointer;}
+    .topbar-account .user-av{width:34px;height:34px;border-radius:var(--r-xs);background:rgba(196,135,79,0.2);border:1.5px solid rgba(196,135,79,0.3);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:var(--c-accent);font-family:'Cormorant Garamond',serif;}
+    .topbar-account .user-name{font-size:12px;font-weight:700;color:var(--c-dark);}
+    .topbar-account .user-role{font-size:10px;color:var(--c-primary);opacity:.8;margin-top:1px;}
+    .user-logout{margin-left:8px;border:none;background:transparent;color:var(--c-primary);font-size:13px;cursor:pointer;padding:4px;border-radius:4px;outline:none;transition:color .2s;}
+    .user-logout:hover{color:var(--s-urgent);}
+    .mobile-menu-btn{display:none;width:36px;height:36px;border-radius:var(--r-sm);border:1.5px solid var(--c-light);background:var(--c-surface);color:var(--c-mid);font-size:14px;cursor:pointer;align-items:center;justify-content:center;flex-shrink:0;outline:none;}
+    .mobile-overlay{display:none;position:fixed;inset:0;background:rgba(46,26,24,.5);z-index:40;backdrop-filter:blur(2px);}
+    .mobile-overlay.show{display:block;}
+
+    /* ══ PAGE ══ */
+    .page-content{flex:1;overflow-y:auto;padding:28px;padding-bottom:100px;}
+
+    /* ══ TOOLBAR ══ */
+    .svc-toolbar{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap;}
+    .search-wrap{position:relative;flex:1;min-width:200px;max-width:340px;}
+    .search-wrap input{width:100%;height:38px;border-radius:var(--r-sm);border:1.5px solid var(--c-light);background:var(--c-surface);font-family:inherit;font-size:13px;color:var(--c-dark);padding:0 38px 0 14px;outline:none;transition:border-color .2s;}
+    .search-wrap input:focus{border-color:var(--c-primary);}
+    .search-wrap input::placeholder{color:var(--c-primary);opacity:.5;}
+    .search-wrap .si{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--c-primary);opacity:.5;pointer-events:none;}
+
+    /* Category filter tabs */
+    .cat-tabs{display:flex;gap:6px;flex-wrap:wrap;}
+    .cat-tab{height:36px;padding:0 14px;border-radius:99px;border:1.5px solid var(--c-light);background:transparent;font-family:inherit;font-size:12px;font-weight:700;color:var(--c-mid);cursor:pointer;transition:all .2s;outline:none;white-space:nowrap;}
+    .cat-tab:hover{border-color:var(--c-primary);color:var(--c-dark);}
+    .cat-tab.active{background:var(--c-dark);color:var(--c-bg);border-color:var(--c-dark);}
+
+    /* ══ SERVICES GRID ══ */
+    .svc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;animation:fadeUp .35s ease both;}
+
+    /* Service Card */
+    .svc-card{background:var(--c-surface);border:1.5px solid var(--c-light);border-radius:var(--r-lg);padding:20px;display:flex;flex-direction:column;gap:14px;transition:box-shadow .2s,transform .2s,border-color .2s;position:relative;animation:fadeUp .35s ease both;}
+    .svc-card:hover{box-shadow:0 8px 24px var(--c-shadow);transform:translateY(-2px);border-color:var(--c-primary);}
+    .svc-card.inactive{opacity:.6;}
+    .svc-card.inactive .svc-name{text-decoration:line-through;opacity:.7;}
+
+    .svc-card-top{display:flex;align-items:flex-start;gap:12px;}
+    .svc-cat-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+    .svc-card-info{flex:1;min-width:0;}
+    .svc-name{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--c-dark);line-height:1.2;}
+    .svc-cat-badge{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--c-primary);opacity:.7;margin-top:2px;}
+
+    .svc-desc{font-size:12px;color:var(--c-mid);opacity:.75;line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+
+    .svc-meta{display:flex;gap:8px;flex-wrap:wrap;}
+    .svc-chip{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:99px;font-size:11px;font-weight:700;}
+    .chip-price{background:rgba(196,135,79,0.1);color:var(--c-accent);}
+    .chip-duration{background:rgba(74,127,165,0.1);color:var(--s-next);}
+
+    .svc-card-footer{display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--c-muted);}
+
+    /* Toggle switch */
+    .toggle-wrap{display:flex;align-items:center;gap:8px;}
+    .toggle-lbl{font-size:11px;font-weight:700;color:var(--c-primary);transition:color .2s;}
+    .toggle-lbl.on{color:var(--s-done);}
+    .toggle{position:relative;width:36px;height:20px;cursor:pointer;}
+    .toggle input{opacity:0;width:0;height:0;position:absolute;}
+    .toggle-track{position:absolute;inset:0;border-radius:99px;background:rgba(46,26,24,0.12);transition:background .25s;}
+    .toggle input:checked~.toggle-track{background:var(--s-done);}
+    .toggle-thumb{position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,0.2);transition:transform .25s cubic-bezier(.34,1.3,.64,1);}
+    .toggle input:checked~.toggle-track~.toggle-thumb,
+    .toggle input:checked+.toggle-track+.toggle-thumb{transform:translateX(16px);}
+
+    /* Card action buttons */
+    .svc-actions{display:flex;gap:6px;}
+    .svc-btn{width:30px;height:30px;border-radius:var(--r-xs);border:1.5px solid var(--c-light);background:transparent;color:var(--c-mid);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;outline:none;}
+    .svc-btn:hover{border-color:var(--c-accent);color:var(--c-accent);background:rgba(196,135,79,0.06);}
+    .svc-btn.del:hover{border-color:var(--s-urgent);color:var(--s-urgent);background:rgba(184,84,80,0.06);}
+
+    /* ══ LIST VIEW ══ */
+    .svc-list{display:flex;flex-direction:column;gap:0;background:var(--c-surface);border:1.5px solid var(--c-light);border-radius:var(--r-lg);overflow:hidden;animation:fadeUp .35s ease both;}
+    .svc-list-head{display:grid;grid-template-columns:2fr 1fr 80px 90px 100px 80px;gap:0;padding:10px 20px;border-bottom:2px solid var(--c-muted);background:var(--c-muted);}
+    .list-th{font-size:10px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--c-primary);opacity:.7;}
+    .svc-list-row{display:grid;grid-template-columns:2fr 1fr 80px 90px 100px 80px;gap:0;padding:14px 20px;border-bottom:1px solid var(--c-muted);align-items:center;transition:background .15s;cursor:pointer;}
+    .svc-list-row:last-child{border-bottom:none;}
+    .svc-list-row:hover{background:rgba(196,135,79,0.04);}
+    .svc-list-row.inactive .svc-list-name{opacity:.5;text-decoration:line-through;}
+    .status-on{background:rgba(90,138,106,0.12);color:var(--s-done);}
+    .status-off{background:rgba(184,84,80,0.1);color:var(--s-urgent);}
+
+    /* Empty state */
+    .empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;gap:12px;color:var(--c-primary);}
+    .empty-icon{font-size:48px;opacity:.15;margin-bottom:8px;}
+    .empty-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;opacity:.5;}
+    .empty-sub{font-size:13px;opacity:.4;text-align:center;}
+
+    /* ══ DRAWER ══ */
+    .drawer-overlay{position:fixed;inset:0;background:rgba(46,26,24,0.45);backdrop-filter:blur(4px);z-index:200;display:flex;justify-content:flex-end;animation:fadeIn .2s ease;}
+    .drawer{width:440px;max-width:100vw;height:100%;background:var(--c-surface);display:flex;flex-direction:column;box-shadow:-16px 0 48px rgba(46,26,24,0.2);animation:slideInRight .3s cubic-bezier(.34,1.2,.64,1);}
+    .drawer-header{padding:24px 24px 20px;border-bottom:1px solid var(--c-muted);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+    .drawer-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--c-dark);}
+    .drawer-subtitle{font-size:12px;color:var(--c-primary);opacity:.6;margin-top:2px;}
+    .drawer-close{width:36px;height:36px;border-radius:var(--r-sm);border:1.5px solid var(--c-light);background:transparent;color:var(--c-mid);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s;outline:none;}
+    .drawer-close:hover{border-color:var(--s-urgent);color:var(--s-urgent);}
+    .drawer-body{flex:1;overflow-y:auto;padding:24px;}
+    .drawer-footer{padding:16px 24px;border-top:1px solid var(--c-muted);display:flex;gap:10px;flex-shrink:0;}
+
+    /* Form fields */
+    .field{margin-bottom:20px;}
+    .field label{display:block;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--c-mid);margin-bottom:8px;}
+    .field input,.field textarea,.field select{width:100%;background:var(--c-bg);border:1.5px solid var(--c-light);border-radius:var(--r-sm);font-family:inherit;font-size:14px;color:var(--c-dark);padding:10px 14px;outline:none;transition:border-color .2s;resize:vertical;}
+    .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--c-accent);}
+    .field textarea{min-height:90px;}
+    .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+    .field-hint{font-size:11px;color:var(--c-primary);opacity:.6;margin-top:5px;}
+    .field-error{font-size:11px;color:var(--s-urgent);margin-top:5px;display:none;}
+    .field input.error,.field textarea.error{border-color:var(--s-urgent);}
+
+    /* Duration stepper */
+    .dur-stepper{display:flex;align-items:center;gap:0;border:1.5px solid var(--c-light);border-radius:var(--r-sm);overflow:hidden;background:var(--c-bg);}
+    .dur-btn{width:40px;height:42px;border:none;background:transparent;color:var(--c-mid);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;outline:none;}
+    .dur-btn:hover{background:rgba(196,135,79,0.1);color:var(--c-accent);}
+    .dur-input{flex:1;border:none;background:transparent;text-align:center;font-family:inherit;font-size:14px;font-weight:700;color:var(--c-dark);outline:none;}
+
+    /* Active toggle in drawer */
+    .active-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--c-muted);border-radius:var(--r-sm);}
+    .active-row-left .label{font-size:13px;font-weight:700;color:var(--c-dark);}
+    .active-row-left .sub{font-size:11px;color:var(--c-primary);opacity:.7;margin-top:2px;}
+
+    /* ══ DELETE CONFIRM ══ */
+    .confirm-overlay{position:fixed;inset:0;background:rgba(46,26,24,0.55);backdrop-filter:blur(6px);z-index:300;display:flex;align-items:center;justify-content:center;animation:fadeIn .15s ease;}
+    .confirm-box{background:var(--c-surface);border-radius:var(--r-xl);padding:32px;max-width:400px;width:90%;box-shadow:0 24px 64px rgba(46,26,24,0.3);border:1.5px solid var(--c-light);animation:scaleIn .2s cubic-bezier(.34,1.3,.64,1);}
+    .confirm-icon{width:52px;height:52px;border-radius:16px;background:rgba(184,84,80,0.1);color:var(--s-urgent);font-size:22px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+    .confirm-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--c-dark);margin-bottom:8px;}
+    .confirm-text{font-size:13px;color:var(--c-mid);line-height:1.55;margin-bottom:24px;}
+    .confirm-btns{display:flex;gap:10px;}
+    .btn-cancel{flex:1;height:40px;border-radius:var(--r-sm);border:1.5px solid var(--c-light);background:transparent;font-family:inherit;font-size:13px;font-weight:700;color:var(--c-mid);cursor:pointer;transition:all .2s;}
+    .btn-cancel:hover{border-color:var(--c-dark);color:var(--c-dark);}
+    .btn-danger{flex:1;height:40px;border-radius:var(--r-sm);border:none;background:var(--s-urgent);color:#fff;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;}
+    .btn-danger:hover{background:#a03030;}
+
+    /* ══ TOAST ══ */
+    #toastContainer{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none;}
+    .toast{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:var(--r-md);background:var(--c-dark);color:var(--c-bg);font-size:13px;font-weight:600;min-width:240px;box-shadow:0 8px 32px rgba(0,0,0,0.25);pointer-events:all;cursor:pointer;animation:toastIn .35s cubic-bezier(.34,1.56,.64,1) both;}
+    .toast.removing{animation:toastOut .25s ease forwards;}
+    .toast-icon{font-size:15px;flex-shrink:0;}
+    .toast.success .toast-icon{color:#6ec97a;}
+    .toast.error .toast-icon{color:var(--s-urgent);}
+    .toast.info .toast-icon{color:var(--c-accent);}
+    .toast-msg{flex:1;}
+
+    /* ══ ANIMATIONS ══ */
+    @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    @keyframes slideInRight{from{transform:translateX(100%)}to{transform:translateX(0)}}
+    @keyframes scaleIn{from{opacity:0;transform:scale(0.92)}to{opacity:1;transform:scale(1)}}
+    @keyframes toastIn{from{opacity:0;transform:translateY(12px) scale(0.95)}to{opacity:1;transform:none}}
+    @keyframes toastOut{to{opacity:0;transform:translateY(8px) scale(0.96)}}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+
+    /* ══ MOBILE ══ */
+    @media(max-width:768px){
+      :root{--sidebar-w:260px;}
+      .sidebar{position:fixed;left:0;top:0;bottom:0;transform:translateX(-100%);transition:transform .3s cubic-bezier(.4,0,.2,1);}
+      .sidebar.mobile-open{transform:translateX(0);box-shadow:8px 0 48px rgba(46,26,24,.3);}
+      .mobile-overlay.show{display:block;}
+      .topbar{padding:0 16px;gap:8px;}
+      .topbar-account .user-name,.topbar-account .user-role{display:none;}
+      .page-content{padding:16px;padding-bottom:90px;}
+      .collapse-btn{display:none;}
+      .mobile-menu-btn{display:flex !important;}
+      .svc-grid{grid-template-columns:1fr;}
+      .drawer{width:100vw;}
+      .field-row{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+
+<a href="#mainContent" class="skip-link">Μετάβαση στο περιεχόμενο</a>
+<div id="toastContainer" role="status" aria-live="polite"></div>
+<div class="mobile-overlay" id="mobileOverlay" onclick="closeMobile()"></div>
+
+<aside class="sidebar" id="sidebar" role="navigation" aria-label="Κύρια πλοήγηση">
+  <button class="collapse-btn" onclick="toggleCollapse()" aria-label="Σύμπτυξη/Ανάπτυξη sidebar"><span class="arrow">‹</span></button>
+  <div class="sidebar-logo">
+    <div class="logo-img-wrap"><img src="./logo.png" alt="Glamour Nails"/></div>
+    <div class="logo-text">
+      <div class="logo-brand">Glamour Nails</div>
+      <div class="logo-tagline">Management</div>
+    </div>
+  </div>
+  <nav class="nav-section">
+    <div class="nav-label">Κύρια</div>
+    <a href="front.html" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-chart-line"></i></div>
+      <span class="nav-lbl">Πίνακας Ελέγχου</span>
+      <span class="nav-tip">Πίνακας Ελέγχου</span>
+    </a>
+    <a href="front.html" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-calendar-check"></i></div>
+      <span class="nav-lbl">Ραντεβού</span>
+      <span class="nav-badge">10</span>
+      <span class="nav-tip">Ραντεβού</span>
+    </a>
+    <a href="customer.html" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-user-heart"></i></div>
+      <span class="nav-lbl">Πελάτες</span>
+      <span class="nav-tip">Πελάτες</span>
+    </a>
+    <a href="services.html" class="nav-item active" aria-current="page">
+      <div class="nav-icon"><i class="fas fa-spa"></i></div>
+      <span class="nav-lbl">Υπηρεσίες</span>
+      <span class="nav-tip">Υπηρεσίες</span>
+    </a>
+    <a href="notifications.html" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-spa"></i></div>
+      <span class="nav-lbl">Μήνυματα</span>
+      <span class="nav-tip">Μήνυματα</span>
+    </a>
+  </nav>
+  <div class="sidebar-spacer"></div>
+  <nav class="nav-section">
+    <div class="nav-label">Διαχείριση</div>
+    <a href="#" class="nav-item"><div class="nav-icon"><i class="fas fa-store"></i></div><span class="nav-lbl">Καταστήματα</span><span class="nav-tip">Καταστήματα</span></a>
+    <a href="#" class="nav-item"><div class="nav-icon"><i class="fas fa-bell"></i></div><span class="nav-lbl">Ειδοποιήσεις</span><span class="nav-tip">Ειδοποιήσεις</span></a>
+  </nav>
+  <div class="credits-bar">
+    <div class="credits-label">SMS Credits</div>
+    <div class="credits-value">325</div>
+    <div class="credits-sub">από 500 διαθέσιμα</div>
+    <div class="credits-track"><div class="credits-fill" style="width:65%"></div></div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main-wrap">
+  <header class="topbar">
+    <button class="mobile-menu-btn" onclick="openMobile()" aria-label="Άνοιγμα μενού"><i class="fas fa-bars"></i></button>
+    <div class="topbar-title">Υπηρεσίες <span id="svcCount" style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:var(--c-primary);opacity:.5;margin-left:6px"></span></div>
+    <div class="topbar-actions">
+      <button class="btn-topbar primary" onclick="openDrawer()">
+        <i class="fas fa-plus" style="font-size:11px"></i> Νέα Υπηρεσία
+      </button>
+      <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" aria-label="Εναλλαγή θέματος"><i class="fas fa-moon" id="themeIcon"></i></button>
+      <div class="topbar-account">
+        <div class="user-av">ΜΚ</div>
+        <div>
+          <div class="user-name">Μαρία Κωνσταντίνου</div>
+          <div class="user-role">Ιδιοκτήτρια</div>
+        </div>
+        <button class="user-logout" title="Αποσύνδεση"><i class="fas fa-sign-out-alt"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-content" id="mainContent">
+
+    <!-- TOOLBAR -->
+    <div class="svc-toolbar">
+      <div class="search-wrap">
+        <input type="search" id="searchInput" placeholder="Αναζήτηση υπηρεσίας..." oninput="filterAndRender()"/>
+        <i class="fas fa-search si"></i>
+      </div>
+      <div class="cat-tabs" id="catTabs" role="tablist"></div>
+    </div>
+
+    <!-- SERVICES OUTPUT -->
+    <div id="svcOutput"></div>
+
+  </main>
+</div>
+
+<!-- ══════════════════ DRAWER ══════════════════ -->
+<div id="drawerOverlay" class="drawer-overlay" style="display:none" onclick="closeDrawerIfBg(event)" role="dialog" aria-modal="true" aria-labelledby="drawerTitleEl">
+  <div class="drawer" onclick="event.stopPropagation()">
+    <div class="drawer-header">
+      <div>
+        <div class="drawer-title" id="drawerTitleEl">Νέα Υπηρεσία</div>
+        <div class="drawer-subtitle" id="drawerSubtitle">Συμπληρώστε τα στοιχεία</div>
+      </div>
+      <button class="drawer-close" onclick="closeDrawer()" aria-label="Κλείσιμο"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="drawer-body">
+
+      <!-- Category picker -->
+      <div class="field">
+        <label for="fCategory">Κατηγορία</label>
+        <select id="fCategory">
+          <option value="manicure">💅 Μανικιούρ</option>
+          <option value="pedicure">🦶 Πεντικιούρ</option>
+          <option value="nails">💎 Τεχνητά Νύχια</option>
+          <option value="spa">🌿 Spa &amp; Θεραπείες</option>
+        </select>
+      </div>
+
+      <!-- Name -->
+      <div class="field">
+        <label for="fName">Όνομα Υπηρεσίας <span style="color:var(--s-urgent)">*</span></label>
+        <input type="text" id="fName" placeholder="πχ. Ημιμόνιμο Χρώμα" maxlength="120" oninput="clearErr('fName')"/>
+        <div class="field-error" id="fNameErr">Το όνομα είναι υποχρεωτικό</div>
+      </div>
+
+      <!-- Description -->
+      <div class="field">
+        <label for="fDesc">Περιγραφή</label>
+        <textarea id="fDesc" placeholder="Σύντομη περιγραφή υπηρεσίας..." maxlength="5000"></textarea>
+        <div class="field-hint" id="fDescCount">0 / 5000 χαρακτήρες</div>
+      </div>
+
+      <!-- Price + Duration -->
+      <div class="field-row">
+        <div class="field">
+          <label for="fPrice">Τιμή (€) <span style="color:var(--s-urgent)">*</span></label>
+          <input type="number" id="fPrice" placeholder="0.00" min="0" step="0.5" oninput="clearErr('fPrice')"/>
+          <div class="field-error" id="fPriceErr">Εισάγετε έγκυρη τιμή (&ge; 0)</div>
+        </div>
+        <div class="field">
+          <label>Διάρκεια</label>
+          <div class="dur-stepper">
+            <button class="dur-btn" onclick="stepDuration(-15)" aria-label="Μείωση 15 λεπτών"><i class="fas fa-minus"></i></button>
+            <input class="dur-input" type="number" id="fDuration" value="30" min="1" max="1440" aria-label="Διάρκεια σε λεπτά"/>
+            <button class="dur-btn" onclick="stepDuration(15)" aria-label="Αύξηση 15 λεπτών"><i class="fas fa-plus"></i></button>
+          </div>
+          <div class="field-hint" id="durLabel">30 λεπτά</div>
+        </div>
+      </div>
+
+      <!-- Active -->
+      <div class="active-row">
+        <div class="active-row-left">
+          <div class="label">Ενεργή Υπηρεσία</div>
+          <div class="sub">Εμφανίζεται κατά την κράτηση ραντεβού</div>
+        </div>
+        <label class="toggle" aria-label="Ενεργή/Ανενεργή υπηρεσία">
+          <input type="checkbox" id="fActive" checked/>
+          <div class="toggle-track"></div>
+          <div class="toggle-thumb"></div>
+        </label>
+      </div>
+
+    </div>
+    <div class="drawer-footer">
+      <button class="btn-topbar" style="flex:1;justify-content:center" onclick="closeDrawer()">Ακύρωση</button>
+      <button class="btn-topbar primary" style="flex:2;justify-content:center" id="drawerSaveBtn" onclick="saveService()">
+        <i class="fas fa-save" style="font-size:11px"></i> Αποθήκευση
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- DELETE CONFIRM -->
+<div id="confirmOverlay" class="confirm-overlay" style="display:none">
+  <div class="confirm-box">
+    <div class="confirm-icon"><i class="fas fa-trash-alt"></i></div>
+    <div class="confirm-title">Διαγραφή Υπηρεσίας;</div>
+    <div class="confirm-text" id="confirmText">Η υπηρεσία θα διαγραφεί οριστικά. Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.</div>
+    <div class="confirm-btns">
+      <button class="btn-cancel" onclick="closeConfirm()">Ακύρωση</button>
+      <button class="btn-danger" id="confirmDeleteBtn">Διαγραφή</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════
+   MOCK DATA — Services
+═══════════════════════════════════════════ */
+const CATEGORIES = [
+  { id: 'manicure',  name: 'Μανικιούρ',      icon: '💅', color: 'rgba(196,135,79,0.12)',  text: 'var(--c-accent)' },
+  { id: 'pedicure',  name: 'Πεντικιούρ',     icon: '🦶', color: 'rgba(74,127,165,0.12)', text: 'var(--s-next)' },
+  { id: 'nails',     name: 'Τεχνητά Νύχια',  icon: '💎', color: 'rgba(90,138,106,0.12)', text: 'var(--s-done)' },
+  { id: 'spa',       name: 'Spa & Θεραπείες',icon: '🌿', color: 'rgba(157,106,101,0.12)', text: 'var(--c-primary)' },
+];
+
+let services = [
+  { id:'s1', name:'Απλό Μανικιούρ',        category:'manicure', description:'Κλασικό μανικιούρ με σχηματισμό νυχιών και απλό βάψιμο.', price:'15.00', duration:30, isActive:true },
+  { id:'s2', name:'Ημιμόνιμο Χρώμα',       category:'manicure', description:'Ημιμόνιμο βερνίκι gel, διάρκειας έως 3 εβδομάδων. Αποξήρανση σε UV.', price:'25.00', duration:45, isActive:true },
+  { id:'s3', name:'Γαλλικό Μανικιούρ',     category:'manicure', description:'Κλασικό γαλλικό με λευκή άκρη και διαφανή βάση.', price:'20.00', duration:40, isActive:true },
+  { id:'s4', name:'Απλό Πεντικιούρ',        category:'pedicure', description:'Φροντίδα νυχιών ποδιών, μπάνιο, φτιασίδωμα και απλό χρώμα.', price:'20.00', duration:40, isActive:true },
+  { id:'s5', name:'Spa Πεντικιούρ',         category:'pedicure', description:'Premium πεντικιούρ με απολέπιση, μάσκα, μασάζ και gel χρώμα.', price:'35.00', duration:60, isActive:true },
+  { id:'s6', name:'Ημιμόνιμο Ποδιών',       category:'pedicure', description:'Ημιμόνιμο βερνίκι για τα πόδια με μεγάλη διάρκεια.', price:'28.00', duration:50, isActive:true },
+  { id:'s7', name:'Τεχνητά Νύχια Gel',      category:'nails',    description:'Κατασκευή τεχνητών νυχιών με gel builder. Περιλαμβάνει σχηματισμό και χρώμα.', price:'55.00', duration:90, isActive:true },
+  { id:'s8', name:'Ακρυλικά Νύχια',         category:'nails',    description:'Επαγγελματική κατασκευή ακρυλικών, ιδανικά για επιμήκυνση.', price:'60.00', duration:90, isActive:true },
+  { id:'s9', name:'Infill Gel (γέμισμα)',   category:'nails',    description:'Επαναπλήρωση gel σε υπάρχοντα τεχνητά νύχια κάθε 3-4 εβδομάδες.', price:'35.00', duration:60, isActive:true },
+  { id:'s10',name:'Αφαίρεση Τεχνητών',      category:'nails',    description:'Απαλή αφαίρεση τεχνητών νυχιών με εξειδικευμένα προϊόντα.', price:'15.00', duration:30, isActive:false },
+  { id:'s11',name:'Μασάζ Χεριών',           category:'spa',      description:'Χαλαρωτικό μασάζ χεριών με ενυδατική κρέμα και αρωματικά έλαια.', price:'20.00', duration:30, isActive:true },
+  { id:'s12',name:'Θεραπεία Παραφίνης',     category:'spa',      description:'Ενυδατική θεραπεία με ζεστή παραφίνη για χέρια και πόδια.', price:'18.00', duration:25, isActive:false },
+];
+
+let editingId = null;
+let activeCategory = 'all';
+let pendingDeleteId = null;
+
+/* ═══════════════════════════════════════════
+   SIDEBAR
+═══════════════════════════════════════════ */
+function toggleCollapse() {
+  const sb = document.getElementById('sidebar');
+  sb.classList.toggle('collapsed');
+  localStorage.setItem('sidebar-collapsed', sb.classList.contains('collapsed'));
+}
+function openMobile() {
+  document.getElementById('sidebar').classList.add('mobile-open');
+  document.getElementById('mobileOverlay').classList.add('show');
+}
+function closeMobile() {
+  document.getElementById('sidebar').classList.remove('mobile-open');
+  document.getElementById('mobileOverlay').classList.remove('show');
+}
+
+/* ═══════════════════════════════════════════
+   THEME
+═══════════════════════════════════════════ */
+function toggleTheme() {
+  const html = document.documentElement;
+  const dark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', dark ? 'light' : 'dark');
+  document.getElementById('themeIcon').className = dark ? 'fas fa-moon' : 'fas fa-sun';
+  localStorage.setItem('theme', dark ? 'light' : 'dark');
+}
+
+/* ═══════════════════════════════════════════
+   CATEGORY TABS
+═══════════════════════════════════════════ */
+function renderCatTabs() {
+  const el = document.getElementById('catTabs');
+  const cats = [{id:'all', name:'Όλες'},...CATEGORIES];
+  el.innerHTML = cats.map(c =>
+    `<button class="cat-tab ${activeCategory===c.id?'active':''}" onclick="setCategory('${c.id}')" role="tab" aria-selected="${activeCategory===c.id}">${c.id!=='all'?c.icon+' ':''}${c.name}</button>`
+  ).join('');
+}
+function setCategory(id) {
+  activeCategory = id;
+  renderCatTabs();
+  filterAndRender();
+}
+
+/* ═══════════════════════════════════════════
+   FILTER + RENDER
+═══════════════════════════════════════════ */
+function filterAndRender() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  let filtered = services;
+  if (activeCategory !== 'all') filtered = filtered.filter(s => s.category === activeCategory);
+  if (q) filtered = filtered.filter(s =>
+    s.name.toLowerCase().includes(q) || (s.description||'').toLowerCase().includes(q)
+  );
+
+  const count = document.getElementById('svcCount');
+  if (count) count.textContent = filtered.length + ' υπηρεσίες';
+
+  const out = document.getElementById('svcOutput');
+  if (!filtered.length) {
+    out.innerHTML = `<div class="empty-state"><div class="empty-icon"><i class="fas fa-spa"></i></div><div class="empty-title">Δεν βρέθηκαν υπηρεσίες</div><div class="empty-sub">${q?'Δοκιμάστε διαφορετικό όρο αναζήτησης':'Προσθέστε την πρώτη υπηρεσία'}</div></div>`;
+    return;
+  }
+  out.innerHTML = `<div class="svc-grid">${filtered.map(svcCard).join('')}</div>`;
+}
+
+function getCat(id) { return CATEGORIES.find(c=>c.id===id)||CATEGORIES[0]; }
+
+function svcCard(s) {
+  const cat = getCat(s.category);
+  const dur = formatDur(s.duration);
+  return `
+  <div class="svc-card ${s.isActive?'':'inactive'}" id="card-${s.id}">
+    <div class="svc-card-top">
+      <div class="svc-cat-icon" style="background:${cat.color};color:${cat.text}">${cat.icon}</div>
+      <div class="svc-card-info">
+        <div class="svc-name">${esc(s.name)}</div>
+        <div class="svc-cat-badge">${cat.name}</div>
+      </div>
+    </div>
+    ${s.description?`<div class="svc-desc">${esc(s.description)}</div>`:''}
+    <div class="svc-meta">
+      <span class="svc-chip chip-price"><i class="fas fa-euro-sign" style="font-size:9px"></i>${parseFloat(s.price).toFixed(2)}</span>
+      <span class="svc-chip chip-duration"><i class="fas fa-clock" style="font-size:9px"></i>${dur}</span>
+    </div>
+    <div class="svc-card-footer">
+      <div class="toggle-wrap">
+        <label class="toggle" aria-label="Ενεργή/Ανενεργή">
+          <input type="checkbox" ${s.isActive?'checked':''} onchange="toggleActive('${s.id}',this.checked)"/>
+          <div class="toggle-track"></div>
+          <div class="toggle-thumb"></div>
+        </label>
+        <span class="toggle-lbl ${s.isActive?'on':''}" id="tlbl-${s.id}">${s.isActive?'Ενεργή':'Ανενεργή'}</span>
+      </div>
+      <div class="svc-actions">
+        <button class="svc-btn" onclick="openDrawer('${s.id}')" title="Επεξεργασία" aria-label="Επεξεργασία ${esc(s.name)}"><i class="fas fa-pen"></i></button>
+        <button class="svc-btn del" onclick="askDelete('${s.id}')" title="Διαγραφή" aria-label="Διαγραφή ${esc(s.name)}"><i class="fas fa-trash-alt"></i></button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function svcListRow() {} // removed
+
+/* ═══════════════════════════════════════════
+   TOGGLE ACTIVE
+═══════════════════════════════════════════ */
+function toggleActive(id, val) {
+  const s = services.find(x=>x.id===id);
+  if (!s) return;
+  s.isActive = val;
+  const lbl = document.getElementById('tlbl-'+id);
+  if (lbl) { lbl.textContent = val?'Ενεργή':'Ανενεργή'; lbl.className='toggle-lbl '+(val?'on':''); }
+  const card = document.getElementById('card-'+id);
+  if (card) card.classList.toggle('inactive', !val);
+  showToast(val?`"${s.name}" ενεργοποιήθηκε`:`"${s.name}" απενεργοποιήθηκε`, val?'success':'info');
+}
+
+/* ═══════════════════════════════════════════
+   DRAWER
+═══════════════════════════════════════════ */
+function openDrawer(id=null) {
+  editingId = id;
+  const overlay = document.getElementById('drawerOverlay');
+  const title = document.getElementById('drawerTitleEl');
+  const subtitle = document.getElementById('drawerSubtitle');
+
+  if (id) {
+    const s = services.find(x=>x.id===id);
+    title.textContent = 'Επεξεργασία Υπηρεσίας';
+    subtitle.textContent = s.name;
+    document.getElementById('fCategory').value = s.category;
+    document.getElementById('fName').value = s.name;
+    document.getElementById('fDesc').value = s.description||'';
+    document.getElementById('fPrice').value = s.price;
+    document.getElementById('fDuration').value = s.duration;
+    document.getElementById('fActive').checked = s.isActive;
+    updateDescCount();
+    updateDurLabel();
+  } else {
+    title.textContent = 'Νέα Υπηρεσία';
+    subtitle.textContent = 'Συμπληρώστε τα στοιχεία';
+    document.getElementById('fCategory').value = 'manicure';
+    document.getElementById('fName').value = '';
+    document.getElementById('fDesc').value = '';
+    document.getElementById('fPrice').value = '';
+    document.getElementById('fDuration').value = 30;
+    document.getElementById('fActive').checked = true;
+    updateDescCount();
+    updateDurLabel();
+  }
+  clearAllErr();
+  overlay.style.display = 'flex';
+  setTimeout(()=>document.getElementById('fName').focus(), 100);
+}
+
+function closeDrawer() {
+  document.getElementById('drawerOverlay').style.display = 'none';
+  editingId = null;
+}
+function closeDrawerIfBg(e) {
+  if (e.target === document.getElementById('drawerOverlay')) closeDrawer();
+}
+
+function saveService() {
+  let valid = true;
+  const name = document.getElementById('fName').value.trim();
+  const price = document.getElementById('fPrice').value;
+  if (!name) { showFieldErr('fName','fNameErr'); valid=false; }
+  if (price===''||isNaN(parseFloat(price))||parseFloat(price)<0) { showFieldErr('fPrice','fPriceErr'); valid=false; }
+  if (!valid) return;
+
+  const data = {
+    category: document.getElementById('fCategory').value,
+    name,
+    description: document.getElementById('fDesc').value.trim(),
+    price: parseFloat(price).toFixed(2),
+    duration: parseInt(document.getElementById('fDuration').value)||30,
+    isActive: document.getElementById('fActive').checked,
+  };
+
+  if (editingId) {
+    const idx = services.findIndex(x=>x.id===editingId);
+    services[idx] = {...services[idx], ...data};
+    showToast(`"${name}" ενημερώθηκε`, 'success');
+  } else {
+    services.unshift({id:'s'+Date.now(), ...data});
+    showToast(`"${name}" προστέθηκε`, 'success');
+  }
+  closeDrawer();
+  filterAndRender();
+}
+
+/* ═══════════════════════════════════════════
+   DELETE
+═══════════════════════════════════════════ */
+function askDelete(id) {
+  const s = services.find(x=>x.id===id);
+  pendingDeleteId = id;
+  document.getElementById('confirmText').textContent = `Η υπηρεσία "${s.name}" θα διαγραφεί οριστικά. Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.`;
+  document.getElementById('confirmDeleteBtn').onclick = () => confirmDelete();
+  document.getElementById('confirmOverlay').style.display = 'flex';
+}
+function closeConfirm() {
+  document.getElementById('confirmOverlay').style.display = 'none';
+  pendingDeleteId = null;
+}
+function confirmDelete() {
+  const s = services.find(x=>x.id===pendingDeleteId);
+  services = services.filter(x=>x.id!==pendingDeleteId);
+  closeConfirm();
+  filterAndRender();
+  showToast(`"${s.name}" διαγράφηκε`, 'error');
+}
+
+/* ═══════════════════════════════════════════
+   DURATION HELPERS
+═══════════════════════════════════════════ */
+function stepDuration(delta) {
+  const inp = document.getElementById('fDuration');
+  let v = (parseInt(inp.value)||30) + delta;
+  v = Math.max(5, Math.min(1440, v));
+  inp.value = v;
+  updateDurLabel();
+}
+function updateDurLabel() {
+  const v = parseInt(document.getElementById('fDuration').value)||30;
+  const h = Math.floor(v/60);
+  const m = v%60;
+  document.getElementById('durLabel').textContent = h>0 ? (m>0?`${h}ω ${m}λ`:`${h} ώρα${h>1?'ι':''}`) : `${m} λεπτά`;
+}
+document.getElementById('fDuration')?.addEventListener('input', updateDurLabel);
+
+function updateDescCount() {
+  const v = document.getElementById('fDesc').value.length;
+  document.getElementById('fDescCount').textContent = `${v} / 5000 χαρακτήρες`;
+}
+document.getElementById('fDesc')?.addEventListener('input', updateDescCount);
+
+/* ═══════════════════════════════════════════
+   VALIDATION HELPERS
+═══════════════════════════════════════════ */
+function showFieldErr(inputId, errId) {
+  document.getElementById(inputId).classList.add('error');
+  document.getElementById(errId).style.display = 'block';
+}
+function clearErr(inputId) {
+  document.getElementById(inputId).classList.remove('error');
+  const errEl = document.getElementById(inputId+'Err');
+  if(errEl) errEl.style.display='none';
+}
+function clearAllErr() {
+  ['fName','fPrice'].forEach(id=>{
+    document.getElementById(id)?.classList.remove('error');
+    const errEl=document.getElementById(id+'Err');
+    if(errEl) errEl.style.display='none';
+  });
+}
+
+/* ═══════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════ */
+function showToast(msg, type='info') {
+  const c = document.getElementById('toastContainer');
+  const t = document.createElement('div');
+  const icons = {success:'fa-check-circle',error:'fa-times-circle',info:'fa-info-circle'};
+  t.className = `toast ${type}`;
+  t.innerHTML = `<i class="fas ${icons[type]} toast-icon"></i><span class="toast-msg">${msg}</span>`;
+  t.onclick = ()=>removeToast(t);
+  c.appendChild(t);
+  setTimeout(()=>removeToast(t), 3500);
+}
+function removeToast(t) {
+  t.classList.add('removing');
+  setTimeout(()=>t.remove(), 260);
+}
+
+/* ═══════════════════════════════════════════
+   UTILS
+═══════════════════════════════════════════ */
+function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function formatDur(m) {
+  if (!m) return '—';
+  const h=Math.floor(m/60),min=m%60;
+  return h>0?(min>0?`${h}ω ${min}λ`:`${h}ω`):`${min}λ`;
+}
+
+/* ═══════════════════════════════════════════
+   KEYBOARD
+═══════════════════════════════════════════ */
+document.addEventListener('keydown', e => {
+  if (e.key==='Escape') {
+    if (document.getElementById('confirmOverlay').style.display!=='none') closeConfirm();
+    else if (document.getElementById('drawerOverlay').style.display!=='none') closeDrawer();
+  }
+  if ((e.metaKey||e.ctrlKey) && e.key==='n') { e.preventDefault(); openDrawer(); }
+});
+
+/* ═══════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════ */
+window.addEventListener('DOMContentLoaded', () => {
+  // Restore sidebar
+  if (localStorage.getItem('sidebar-collapsed')==='true' && window.innerWidth>768)
+    document.getElementById('sidebar').classList.add('collapsed');
+  // Restore theme
+  const t = localStorage.getItem('theme');
+  if (t) {
+    document.documentElement.setAttribute('data-theme', t);
+    document.getElementById('themeIcon').className = t==='dark'?'fas fa-sun':'fas fa-moon';
+  }
+  renderCatTabs();
+  filterAndRender();
+});
+</script>
+</body>
+</html>

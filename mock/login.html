@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="el" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Glamour Nails — Σύνδεση</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet"/>
+<style>
+/* ── TOKENS (ίδια με front.html) ── */
+:root {
+  --c-bg:      #F9F6F3;
+  --c-surface: #FFFFFF;
+  --c-dark:    #2E1A18;
+  --c-mid:     #6B3F3A;
+  --c-primary: #9D6A65;
+  --c-accent:  #C4874F;
+  --c-light:   #E8C9BC;
+  --c-muted:   #F0EAE6;
+  --c-shadow:  rgba(46,26,24,0.10);
+  --s-urgent:  #B85450;
+  --s-done:    #5A8A6A;
+  --sb-bg:     #2E1A18;
+  --focus-ring:0 0 0 3px rgba(196,135,79,0.4);
+  --r-sm:10px; --r-md:14px; --r-lg:20px;
+}
+[data-theme="dark"] {
+  --c-bg:      #1A1210;
+  --c-surface: #231815;
+  --c-dark:    #F2EBE6;
+  --c-mid:     #C4A49F;
+  --c-primary: #B08A85;
+  --c-accent:  #D49A60;
+  --c-light:   #4A2E2A;
+  --c-muted:   #2E1E1B;
+  --c-shadow:  rgba(0,0,0,0.4);
+  --sb-bg:     #150e0d;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--c-bg);color:var(--c-dark);min-height:100vh;display:flex;transition:background .3s,color .3s;}
+:focus{outline:none;}
+:focus-visible{box-shadow:var(--focus-ring)!important;outline:none;border-radius:var(--r-sm);}
+
+/* ── SPLIT LAYOUT ── */
+.split{display:flex;min-height:100vh;width:100%;}
+
+/* ── LEFT: BRAND PANEL ── */
+.brand{width:440px;flex-shrink:0;background:var(--sb-bg);display:flex;flex-direction:column;padding:48px 44px;position:relative;overflow:hidden;}
+
+/* Decorative rings */
+.brand::before{
+  content:'';position:absolute;right:-80px;top:-80px;
+  width:360px;height:360px;border-radius:50%;
+  border:1px solid rgba(196,135,79,0.12);
+}
+.brand::after{
+  content:'';position:absolute;right:-40px;top:-40px;
+  width:260px;height:260px;border-radius:50%;
+  border:1px solid rgba(196,135,79,0.08);
+}
+.brand-ring-sm{
+  position:absolute;left:-60px;bottom:-60px;
+  width:280px;height:280px;border-radius:50%;
+  border:1px solid rgba(196,135,79,0.07);
+}
+
+.brand-logo{display:flex;align-items:center;gap:12px;margin-bottom:auto;}
+.logo-mark{width:44px;height:44px;border-radius:10px;background:rgba(196,135,79,0.15);border:1.5px solid rgba(196,135,79,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.logo-mark i{font-size:18px;color:var(--c-accent);}
+.logo-text-wrap{}
+.logo-brand{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:#F9F6F3;display:block;}
+.logo-tag{font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--c-accent);opacity:.7;margin-top:1px;display:block;}
+
+.brand-hero{margin-bottom:auto;padding-top:48px;}
+.brand-eyebrow{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--c-accent);opacity:.8;margin-bottom:16px;}
+.brand-headline{font-family:'Cormorant Garamond',serif;font-size:2.6rem;font-weight:600;color:#F9F6F3;line-height:1.15;margin-bottom:20px;}
+.brand-headline em{font-style:italic;color:var(--c-accent);}
+.brand-desc{font-size:13px;color:rgba(249,246,243,0.45);line-height:1.7;max-width:280px;}
+
+.brand-features{display:flex;flex-direction:column;gap:12px;margin-top:40px;}
+.feat{display:flex;align-items:center;gap:12px;}
+.feat-dot{width:28px;height:28px;border-radius:7px;background:rgba(196,135,79,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.feat-dot i{font-size:11px;color:var(--c-accent);}
+.feat-text{font-size:12px;color:rgba(249,246,243,0.5);font-weight:500;}
+
+.brand-footer{margin-top:32px;padding-top:20px;border-top:1px solid rgba(249,246,243,0.07);}
+.brand-footer p{font-size:10px;color:rgba(249,246,243,0.2);}
+
+/* ── RIGHT: FORM PANEL ── */
+.form-panel{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 32px;position:relative;}
+
+.theme-toggle{position:absolute;top:20px;right:20px;width:36px;height:36px;border-radius:var(--r-sm);border:1.5px solid var(--c-light);background:var(--c-surface);color:var(--c-mid);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;transition:all .2s;}
+.theme-toggle:hover{border-color:var(--c-primary);color:var(--c-dark);}
+
+.form-box{width:100%;max-width:380px;}
+
+.form-header{margin-bottom:32px;}
+.form-title{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:600;color:var(--c-dark);margin-bottom:6px;}
+.form-sub{font-size:13px;color:var(--c-mid);}
+
+/* ── FIELDS ── */
+.field{margin-bottom:18px;}
+.field-label{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--c-mid);margin-bottom:7px;}
+.field-wrap{position:relative;}
+.field-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--c-primary);opacity:.6;pointer-events:none;}
+.field-input{width:100%;border:1.5px solid var(--c-light);border-radius:var(--r-sm);padding:12px 14px 12px 40px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--c-dark);background:var(--c-surface);transition:border-color .2s,box-shadow .2s;}
+.field-input:hover{border-color:var(--c-primary);}
+.field-input:focus{border-color:var(--c-accent);box-shadow:var(--focus-ring);outline:none;}
+.field-input::placeholder{color:var(--c-light);}
+.field-input.err{border-color:var(--s-urgent);}
+
+/* Password toggle */
+.pwd-toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);border:none;background:none;color:var(--c-primary);opacity:.5;cursor:pointer;padding:4px;font-size:13px;transition:opacity .2s;}
+.pwd-toggle:hover{opacity:1;}
+
+/* ── TENANT FIELD (shows only when needed) ── */
+.tenant-note{font-size:11px;color:var(--c-mid);margin-top:5px;opacity:.7;}
+
+/* ── FORGOT ── */
+.forgot-row{display:flex;justify-content:flex-end;margin-top:-8px;margin-bottom:18px;}
+.forgot-link{font-size:12px;color:var(--c-primary);text-decoration:none;font-weight:600;transition:color .2s;}
+.forgot-link:hover{color:var(--c-accent);}
+
+/* ── ERROR BANNER ── */
+.error-banner{background:#FDF0EF;border:1.5px solid #F0B4B0;border-radius:var(--r-sm);padding:12px 14px;display:flex;align-items:flex-start;gap:10px;margin-bottom:18px;display:none;}
+.error-banner.show{display:flex;animation:shake .35s ease both;}
+.error-banner i{color:var(--s-urgent);font-size:13px;margin-top:1px;flex-shrink:0;}
+.error-msg{font-size:12px;color:#7D2020;font-weight:500;line-height:1.5;}
+[data-theme="dark"] .error-banner{background:#2E1515;border-color:#5A2020;}
+[data-theme="dark"] .error-msg{color:#F0B4B0;}
+
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-4px)}40%,80%{transform:translateX(4px)}}
+
+/* ── SUBMIT BTN ── */
+.btn-login{width:100%;padding:14px;border-radius:var(--r-sm);border:none;background:var(--sb-bg);color:#F9F6F3;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .25s;display:flex;align-items:center;justify-content:center;gap:10px;position:relative;overflow:hidden;}
+.btn-login::before{content:'';position:absolute;inset:0;background:rgba(196,135,79,0.15);opacity:0;transition:opacity .2s;}
+.btn-login:hover::before{opacity:1;}
+.btn-login:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(46,26,24,0.25);}
+.btn-login:active{transform:none;}
+.btn-login:disabled{opacity:.5;cursor:default;transform:none;}
+.btn-login:disabled::before{opacity:0;}
+.spinner{width:16px;height:16px;border:2px solid rgba(249,246,243,0.3);border-top-color:#F9F6F3;border-radius:50%;animation:spin .7s linear infinite;display:none;}
+.btn-login.loading .spinner{display:block;}
+.btn-login.loading .btn-label{display:none;}
+
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── DIVIDER ── */
+.divider{display:flex;align-items:center;gap:12px;margin:20px 0;}
+.divider-line{flex:1;height:1px;background:var(--c-light);}
+.divider-text{font-size:11px;color:var(--c-mid);font-weight:600;}
+
+/* ── SUCCESS STATE ── */
+.success-overlay{position:absolute;inset:0;background:var(--c-bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;opacity:0;pointer-events:none;transition:opacity .4s;}
+.success-overlay.show{opacity:1;pointer-events:all;}
+.success-icon{width:64px;height:64px;border-radius:50%;background:var(--s-done);display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;}
+.success-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:600;color:var(--c-dark);}
+.success-sub{font-size:13px;color:var(--c-mid);text-align:center;}
+.progress-bar{width:200px;height:3px;background:var(--c-light);border-radius:99px;overflow:hidden;margin-top:8px;}
+.progress-fill{height:100%;width:0%;background:var(--c-accent);border-radius:99px;transition:width 1.5s linear;}
+
+/* ── USER INFO PREVIEW (after login) ── */
+.user-badge{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--c-muted);border-radius:var(--r-md);margin-bottom:20px;display:none;}
+.user-badge.show{display:flex;}
+.user-avatar{width:36px;height:36px;border-radius:50%;background:var(--sb-bg);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#E8C9BC;flex-shrink:0;}
+.user-info{flex:1;min-width:0;}
+.user-name{font-size:13px;font-weight:700;color:var(--c-dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.user-role{font-size:11px;color:var(--c-primary);}
+
+/* ── ROLE BADGES ── */
+.role-tag{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:4px;margin-right:4px;}
+.role-owner{background:#FDF0EC;color:#7D3F2A;}
+.role-manager{background:#EDF3FF;color:#1A3A8A;}
+.role-employee{background:#EFF7ED;color:#1B4D20;}
+.role-sales{background:#F3E5F5;color:#4A235A;}
+.role-admin{background:#2E1A18;color:#E8C9BC;}
+
+/* ── FOOTER LINKS ── */
+.form-footer{margin-top:28px;text-align:center;}
+.form-footer p{font-size:11px;color:var(--c-mid);}
+.form-footer a{color:var(--c-accent);text-decoration:none;font-weight:600;}
+
+/* ── JWT DEBUG (dev only) ── */
+.dev-panel{background:var(--c-muted);border-radius:var(--r-sm);padding:14px;margin-top:20px;display:none;}
+.dev-panel.show{display:block;}
+.dev-title{font-size:9px;font-weight:900;letter-spacing:.15em;text-transform:uppercase;color:var(--c-primary);margin-bottom:8px;}
+.dev-code{font-family:monospace;font-size:10px;color:var(--c-mid);word-break:break-all;line-height:1.6;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:780px){
+  .brand{display:none;}
+  .form-panel{padding:32px 20px;}
+}
+@media(max-width:400px){
+  .form-box{padding:0;}
+}
+</style>
+</head>
+<body>
+
+<div class="split">
+
+  <!-- ── BRAND PANEL ── -->
+  <aside class="brand" aria-hidden="true">
+    <div class="brand-ring-sm"></div>
+
+    <div class="brand-logo">
+      <div class="logo-mark"><i class="fas fa-spa"></i></div>
+      <div class="logo-text-wrap">
+        <span class="logo-brand">Glamour Nails</span>
+        <span class="logo-tag">Management Platform</span>
+      </div>
+    </div>
+
+    <div class="brand-hero">
+      <div class="brand-eyebrow">Καλώς ήρθες πίσω</div>
+      <h1 class="brand-headline">Όλα τα ραντεβού σου,<br><em>σε μία ματιά.</em></h1>
+      <p class="brand-desc">Διαχειρίσου πελάτες, campaigns, ωράρια και αναφορές από ένα κεντρικό σημείο.</p>
+
+      <div class="brand-features">
+        <div class="feat">
+          <div class="feat-dot"><i class="fas fa-calendar-check"></i></div>
+          <span class="feat-text">Ραντεβού & διαθεσιμότητα σε πραγματικό χρόνο</span>
+        </div>
+        <div class="feat">
+          <div class="feat-dot"><i class="fas fa-bullhorn"></i></div>
+          <span class="feat-text">AI campaigns με στοχευμένα μηνύματα</span>
+        </div>
+        <div class="feat">
+          <div class="feat-dot"><i class="fas fa-star"></i></div>
+          <span class="feat-text">Loyalty points & CRM πελατών</span>
+        </div>
+        <div class="feat">
+          <div class="feat-dot"><i class="fas fa-chart-bar"></i></div>
+          <span class="feat-text">Αναλυτικές αναφορές & KPIs</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="brand-footer">
+      <p>Connect SaaS © 2026 · Multi-tenant · JWT Auth · API Platform 3</p>
+    </div>
+  </aside>
+
+  <!-- ── FORM PANEL ── -->
+  <main class="form-panel" id="formPanel">
+
+    <button class="theme-toggle" onclick="toggleTheme()" title="Εναλλαγή θέματος" aria-label="Εναλλαγή dark/light mode">
+      <i class="fas fa-moon" id="themeIcon"></i>
+    </button>
+
+    <div class="form-box">
+
+      <div class="form-header">
+        <h2 class="form-title">Σύνδεση</h2>
+        <p class="form-sub">Εισάγετε τα στοιχεία του λογαριασμού σας</p>
+      </div>
+
+      <!-- Error Banner -->
+      <div class="error-banner" id="errorBanner" role="alert">
+        <i class="fas fa-exclamation-circle"></i>
+        <span class="error-msg" id="errorMsg"></span>
+      </div>
+
+      <!-- User badge (shows after successful parse) -->
+      <div class="user-badge" id="userBadge">
+        <div class="user-avatar" id="userAvatar"></div>
+        <div class="user-info">
+          <div class="user-name" id="userName"></div>
+          <div class="user-role" id="userRole"></div>
+        </div>
+      </div>
+
+      <form id="loginForm" novalidate>
+
+        <!-- Email -->
+        <div class="field">
+          <label class="field-label" for="email">Email</label>
+          <div class="field-wrap">
+            <i class="fas fa-envelope field-icon"></i>
+            <input type="email" id="email" class="field-input" placeholder="user@example.com"
+              autocomplete="email" autocapitalize="none" spellcheck="false" required/>
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="field">
+          <label class="field-label" for="password">Κωδικός</label>
+          <div class="field-wrap">
+            <i class="fas fa-lock field-icon"></i>
+            <input type="password" id="password" class="field-input" placeholder="Τουλάχιστον 8 χαρακτήρες"
+              autocomplete="current-password" required style="padding-right:44px;"/>
+            <button type="button" class="pwd-toggle" id="pwdToggle" onclick="togglePwd()" aria-label="Εμφάνιση κωδικού">
+              <i class="fas fa-eye" id="pwdIcon"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- API URL (collapsible) -->
+        <div class="field" id="apiField">
+          <label class="field-label" for="apiUrl">
+            API URL
+            <span style="font-size:9px;font-weight:500;text-transform:none;letter-spacing:0;color:var(--c-primary);margin-left:6px;">(προαιρετικό)</span>
+          </label>
+          <div class="field-wrap">
+            <i class="fas fa-server field-icon"></i>
+            <input type="url" id="apiUrl" class="field-input" placeholder="https://api.yourdomain.com"
+              autocomplete="url" value="http://localhost:8000"/>
+          </div>
+          <span class="tenant-note">Το tenant slug ανιχνεύεται αυτόματα από το JWT</span>
+        </div>
+
+        <div class="forgot-row">
+          <a href="#" class="forgot-link" onclick="forgotPwd(event)">Ξέχασα τον κωδικό</a>
+        </div>
+
+        <button type="submit" class="btn-login" id="loginBtn">
+          <div class="spinner"></div>
+          <span class="btn-label"><i class="fas fa-arrow-right-to-bracket" style="margin-right:6px;"></i>Σύνδεση</span>
+        </button>
+
+      </form>
+
+      <!-- Dev panel: JWT info -->
+      <div class="dev-panel" id="devPanel">
+        <div class="dev-title">JWT Payload</div>
+        <div class="dev-code" id="devCode"></div>
+      </div>
+
+      <div class="form-footer">
+        <p>Πρόβλημα σύνδεσης; <a href="mailto:support@connectsaas.gr">Επικοινωνήστε με την υποστήριξη</a></p>
+      </div>
+
+    </div>
+
+    <!-- Success overlay -->
+    <div class="success-overlay" id="successOverlay" aria-live="polite">
+      <div class="success-icon"><i class="fas fa-check"></i></div>
+      <div class="success-title" id="sucTitle">Καλώς ήρθες!</div>
+      <div class="success-sub" id="sucSub">Μεταφορά στον πίνακα ελέγχου...</div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+/* ── CONFIG ── */
+const REDIRECT = 'front.html';
+const STORAGE = { TOKEN:'gn_jwt', REFRESH:'gn_refresh', USER:'gn_user', API:'gn_api' };
+
+/* ── THEME ── */
+const saved = localStorage.getItem('gn_theme');
+if(saved) document.documentElement.setAttribute('data-theme', saved);
+updateThemeIcon();
+
+function toggleTheme(){
+  const cur = document.documentElement.getAttribute('data-theme');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('gn_theme', next);
+  updateThemeIcon();
+}
+function updateThemeIcon(){
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  document.getElementById('themeIcon').className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+}
+
+/* ── PASSWORD TOGGLE ── */
+function togglePwd(){
+  const inp = document.getElementById('password');
+  const ico = document.getElementById('pwdIcon');
+  if(inp.type === 'password'){
+    inp.type = 'text';
+    ico.className = 'fas fa-eye-slash';
+  } else {
+    inp.type = 'password';
+    ico.className = 'fas fa-eye';
+  }
+}
+
+/* ── RESTORE API URL ── */
+const savedApi = localStorage.getItem(STORAGE.API);
+if(savedApi) document.getElementById('apiUrl').value = savedApi;
+
+/* ── CHECK ALREADY LOGGED IN ── */
+window.addEventListener('DOMContentLoaded', () => {
+  const token = localStorage.getItem(STORAGE.TOKEN);
+  if(token){
+    const payload = parseJWT(token);
+    if(payload && payload.exp * 1000 > Date.now()){
+      showAlreadyLoggedIn(payload);
+    }
+  }
+  document.getElementById('email').focus();
+});
+
+function showAlreadyLoggedIn(payload){
+  const badge = document.getElementById('userBadge');
+  const initials = (payload.email || '?').substring(0,2).toUpperCase();
+  document.getElementById('userAvatar').textContent = initials;
+  document.getElementById('userName').textContent = payload.email;
+  document.getElementById('userRole').innerHTML = formatRoles(payload.roles || []);
+  badge.classList.add('show');
+}
+
+/* ── FORM SUBMIT ── */
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  clearError();
+
+  const email    = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const apiUrl   = document.getElementById('apiUrl').value.trim().replace(/\/$/, '');
+
+  /* Validation */
+  if(!email){return showError('Εισάγετε το email σας.');}
+  if(!password){return showError('Εισάγετε τον κωδικό σας.');}
+  if(password.length < 8){return showError('Ο κωδικός πρέπει να έχει τουλάχιστον 8 χαρακτήρες.');}
+
+  setLoading(true);
+  localStorage.setItem(STORAGE.API, apiUrl);
+
+  try {
+    const res = await fetch(`${apiUrl}/api/login_check`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ email, password })
+    });
+
+    if(res.status === 401){
+      return showError('Λάθος email ή κωδικός. Παρακαλώ ελέγξτε τα στοιχεία σας.');
+    }
+    if(res.status === 429){
+      return showError('Πολλές αποτυχημένες προσπάθειες. Δοκιμάστε ξανά σε λίγα λεπτά.');
+    }
+    if(!res.ok){
+      const err = await res.json().catch(()=>({}));
+      return showError(err.message || `Σφάλμα διακομιστή (${res.status}). Δοκιμάστε αργότερα.`);
+    }
+
+    const data = await res.json();
+    const { token, refresh_token } = data;
+
+    /* Store tokens */
+    localStorage.setItem(STORAGE.TOKEN, token);
+    localStorage.setItem(STORAGE.REFRESH, refresh_token);
+
+    /* Parse JWT */
+    const payload = parseJWT(token);
+    if(payload){
+      localStorage.setItem(STORAGE.USER, JSON.stringify(payload));
+      showDevPanel(payload);
+    }
+
+    /* Success */
+    onLoginSuccess(payload);
+
+  } catch(err) {
+    if(err.name === 'TypeError'){
+      showError('Δεν ήταν δυνατή η σύνδεση με τον διακομιστή. Ελέγξτε το API URL και τη σύνδεσή σας.');
+    } else {
+      showError('Απρόσμενο σφάλμα. Παρακαλώ δοκιμάστε ξανά.');
+    }
+  } finally {
+    setLoading(false);
+  }
+});
+
+/* ── LOGIN SUCCESS ── */
+function onLoginSuccess(payload){
+  const overlay = document.getElementById('successOverlay');
+  const name = payload?.email?.split('@')[0] || 'χρήστη';
+  const capitalized = name.charAt(0).toUpperCase() + name.slice(1);
+  document.getElementById('sucTitle').textContent = `Καλώς ήρθες, ${capitalized}!`;
+
+  /* Determine redirect based on role */
+  let redirectTo = REDIRECT;
+  const roles = payload?.roles || [];
+  if(roles.includes('ROLE_SUPER_ADMIN') || roles.includes('ROLE_SALES')){
+    document.getElementById('sucSub').textContent = 'Μεταφορά στο Landlord Dashboard...';
+  } else if(payload?.tenant_slug){
+    document.getElementById('sucSub').textContent = `Tenant: ${payload.tenant_slug} · Μεταφορά...`;
+  }
+
+  overlay.classList.add('show');
+
+  /* Animate progress bar */
+  setTimeout(() => {
+    document.getElementById('progressFill').style.width = '100%';
+  }, 50);
+
+  /* Redirect after 1.6s */
+  setTimeout(() => {
+    window.location.href = redirectTo;
+  }, 1700);
+}
+
+/* ── JWT PARSER ── */
+function parseJWT(token){
+  try{
+    const base64 = token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
+    const json = decodeURIComponent(atob(base64).split('').map(c =>
+      '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+    ).join(''));
+    return JSON.parse(json);
+  } catch(e){ return null; }
+}
+
+/* ── DEV PANEL ── */
+function showDevPanel(payload){
+  const panel = document.getElementById('devPanel');
+  const lines = [
+    `email: ${payload.email}`,
+    `roles: ${(payload.roles||[]).join(', ')}`,
+    payload.tenant_slug ? `tenant_slug: ${payload.tenant_slug}` : null,
+    payload.store_id ? `store_id: ${payload.store_id}` : null,
+    `exp: ${new Date(payload.exp * 1000).toLocaleString('el-GR')}`,
+  ].filter(Boolean);
+  document.getElementById('devCode').innerHTML = lines.map(l => `<div>${l}</div>`).join('');
+  panel.classList.add('show');
+}
+
+/* ── ROLE FORMATTING ── */
+function formatRoles(roles){
+  const map = {
+    ROLE_SUPER_ADMIN: ['admin','Super Admin'],
+    ROLE_OWNER:       ['owner','Owner'],
+    ROLE_MANAGER:     ['manager','Manager'],
+    ROLE_EMPLOYEE:    ['employee','Employee'],
+    ROLE_SALES:       ['sales','Sales'],
+  };
+  return roles.filter(r => map[r]).map(r =>
+    `<span class="role-tag role-${map[r][0]}">${map[r][1]}</span>`
+  ).join('');
+}
+
+/* ── UI HELPERS ── */
+function setLoading(on){
+  const btn = document.getElementById('loginBtn');
+  btn.disabled = on;
+  btn.className = 'btn-login' + (on ? ' loading' : '');
+}
+
+function showError(msg){
+  const banner = document.getElementById('errorBanner');
+  document.getElementById('errorMsg').textContent = msg;
+  banner.style.display = 'none';
+  banner.offsetHeight; /* reflow for animation replay */
+  banner.style.display = '';
+  banner.classList.add('show');
+  document.getElementById('email').classList.add('err');
+  document.getElementById('password').classList.add('err');
+  setLoading(false);
+}
+
+function clearError(){
+  document.getElementById('errorBanner').classList.remove('show');
+  document.getElementById('email').classList.remove('err');
+  document.getElementById('password').classList.remove('err');
+}
+
+function forgotPwd(e){
+  e.preventDefault();
+  const email = document.getElementById('email').value.trim();
+  if(!email){
+    showError('Εισάγετε πρώτα το email σας για επαναφορά κωδικού.');
+    document.getElementById('email').focus();
+    return;
+  }
+  alert(`Οδηγίες επαναφοράς θα σταλούν στο: ${email}\n\n(Endpoint δεν περιλαμβάνεται στο Connect SaaS API v1)`);
+}
+
+/* ── KEYBOARD SHORTCUT: ⌘/Ctrl+Enter ── */
+document.addEventListener('keydown', (e) => {
+  if((e.metaKey || e.ctrlKey) && e.key === 'Enter'){
+    document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+  }
+});
+</script>
+</body>
+</html>

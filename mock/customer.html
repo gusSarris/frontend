@@ -1,0 +1,1305 @@
+<!doctype html>
+<html lang="el" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Glamour Nails — Πελάτες</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700;9..40,900&display=swap" rel="stylesheet"/>
+
+  <style>
+    /* ══════════════════════════════════════
+       DESIGN TOKENS — LIGHT MODE
+    ══════════════════════════════════════ */
+    :root {
+      --c-bg:       #F9F6F3;
+      --c-surface:  #FFFFFF;
+      --c-dark:     #2E1A18;
+      --c-mid:      #6B3F3A;
+      --c-primary:  #9D6A65;
+      --c-accent:   #C4874F;
+      --c-light:    #E8C9BC;
+      --c-muted:    #F0EAE6;
+      --c-shadow:   rgba(46,26,24,0.10);
+
+      --s-active:   #C4874F;
+      --s-next:     #4A7FA5;
+      --s-done:     #5A8A6A;
+      --s-urgent:   #B85450;
+
+      --r-xs: 6px; --r-sm: 10px; --r-md: 14px; --r-lg: 20px; --r-xl: 28px;
+      --sidebar-w: 240px; --sidebar-w-col: 64px;
+
+      --focus-ring: 0 0 0 3px rgba(196,135,79,0.4);
+
+      /* Skeleton shimmer */
+      --sk-base: #ede8e4;
+      --sk-shine: #f7f3f0;
+
+      /* Sidebar */
+      --sb-bg: #2E1A18;
+      --sb-text: rgba(249,246,243,0.8);
+      --sb-label: rgba(249,246,243,0.2);
+      --sb-hover: rgba(249,246,243,0.07);
+      --sb-active: rgba(196,135,79,0.15);
+    }
+
+    /* ══════════════════════════════════════
+       1. DARK MODE
+    ══════════════════════════════════════ */
+    [data-theme="dark"] {
+      --c-bg:       #1A1210;
+      --c-surface:  #231815;
+      --c-dark:     #F2EBE6;
+      --c-mid:      #C4A49F;
+      --c-primary:  #B08A85;
+      --c-accent:   #D49A60;
+      --c-light:    #4A2E2A;
+      --c-muted:    #2E1E1B;
+      --c-shadow:   rgba(0,0,0,0.4);
+
+      --sk-base: #2a1c19;
+      --sk-shine: #3a2825;
+
+      --sb-bg: #150e0d;
+      --sb-text: rgba(242,235,230,0.75);
+      --sb-label: rgba(242,235,230,0.18);
+      --sb-hover: rgba(242,235,230,0.06);
+      --sb-active: rgba(212,154,96,0.18);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--c-bg);
+      color: var(--c-dark);
+      min-height: 100vh;
+      display: flex;
+      overflow: hidden;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    /* ══════════════════════════════════════
+       3. FOCUS STATES
+    ══════════════════════════════════════ */
+    :focus { outline: none; }
+    :focus-visible { box-shadow: var(--focus-ring) !important; outline: none; }
+    a:focus-visible { border-radius: var(--r-sm); }
+
+    /* ══════════════════════════════════════
+       SIDEBAR
+    ══════════════════════════════════════ */
+    .sidebar {
+      width: var(--sidebar-w); min-height: 100vh;
+      background: var(--sb-bg);
+      display: flex; flex-direction: column; flex-shrink: 0;
+      position: relative;
+      transition: width .3s cubic-bezier(.4,0,.2,1), background 0.3s;
+      overflow: hidden; z-index: 50;
+    }
+    .sidebar.collapsed { width: var(--sidebar-w-col); }
+
+    .sidebar-logo {
+      padding: 24px 16px; display: flex; align-items: center; gap: 12px;
+      border-bottom: 1px solid rgba(232,201,188,0.1); min-height: 80px;
+    }
+    .logo-img-wrap { width: 40px; height: 40px; border-radius: 10px; overflow: hidden; flex-shrink: 0; border: 1.5px solid rgba(196,135,79,0.4); }
+    .logo-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .logo-text { white-space: nowrap; transition: opacity 0.2s; opacity: 1; }
+    .sidebar.collapsed .logo-text { opacity: 0; pointer-events: none; }
+    .logo-brand { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 700; color: var(--c-bg); }
+    .logo-tagline { font-size: 9px; font-weight: 700; color: var(--c-accent); text-transform: uppercase; margin-top: 2px; }
+
+    .nav-section { padding: 12px; }
+    .nav-label { font-size: 9px; font-weight: 900; letter-spacing: .2em; text-transform: uppercase; color: var(--sb-label); padding: 12px 8px 6px; white-space: nowrap; }
+    .sidebar.collapsed .nav-label { opacity: 0; }
+
+    .nav-item {
+      display: flex; align-items: center; gap: 12px; padding: 10px 12px;
+      border-radius: var(--r-sm); cursor: pointer; transition: background .2s;
+      position: relative; text-decoration: none; margin-bottom: 4px;
+    }
+    .nav-item:hover { background: var(--sb-hover); }
+    .nav-item.active { background: var(--sb-active); }
+    .nav-item.active::before { content: ''; position: absolute; left: 0; top: 8px; bottom: 8px; width: 3px; background: var(--c-accent); border-radius: 0 3px 3px 0; }
+
+    .nav-icon { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 14px; color: rgba(249,246,243,0.35); flex-shrink: 0; }
+    .nav-item.active .nav-icon { color: var(--c-accent); }
+    .nav-lbl { font-size: 13px; font-weight: 500; color: var(--sb-text); transition: opacity 0.2s; white-space: nowrap; }
+    .nav-item.active .nav-lbl { color: var(--c-bg); font-weight: 700; }
+    .sidebar.collapsed .nav-lbl { opacity: 0; pointer-events: none; width: 0; }
+
+    .nav-badge { margin-left: auto; background: var(--s-urgent); color: #fff; font-size: 9px; font-weight: 900; min-width: 18px; height: 18px; border-radius: 99px; display: flex; align-items: center; justify-content: center; padding: 0 4px; transition: opacity 0.2s; }
+    .sidebar.collapsed .nav-badge { opacity: 0; }
+
+    .nav-tip {
+      position: absolute; left: 70px; top: 50%; transform: translateY(-50%);
+      background: var(--sb-bg); color: white; padding: 6px 12px;
+      border-radius: 6px; font-size: 12px; font-weight: 600;
+      white-space: nowrap; opacity: 0; pointer-events: none;
+      transition: all 0.2s; border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 100;
+    }
+    .sidebar.collapsed .nav-item:hover .nav-tip { opacity: 1; left: 60px; }
+
+    .collapse-btn {
+      position: absolute; top: 28px; right: -12px; width: 24px; height: 24px;
+      border-radius: 50%; background: var(--c-accent); border: 2px solid var(--c-bg);
+      color: #fff; font-size: 9px; cursor: pointer; display: flex;
+      align-items: center; justify-content: center; z-index: 60;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      transition: box-shadow 0.2s;
+    }
+    .collapse-btn:focus-visible { box-shadow: var(--focus-ring); }
+    .sidebar.collapsed .collapse-btn .arrow { transform: rotate(180deg); display: inline-block; }
+    .sidebar-spacer { flex: 1; }
+
+    /* ══════════════════════════════════════
+       TOPBAR
+    ══════════════════════════════════════ */
+    .main-wrap { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+    .topbar {
+      height: 60px; background: rgba(249,246,243,0.88); backdrop-filter: blur(24px) saturate(160%);
+      border-bottom: 1px solid rgba(232,201,188,0.45);
+      display: flex; align-items: center; padding: 0 28px; gap: 16px;
+      flex-shrink: 0; position: sticky; top: 0; z-index: 30;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    [data-theme="dark"] .topbar { background: rgba(26,18,16,0.92); border-color: rgba(74,46,42,0.5); }
+
+    .topbar-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; color: var(--c-dark); flex: 1; }
+
+    .topbar-actions { display: flex; gap: 8px; align-items: center; }
+    .btn-topbar {
+      height: 36px; padding: 0 14px; border-radius: var(--r-sm);
+      border: 1.5px solid var(--c-light); background: var(--c-surface);
+      color: var(--c-mid); font-family: inherit; font-size: 12px; font-weight: 700;
+      cursor: pointer; display: flex; align-items: center; gap: 7px;
+      transition: all .2s; outline: none;
+    }
+    .btn-topbar:hover { border-color: var(--c-dark); color: var(--c-dark); box-shadow: 0 2px 8px var(--c-shadow); }
+    .btn-topbar:focus-visible { box-shadow: var(--focus-ring); }
+    .btn-topbar-primary { background: var(--c-dark); color: var(--c-bg); border-color: var(--c-dark); }
+    .btn-topbar-primary:hover { background: var(--c-accent); border-color: var(--c-accent); box-shadow: 0 4px 14px rgba(196,135,79,.35); transform: translateY(-1px); }
+
+    .notif-btn { width: 36px; height: 36px; border-radius: var(--r-sm); border: 1.5px solid var(--c-light); background: var(--c-surface); color: var(--c-mid); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; position: relative; transition: all .2s; outline: none; }
+    .notif-btn:hover { border-color: var(--c-primary); color: var(--c-dark); }
+    .notif-btn:focus-visible { box-shadow: var(--focus-ring); }
+    .notif-dot { position: absolute; top: 6px; right: 6px; width: 7px; height: 7px; border-radius: 50%; background: var(--s-urgent); border: 1.5px solid var(--c-bg); }
+
+    /* 1. Dark mode toggle button */
+    .theme-btn { width: 36px; height: 36px; border-radius: var(--r-sm); border: 1.5px solid var(--c-light); background: var(--c-surface); color: var(--c-mid); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: all .2s; outline: none; }
+    .theme-btn:hover { border-color: var(--c-accent); color: var(--c-accent); }
+    .theme-btn:focus-visible { box-shadow: var(--focus-ring); }
+
+    /* 7. Command palette button */
+    .cmd-btn {
+      height: 36px; padding: 0 12px; border-radius: var(--r-sm); border: 1.5px solid var(--c-light);
+      background: var(--c-surface); color: var(--c-mid); font-family: inherit; font-size: 12px;
+      cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all .2s; outline: none;
+    }
+    .cmd-btn:hover { border-color: var(--c-dark); color: var(--c-dark); }
+    .cmd-btn:focus-visible { box-shadow: var(--focus-ring); }
+    .cmd-kbd { font-size: 10px; background: var(--c-muted); border-radius: 4px; padding: 1px 5px; color: var(--c-primary); }
+
+    .topbar-account { display: flex; align-items: center; gap: 10px; padding-left: 16px; border-left: 1px solid var(--c-light); cursor: pointer; }
+    .topbar-account .user-av { width: 34px; height: 34px; border-radius: var(--r-xs); background: rgba(196,135,79,0.2); border: 1.5px solid rgba(196,135,79,0.3); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; color: var(--c-accent); font-family: 'Cormorant Garamond', serif; }
+    .topbar-account .user-name { font-size: 12px; font-weight: 700; color: var(--c-dark); }
+    .topbar-account .user-role { font-size: 10px; color: var(--c-primary); opacity: 0.8; margin-top: 1px; }
+
+    /* ══════════════════════════════════════
+       CRM LAYOUT
+    ══════════════════════════════════════ */
+    .page-content { flex: 1; padding: 24px 28px; display: flex; flex-direction: column; overflow: hidden; }
+
+    .crm-container {
+      display: grid; grid-template-columns: 360px 1fr;
+      gap: 24px; flex: 1; min-height: 0;
+    }
+
+    /* ── CUSTOMER LIST PANEL ── */
+    .customer-list-panel {
+      background: var(--c-surface); border: 1.5px solid var(--c-light);
+      border-radius: var(--r-xl); display: flex; flex-direction: column; overflow: hidden;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .list-header { padding: 20px; border-bottom: 1px solid var(--c-muted); }
+    .search-box { position: relative; width: 100%; }
+    .search-input {
+      width: 100%; height: 42px; background: var(--c-bg); border: 1.5px solid var(--c-light);
+      border-radius: var(--r-sm); padding: 0 16px 0 40px;
+      font-family: inherit; font-size: 13px; color: var(--c-dark);
+      transition: all 0.2s; outline: none;
+    }
+    .search-input:focus { border-color: var(--c-accent); background: var(--c-surface); box-shadow: 0 0 0 3px rgba(196,135,79,0.15); }
+    .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--c-primary); font-size: 13px; opacity: 0.7; pointer-events: none; }
+
+    .filter-tags { display: flex; gap: 8px; margin-top: 12px; overflow-x: auto; padding-bottom: 4px; }
+    .filter-tags::-webkit-scrollbar { height: 3px; }
+    .filter-tags::-webkit-scrollbar-thumb { background: var(--c-light); border-radius: 2px; }
+    .f-tag { font-size: 10px; font-weight: 700; padding: 6px 12px; border-radius: 99px; background: var(--c-bg); color: var(--c-mid); border: 1px solid var(--c-light); cursor: pointer; white-space: nowrap; transition: 0.2s; user-select: none; }
+    .f-tag:hover { border-color: var(--c-accent); color: var(--c-dark); }
+    .f-tag.active { background: var(--c-dark); color: var(--c-bg); border-color: var(--c-dark); }
+    .f-tag:focus-visible { box-shadow: var(--focus-ring); }
+
+    .list-body { flex: 1; overflow-y: auto; padding: 10px 0; }
+    .list-body::-webkit-scrollbar { width: 4px; }
+    .list-body::-webkit-scrollbar-thumb { background: var(--c-light); border-radius: 2px; }
+
+    /* 9. STAGGER — each c-item gets delay via nth-child */
+    .c-item {
+      display: flex; align-items: center; gap: 14px; padding: 14px 20px;
+      border-left: 3px solid transparent; cursor: pointer; transition: all 0.2s;
+      border-bottom: 1px solid rgba(240,234,230,0.5);
+      animation: fadeUp 0.4s ease both;
+    }
+    .c-item:nth-child(1) { animation-delay: 0ms; }
+    .c-item:nth-child(2) { animation-delay: 55ms; }
+    .c-item:nth-child(3) { animation-delay: 110ms; }
+    .c-item:nth-child(4) { animation-delay: 165ms; }
+    .c-item:nth-child(5) { animation-delay: 220ms; }
+    .c-item:last-child { border-bottom: none; }
+    .c-item:hover { background: rgba(249,246,243,0.6); }
+    .c-item.active { background: rgba(196,135,79,0.06); border-left-color: var(--c-accent); }
+    [data-theme="dark"] .c-item:hover { background: rgba(255,255,255,0.04); }
+
+    .c-av {
+      width: 44px; height: 44px; border-radius: 12px; overflow: hidden;
+      background: rgba(157,106,101,0.12); border: 1.5px solid rgba(157,106,101,0.25);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; font-weight: 600; color: var(--c-primary);
+      font-family: 'Cormorant Garamond', serif; flex-shrink: 0;
+    }
+    .c-av img { width: 100%; height: 100%; object-fit: cover; }
+    .c-item.active .c-av { border-color: var(--c-accent); color: var(--c-accent); background: rgba(196,135,79,0.08); }
+
+    .c-info { flex: 1; overflow: hidden; }
+    .c-name { font-size: 14px; font-weight: 700; color: var(--c-dark); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 6px; }
+    .c-phone { font-size: 11px; color: var(--c-primary); opacity: 0.8; }
+    .c-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+    .c-visits { font-size: 10px; font-weight: 700; color: var(--c-mid); opacity: 0.6; }
+
+    /* ── CUSTOMER DETAIL PANEL ── */
+    .customer-detail-panel {
+      background: var(--c-surface); border: 1.5px solid var(--c-light);
+      border-radius: var(--r-xl); display: flex; flex-direction: column;
+      overflow-y: auto; transition: background 0.3s, border-color 0.3s;
+    }
+    .customer-detail-panel::-webkit-scrollbar { width: 4px; }
+    .customer-detail-panel::-webkit-scrollbar-thumb { background: var(--c-light); border-radius: 2px; }
+
+    .detail-header {
+      padding: 32px 32px 24px; border-bottom: 1px solid var(--c-muted);
+      display: flex; justify-content: space-between; align-items: flex-start;
+      position: relative; overflow: hidden;
+    }
+    .detail-header::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 100px;
+      background: linear-gradient(180deg, rgba(196,135,79,0.08) 0%, transparent 100%);
+      pointer-events: none;
+    }
+    .d-profile { display: flex; gap: 20px; align-items: center; position: relative; z-index: 1; }
+
+    /* 10. AVATAR UPLOAD */
+    .d-av-wrap { position: relative; cursor: pointer; }
+    .d-av {
+      width: 80px; height: 80px; border-radius: 20px;
+      background: rgba(157,106,101,0.12); border: 2px solid var(--c-light);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px; font-weight: 600; color: var(--c-accent);
+      font-family: 'Cormorant Garamond', serif;
+      box-shadow: 0 8px 24px rgba(196,135,79,0.15);
+      overflow: hidden; transition: filter 0.2s;
+    }
+    .d-av img { width: 100%; height: 100%; object-fit: cover; }
+    .d-av-overlay {
+      position: absolute; inset: 0; border-radius: 20px;
+      background: rgba(46,26,24,0.55); display: flex; align-items: center;
+      justify-content: center; opacity: 0; transition: opacity 0.2s;
+      color: white; font-size: 13px; flex-direction: column; gap: 4px;
+    }
+    .d-av-wrap:hover .d-av-overlay { opacity: 1; }
+    .d-av-wrap:hover .d-av { filter: brightness(0.85); }
+    .d-av-input { display: none; }
+
+    .d-name { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 700; color: var(--c-dark); line-height: 1.1; margin-bottom: 4px; }
+    .d-since { font-size: 11px; font-weight: 500; color: var(--c-primary); opacity: 0.8; }
+
+    .detail-body { padding: 32px; display: flex; flex-direction: column; gap: 32px; }
+
+    /* Stats */
+    .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+    .stat-box {
+      background: var(--c-bg); border: 1px solid var(--c-light);
+      border-radius: var(--r-md); padding: 16px; text-align: center;
+      /* 9. Stagger */
+      animation: fadeUp 0.4s ease both;
+    }
+    .stat-box:nth-child(1) { animation-delay: 100ms; }
+    .stat-box:nth-child(2) { animation-delay: 160ms; }
+    .stat-box:nth-child(3) { animation-delay: 220ms; }
+    .stat-box:nth-child(4) { animation-delay: 280ms; }
+    .sb-val { font-size: 22px; font-weight: 900; color: var(--c-dark); line-height: 1; margin-bottom: 2px; }
+    .sb-lbl { font-size: 10px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--c-primary); opacity: 0.7; }
+    .sb-val.bad { color: var(--s-urgent); }
+    .sb-val.good { color: var(--s-done); }
+
+    /* 6. SPARKLINE */
+    .sparkline { margin-top: 6px; }
+    .sparkline svg { display: block; margin: 0 auto; }
+
+    /* Detail columns */
+    .detail-cols { display: flex; flex-direction: column; gap: 28px; }
+    .section-title { font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-mid); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--c-muted); }
+
+    /* Loyalty card */
+    .loyalty-card {
+      background: var(--c-dark); border-radius: var(--r-lg); padding: 24px;
+      color: var(--c-bg); position: relative; overflow: hidden;
+      box-shadow: 0 12px 32px rgba(46,26,24,0.15); margin-bottom: 24px;
+    }
+    .loyalty-card::after {
+      content: '\f005'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
+      position: absolute; right: -20px; bottom: -20px; font-size: 120px;
+      color: var(--c-accent); opacity: 0.1; pointer-events: none; transform: rotate(-15deg);
+    }
+    .lc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; position: relative; z-index: 1; }
+    .lc-title { font-size: 10px; font-weight: 900; letter-spacing: 0.15em; text-transform: uppercase; color: var(--c-accent); }
+    .lc-points { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 600; line-height: 1; }
+    .lc-points span { font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; opacity: 0.7; margin-left: 4px; }
+    .lc-progress-bg { height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; margin-bottom: 8px; overflow: hidden; position: relative; z-index: 1; }
+    .lc-progress-fill { height: 100%; background: var(--c-accent); border-radius: 3px; transition: width 0.8s cubic-bezier(.4,0,.2,1); }
+    .lc-desc { font-size: 11px; color: rgba(249,246,243,0.6); position: relative; z-index: 1; }
+    .btn-redeem {
+      background: var(--c-accent); color: white; border: none;
+      padding: 6px 12px; border-radius: 6px; font-size: 11px;
+      font-weight: 700; cursor: pointer; transition: transform 0.2s, background 0.2s;
+      position: relative; z-index: 1; outline: none;
+    }
+    .btn-redeem:hover { transform: scale(1.05); background: #d49555; }
+    .btn-redeem:focus-visible { box-shadow: 0 0 0 3px rgba(255,255,255,0.5); }
+
+    /* Contact */
+    .info-list { display: flex; flex-direction: column; gap: 12px; }
+    .info-row { display: flex; align-items: center; gap: 12px; }
+    .info-icon { width: 32px; height: 32px; border-radius: 8px; background: var(--c-bg); color: var(--c-primary); display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+    .info-text { font-size: 13px; font-weight: 600; color: var(--c-dark); }
+    .info-sub { font-size: 11px; color: var(--c-primary); opacity: 0.7; }
+    .contact-actions { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
+    .btn-contact {
+      height: 30px; padding: 0 10px; border-radius: var(--r-xs);
+      border: 1.5px solid var(--c-light); background: var(--c-surface);
+      color: var(--c-mid); font-family: inherit; font-size: 11px; font-weight: 700;
+      cursor: pointer; display: flex; align-items: center; gap: 5px; transition: all .2s; outline: none;
+    }
+    .btn-contact:hover { border-color: var(--c-dark); color: var(--c-dark); }
+    .btn-contact:focus-visible { box-shadow: var(--focus-ring); }
+    .btn-contact.whatsapp { color: #25D366; border-color: rgba(37,211,102,0.3); background: rgba(37,211,102,0.04); }
+    .btn-contact.whatsapp:hover { background: rgba(37,211,102,0.1); border-color: #25D366; }
+    .btn-contact.viber { color: #7360F2; border-color: rgba(115,96,242,0.3); background: rgba(115,96,242,0.04); }
+    .btn-contact.viber:hover { background: rgba(115,96,242,0.1); border-color: #7360F2; }
+
+    /* Notes */
+    .notes-box {
+      width: 100%; background: var(--c-bg); border: 1px dashed var(--c-accent);
+      border-radius: var(--r-sm); padding: 16px; font-size: 13px; color: var(--c-mid);
+      line-height: 1.5; outline: none; resize: vertical; min-height: 100px;
+      font-family: 'DM Sans', sans-serif; transition: background 0.3s;
+    }
+    .notes-box:focus { border-style: solid; background: var(--c-surface); box-shadow: 0 0 0 3px rgba(196,135,79,0.12); }
+    .notes-save-indicator { font-size: 10px; font-weight: 700; color: var(--s-done); margin-top: 4px; display: flex; align-items: center; gap: 4px; opacity: 0; transition: opacity 0.4s; height: 16px; }
+    .notes-save-indicator.visible { opacity: 1; }
+    .notes-save-indicator.saving { color: var(--c-primary); }
+
+    /* History */
+    .history-list { display: flex; flex-direction: column; gap: 12px; }
+    .hist-item { display: flex; gap: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--c-muted); }
+    .hist-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .hist-date { display: flex; flex-direction: column; align-items: center; min-width: 45px; }
+    .hd-day { font-size: 16px; font-weight: 900; color: var(--c-dark); line-height: 1; }
+    .hd-mo { font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--c-primary); margin-top: 2px; }
+    .hist-content { flex: 1; }
+    .hc-title { font-size: 13px; font-weight: 700; color: var(--c-dark); }
+    .hc-sub { font-size: 11px; color: var(--c-primary); opacity: 0.8; margin-top: 2px; }
+    .hist-price { font-size: 13px; font-weight: 800; color: var(--c-dark); }
+
+    /* Tags */
+    .tag { font-size: 9px; font-weight: 700; padding: 3px 6px; border-radius: 4px; letter-spacing: 0.05em; display: inline-flex; align-items: center; gap: 4px; }
+    .tag-red { background: #fde8e8; color: #c81e1e; }
+    .tag-yellow { background: #fdf6b2; color: #723b13; }
+    .icon-vip { color: #D4AF37; font-size: 12px; }
+    .noshows-hint { font-size: 9px; color: var(--s-done); margin-top: 2px; }
+
+    /* ══════════════════════════════════════
+       2. SKELETON LOADING
+    ══════════════════════════════════════ */
+    @keyframes shimmer {
+      0% { background-position: -400px 0; }
+      100% { background-position: 400px 0; }
+    }
+    .sk {
+      background: linear-gradient(90deg, var(--sk-base) 25%, var(--sk-shine) 50%, var(--sk-base) 75%);
+      background-size: 800px 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 6px;
+    }
+    .sk-avatar { width: 80px; height: 80px; border-radius: 20px; }
+    .sk-line { height: 14px; margin-bottom: 8px; }
+    .sk-line.w-60 { width: 60%; }
+    .sk-line.w-40 { width: 40%; }
+    .sk-line.w-80 { width: 80%; }
+    .sk-stat { height: 60px; border-radius: var(--r-md); }
+    .sk-block { height: 120px; border-radius: var(--r-md); }
+
+    /* ══════════════════════════════════════
+       4. EMPTY STATES
+    ══════════════════════════════════════ */
+    .empty-state {
+      flex: 1; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 16px; padding: 40px;
+      animation: fadeUp 0.4s ease;
+    }
+    .empty-illustration { opacity: 0.18; }
+    .empty-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; color: var(--c-dark); text-align: center; }
+    .empty-sub { font-size: 13px; color: var(--c-primary); text-align: center; opacity: 0.7; line-height: 1.5; }
+    .no-results { padding: 48px 24px; text-align: center; }
+    .no-results-icon { font-size: 32px; color: var(--c-primary); opacity: 0.3; margin-bottom: 12px; }
+    .no-results-title { font-size: 14px; font-weight: 700; color: var(--c-dark); opacity: 0.5; margin-bottom: 4px; }
+    .no-results-sub { font-size: 12px; color: var(--c-primary); opacity: 0.5; }
+
+    /* ══════════════════════════════════════
+       5. TOAST SYSTEM
+    ══════════════════════════════════════ */
+    #toastContainer {
+      position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+      display: flex; flex-direction: column; gap: 8px; pointer-events: none;
+    }
+    .toast {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 16px; border-radius: var(--r-md);
+      background: var(--c-dark); color: var(--c-bg);
+      font-size: 13px; font-weight: 600; min-width: 240px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+      pointer-events: all; cursor: pointer;
+      animation: toastIn 0.35s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    .toast.removing { animation: toastOut 0.25s ease forwards; }
+    .toast-icon { font-size: 15px; flex-shrink: 0; }
+    .toast.success .toast-icon { color: #6ec97a; }
+    .toast.error .toast-icon { color: var(--s-urgent); }
+    .toast.info .toast-icon { color: var(--c-accent); }
+    .toast-msg { flex: 1; }
+    @keyframes toastIn { from { opacity:0; transform:translateY(12px) scale(0.95); } to { opacity:1; transform:translateY(0) scale(1); } }
+    @keyframes toastOut { to { opacity:0; transform:translateY(8px) scale(0.96); } }
+
+    /* ══════════════════════════════════════
+       7. COMMAND PALETTE
+    ══════════════════════════════════════ */
+    .cmd-overlay {
+      position: fixed; inset: 0; background: rgba(46,26,24,0.45);
+      backdrop-filter: blur(4px); z-index: 8000;
+      display: flex; align-items: flex-start; justify-content: center;
+      padding-top: 15vh;
+      animation: fadeIn 0.15s ease;
+    }
+    .cmd-palette {
+      background: var(--c-surface); border-radius: var(--r-xl);
+      width: 560px; max-width: 90vw;
+      box-shadow: 0 24px 64px rgba(46,26,24,0.3);
+      border: 1.5px solid var(--c-light);
+      overflow: hidden;
+      animation: cmdIn 0.2s cubic-bezier(.34,1.3,.64,1);
+    }
+    @keyframes cmdIn { from { opacity:0; transform:translateY(-12px) scale(0.97); } to { opacity:1; transform:none; } }
+    .cmd-search-wrap { display: flex; align-items: center; gap: 12px; padding: 16px 20px; border-bottom: 1px solid var(--c-muted); }
+    .cmd-search-icon { color: var(--c-primary); font-size: 15px; opacity: 0.6; flex-shrink: 0; }
+    .cmd-input { flex: 1; background: transparent; border: none; outline: none; font-family: inherit; font-size: 15px; color: var(--c-dark); }
+    .cmd-input::placeholder { color: var(--c-primary); opacity: 0.5; }
+    .cmd-esc { font-size: 10px; background: var(--c-muted); border-radius: 4px; padding: 2px 6px; color: var(--c-primary); white-space: nowrap; }
+    .cmd-section-lbl { font-size: 10px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-mid); padding: 10px 20px 4px; opacity: 0.6; }
+    .cmd-item {
+      display: flex; align-items: center; gap: 12px; padding: 10px 20px;
+      cursor: pointer; transition: background 0.15s;
+    }
+    .cmd-item:hover, .cmd-item.selected { background: rgba(196,135,79,0.08); }
+    .cmd-item-icon { width: 32px; height: 32px; border-radius: 8px; background: var(--c-bg); display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--c-primary); flex-shrink: 0; }
+    .cmd-item-name { font-size: 13px; font-weight: 600; color: var(--c-dark); }
+    .cmd-item-sub { font-size: 11px; color: var(--c-primary); opacity: 0.7; }
+    .cmd-item-av { width: 32px; height: 32px; border-radius: 8px; background: rgba(157,106,101,0.12); border: 1px solid rgba(157,106,101,0.2); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: var(--c-primary); font-family: 'Cormorant Garamond', serif; overflow: hidden; flex-shrink: 0; }
+    .cmd-item-av img { width: 100%; height: 100%; object-fit: cover; }
+    .cmd-footer { padding: 10px 20px; border-top: 1px solid var(--c-muted); display: flex; gap: 16px; }
+    .cmd-hint { font-size: 10px; color: var(--c-primary); opacity: 0.5; display: flex; align-items: center; gap: 4px; }
+
+    /* ══════════════════════════════════════
+       ANIMATIONS
+    ══════════════════════════════════════ */
+    @keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    @keyframes panelIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+
+    /* ══════════════════════════════════════
+       MOBILE
+    ══════════════════════════════════════ */
+    .mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(46,26,24,.5); z-index: 40; backdrop-filter: blur(2px); }
+    .mobile-overlay.show { display: block; }
+    .mobile-menu-btn { display: none; width: 36px; height: 36px; border-radius: var(--r-sm); border: 1.5px solid var(--c-light); background: var(--c-surface); color: var(--c-mid); font-size: 14px; cursor: pointer; align-items: center; justify-content: center; flex-shrink: 0; outline: none; }
+    .mobile-back-btn { display: none; width: 36px; height: 36px; border-radius: var(--r-sm); border: 1.5px solid var(--c-light); background: var(--c-surface); color: var(--c-mid); font-size: 14px; cursor: pointer; align-items: center; justify-content: center; flex-shrink: 0; outline: none; }
+    .mobile-menu-btn:focus-visible, .mobile-back-btn:focus-visible { box-shadow: var(--focus-ring); }
+
+    @media (max-width: 1024px) {
+      .crm-container { grid-template-columns: 300px 1fr; }
+    }
+    @media (max-width: 768px) {
+      :root { --sidebar-w: 260px; }
+      .sidebar { position: fixed; left: 0; top: 0; bottom: 0; transform: translateX(-100%); transition: transform .3s cubic-bezier(.4,0,.2,1); box-shadow: none; z-index: 100; }
+      .sidebar.mobile-open { transform: translateX(0); box-shadow: 8px 0 48px rgba(46,26,24,.3); }
+      .mobile-overlay.show { display: block; }
+      .topbar { padding: 0 16px; gap: 8px; }
+      .topbar-account { display: none; }
+      .collapse-btn { display: none; }
+      .mobile-menu-btn { display: flex !important; }
+      .topbar-title { font-size: 16px; }
+      .cmd-btn { display: none; }
+      .page-content { padding: 12px; overflow: auto; }
+      .crm-container { display: flex; flex-direction: column; gap: 12px; height: auto; overflow: visible; }
+      .customer-list-panel { height: 380px; flex-shrink: 0; }
+      .customer-detail-panel { min-height: 60vh; overflow: visible; display: none; }
+      .crm-container.detail-visible .customer-list-panel { display: none; }
+      .crm-container.detail-visible .customer-detail-panel { display: flex; animation: panelIn 0.3s ease; }
+      .mobile-back-btn { display: none; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .detail-header { padding: 24px 20px; flex-direction: column; gap: 16px; }
+      .detail-body { padding: 20px; gap: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Toast container -->
+<div id="toastContainer"></div>
+
+<!-- Mobile overlay -->
+<div class="mobile-overlay" id="mobileOverlay" onclick="closeMobile()"></div>
+
+<!-- Command palette -->
+<div class="cmd-overlay" id="cmdOverlay" style="display:none" onclick="closePalette(event)">
+  <div class="cmd-palette" onclick="event.stopPropagation()">
+    <div class="cmd-search-wrap">
+      <i class="fas fa-search cmd-search-icon"></i>
+      <input class="cmd-input" id="cmdInput" placeholder="Αναζήτηση πελάτη ή ενέργεια..." oninput="renderPalette()" onkeydown="paletteKey(event)" autocomplete="off"/>
+      <span class="cmd-esc">ESC</span>
+    </div>
+    <div id="cmdResults" style="max-height:340px; overflow-y:auto;"></div>
+    <div class="cmd-footer">
+      <span class="cmd-hint"><kbd style="background:var(--c-muted);padding:1px 4px;border-radius:3px;font-size:9px">↑↓</kbd> πλοήγηση</span>
+      <span class="cmd-hint"><kbd style="background:var(--c-muted);padding:1px 4px;border-radius:3px;font-size:9px">↵</kbd> επιλογή</span>
+      <span class="cmd-hint"><kbd style="background:var(--c-muted);padding:1px 4px;border-radius:3px;font-size:9px">ESC</kbd> κλείσιμο</span>
+    </div>
+  </div>
+</div>
+
+<aside class="sidebar" id="sidebar" role="navigation" aria-label="Κύρια πλοήγηση">
+  <button class="collapse-btn" onclick="toggleCollapse()" aria-label="Σύμπτυξη/Ανάπτυξη sidebar"><span class="arrow">‹</span></button>
+  <div class="sidebar-logo">
+    <div class="logo-img-wrap"><img src="./logo.png" alt="Glamour Nails"/></div>
+    <div class="logo-text">
+      <div class="logo-brand">Glamour Nails</div>
+      <div class="logo-tagline">Management</div>
+    </div>
+  </div>
+  <nav class="nav-section">
+    <div class="nav-label">Κύρια</div>
+    <a href="front.html" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-chart-line"></i></div>
+      <span class="nav-lbl">Πίνακας Ελέγχου</span>
+      <span class="nav-tip">Πίνακας Ελέγχου</span>
+    </a>
+    <a href="front.html" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-calendar-check"></i></div>
+      <span class="nav-lbl">Ραντεβού</span>
+      <span class="nav-badge">10</span>
+      <span class="nav-tip">Ραντεβού</span>
+    </a>
+    <a href="customer.html" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-user-heart"></i></div>
+      <span class="nav-lbl">Πελάτες</span>
+      <span class="nav-tip">Πελάτες</span>
+    </a>
+    <a href="services.html" class="nav-item active" aria-current="page">
+      <div class="nav-icon"><i class="fas fa-spa"></i></div>
+      <span class="nav-lbl">Υπηρεσίες</span>
+      <span class="nav-tip">Υπηρεσίες</span>
+    </a>
+    <a href="notifications.html" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-spa"></i></div>
+      <span class="nav-lbl">Μήνυματα</span>
+      <span class="nav-tip">Μήνυματα</span>
+    </a>
+  </nav>
+  <div class="sidebar-spacer"></div>
+  <nav class="nav-section">
+    <div class="nav-label">Διαχείριση</div>
+    <a href="#" class="nav-item"><div class="nav-icon"><i class="fas fa-store"></i></div><span class="nav-lbl">Καταστήματα</span><span class="nav-tip">Καταστήματα</span></a>
+    <a href="#" class="nav-item"><div class="nav-icon"><i class="fas fa-bell"></i></div><span class="nav-lbl">Ειδοποιήσεις</span><span class="nav-tip">Ειδοποιήσεις</span></a>
+  </nav>
+  <div class="credits-bar">
+    <div class="credits-label">SMS Credits</div>
+    <div class="credits-value">325</div>
+    <div class="credits-sub">από 500 διαθέσιμα</div>
+    <div class="credits-track"><div class="credits-fill" style="width:65%"></div></div>
+  </div>
+</aside>
+<div class="main-wrap">
+  <header class="topbar">
+    <button class="mobile-menu-btn" id="mobileMenuBtn" onclick="openMobile()"><i class="fas fa-bars"></i></button>
+    <button class="mobile-back-btn" id="mobileBackBtn" onclick="goBackToList()"><i class="fas fa-arrow-left"></i></button>
+    <div class="topbar-title"></div>
+    <div class="topbar-actions">
+      <!-- 7. Command Palette trigger -->
+      <button class="cmd-btn" onclick="openPalette()" title="⌘K">
+        <i class="fas fa-search" style="font-size:12px"></i>
+        Γρήγορη αναζήτηση
+        <span class="cmd-kbd">⌘K</span>
+      </button>
+      <button class="btn-topbar btn-topbar-primary" onclick="showToast('Άνοιγμα φόρμας νέου πελάτη', 'info')">
+        <i class="fas fa-plus" style="font-size:11px"></i> Νέος Πελάτης
+      </button>
+      <button class="notif-btn">
+        <i class="fas fa-bell"></i>
+        <span class="notif-dot"></span>
+      </button>
+      <!-- 1. Dark mode toggle -->
+      <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" title="Εναλλαγή dark/light mode">
+        <i class="fas fa-moon" id="themeIcon"></i>
+      </button>
+      <div class="topbar-account">
+        <div class="user-av">ΜΚ</div>
+        <div class="user-info">
+          <div class="user-name">Μαρία Κωνσταντίνου</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-content">
+    <div class="crm-container" id="crmContainer">
+      <!-- Left panel -->
+      <div class="customer-list-panel">
+        <div class="list-header">
+          <div class="search-box">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" class="search-input" id="searchInput" placeholder="Αναζήτηση με όνομα ή τηλέφωνο..." oninput="filterCustomers()" aria-label="Αναζήτηση πελάτη">
+          </div>
+          <div class="filter-tags" id="filterTags">
+            <div class="f-tag active" data-filter="all" onclick="setFilter(this,'all')" tabindex="0" onkeydown="if(event.key==='Enter')setFilter(this,'all')">Όλοι (247)</div>
+            <div class="f-tag" data-filter="vip" onclick="setFilter(this,'vip')" tabindex="0" onkeydown="if(event.key==='Enter')setFilter(this,'vip')"><i class="fas fa-star" style="color:var(--c-accent);margin-right:3px;font-size:9px"></i>VIP (42)</div>
+            <div class="f-tag" data-filter="debt" onclick="setFilter(this,'debt')" tabindex="0" onkeydown="if(event.key==='Enter')setFilter(this,'debt')" style="color:var(--s-urgent)">Χρέος (3)</div>
+          </div>
+        </div>
+        <div class="list-body" id="customerList" role="list"></div>
+      </div>
+
+      <!-- Right panel -->
+      <div class="customer-detail-panel" id="detailPanel">
+        <div class="empty-state">
+          <svg class="empty-illustration" width="120" height="120" viewBox="0 0 120 120" fill="none">
+            <circle cx="60" cy="44" r="28" stroke="#C4874F" stroke-width="2.5"/>
+            <path d="M32 100c0-15.464 12.536-28 28-28h0c15.464 0 28 12.536 28 28" stroke="#C4874F" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="60" cy="44" r="14" fill="#C4874F" opacity="0.15"/>
+            <path d="M52 44l5 5 11-11" stroke="#C4874F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div class="empty-title">Επιλέξτε έναν πελάτη</div>
+          <div class="empty-sub">Κάντε κλικ σε οποιονδήποτε πελάτη στη λίστα<br>για να δείτε το πλήρες προφίλ του.</div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+/* ════════════════════════════════════
+   DATA
+════════════════════════════════════ */
+const customers = [
+  {
+    id:1, initials:'ΜΚ', name:'Μαρία Κωνσταντίνου', phone:'691 234 5678',
+    email:'maria.k@glamournails.gr', isVip:true, photo: null,
+    listTags:[], detailTags:[], warningTags:['ΟΧΙ ΑΣΕΤΟΝ'],
+    visits:24, revenue:'845€', avgDays:15, noShows:0,
+    since:'12 Μαρτίου 2023', status:'active',
+    loyaltyTier:'Gold', loyaltyPoints:280, loyaltyThreshold:300,
+    notes:'- Πίνει καφέ σκέτο.\n- Έχει ευαισθησία στα πετσάκια, θέλει πολύ απαλό κόψιμο.\n- Προτιμάει την Ελένη για πεντικιούρ.',
+    sparkVisits:[18,20,19,22,21,23,24],
+    sparkRevenue:[580,640,690,720,760,800,845],
+    daysSinceLast: 2,
+    history:[
+      {date:'08',month:'Απρ',service:'Spa Πεντικιούρ',note:'Σήμερα',sub:'10:00 με Ελένη',status:'active',price:'25€'},
+      {date:'12',month:'Μαρ',service:'Ημιμόνιμο Μανικιούρ',sub:'Χαρά',status:'done',price:'15€'},
+      {date:'20',month:'Φεβ',service:'Spa Πεντικιούρ & Απλό Μανικιούρ',sub:'Ελένη',status:'done',price:'37€'},
+    ], totalHistory:24, filter:['all','vip']
+  },
+  {
+    id:2, initials:'ΑΓ', name:'Άννα Γεωργίου', phone:'699 876 5432',
+    email:'anna.g@example.com', isVip:false, photo: null,
+    listTags:[{label:'ΑΛΛΕΡΓΙΑ',type:'red'}], detailTags:[{label:'ΑΛΛΕΡΓΙΑ',type:'red'}],
+    warningTags:['ΑΛΛΕΡΓΙΑ ΣΕ ΑΚΡΥΛΙΚΑ'],
+    visits:8, revenue:'210€', avgDays:22, noShows:1,
+    since:'5 Ιουνίου 2023', status:'active',
+    loyaltyTier:'Silver', loyaltyPoints:80, loyaltyThreshold:150,
+    notes:'- Αλλεργία σε ακρυλικά. Χρησιμοποιούμε μόνο gel.',
+    sparkVisits:[4,5,5,6,6,7,8], sparkRevenue:[90,110,140,160,175,195,210],
+    daysSinceLast: 9,
+    history:[
+      {date:'01',month:'Απρ',service:'Απλό Μανικιούρ',sub:'Χαρά',status:'done',price:'10€'},
+      {date:'10',month:'Μαρ',service:'Spa Πεντικιούρ',sub:'Ελένη',status:'done',price:'25€'},
+    ], totalHistory:8, filter:['all']
+  },
+  {
+    id:3, initials:'ΣΚ', name:'Σοφία Καλαντζή', phone:'694 555 1122',
+    email:'', isVip:false, photo: null,
+    listTags:[{label:'ΕΓΚΥΟΣ',type:'yellow'}], detailTags:[{label:'ΕΓΚΥΟΣ',type:'yellow'}],
+    warningTags:['ΕΓΚΥΟΣ 5ου ΜΗΝΑ — ΑΠΟΦΥΓΗ ΧΗΜΙΚΩΝ'],
+    visits:6, revenue:'155€', avgDays:30, noShows:0,
+    since:'3 Σεπτεμβρίου 2023', status:'active',
+    loyaltyTier:'Bronze', loyaltyPoints:30, loyaltyThreshold:100,
+    notes:'- Έγκυος 5ου μήνα. Αποφύγετε ισχυρά χημικά.',
+    sparkVisits:[2,3,3,4,4,5,6], sparkRevenue:[40,60,85,100,120,140,155],
+    daysSinceLast: 26,
+    history:[
+      {date:'15',month:'Μαρ',service:'Spa Πεντικιούρ',sub:'Ελένη',status:'done',price:'25€'},
+    ], totalHistory:6, filter:['all']
+  },
+  {
+    id:4, initials:'ΓΠ', name:'Γιώργος Παπαδόπουλος', phone:'697 111 2233',
+    email:'', isVip:false, photo: null,
+    listTags:[], detailTags:[], warningTags:[],
+    visits:3, revenue:'75€', avgDays:45, noShows:0,
+    since:'20 Ιανουαρίου 2024', status:'active',
+    loyaltyTier:null, loyaltyPoints:15, loyaltyThreshold:100,
+    notes:'', sparkVisits:[1,1,2,2,2,3,3], sparkRevenue:[15,30,40,50,60,65,75],
+    daysSinceLast: 36,
+    history:[
+      {date:'05',month:'Μαρ',service:'Απλό Μανικιούρ',sub:'Χαρά',status:'done',price:'10€'},
+    ], totalHistory:3, filter:['all']
+  },
+  {
+    id:5, initials:'ΚΛ', name:'Κατερίνα Λέκκα', phone:'693 444 5566',
+    email:'', isVip:false, photo: null,
+    listTags:[], detailTags:[], warningTags:[],
+    visits:1, revenue:'25€', avgDays:null, noShows:0,
+    since:'1 Απριλίου 2024', status:'new',
+    loyaltyTier:null, loyaltyPoints:5, loyaltyThreshold:100,
+    notes:'', sparkVisits:[0,0,0,0,0,0,1], sparkRevenue:[0,0,0,0,0,0,25],
+    daysSinceLast: 9,
+    history:[
+      {date:'01',month:'Απρ',service:'Spa Πεντικιούρ',sub:'Ελένη',status:'done',price:'25€'},
+    ], totalHistory:1, filter:['all','new']
+  }
+];
+
+/* ── State ── */
+let activeCustomerId = null;
+let activeFilter = 'all';
+let searchQuery = '';
+let saveTimer = null;
+let paletteSelectedIndex = 0;
+
+/* ════════════════════════════════════
+   1. DARK MODE
+════════════════════════════════════ */
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  localStorage.setItem('gnTheme', isDark ? 'light' : 'dark');
+  document.getElementById('themeIcon').className = isDark ? 'fas fa-moon' : 'fas fa-sun';
+  showToast(isDark ? 'Light mode ενεργό' : 'Dark mode ενεργό', 'info');
+}
+(function initTheme() {
+  const saved = localStorage.getItem('gnTheme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const theme = saved || (prefersDark ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', theme);
+  const icon = document.getElementById('themeIcon');
+  if (icon) icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+})();
+
+/* ════════════════════════════════════
+   5. TOASTS (replace all alert())
+════════════════════════════════════ */
+function showToast(msg, type = 'success') {
+  const icons = { success:'fa-check-circle', error:'fa-circle-xmark', info:'fa-circle-info' };
+  const container = document.getElementById('toastContainer');
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.innerHTML = `<i class="fas ${icons[type]} toast-icon"></i><span class="toast-msg">${msg}</span><i class="fas fa-xmark" style="opacity:0.4;font-size:12px;flex-shrink:0"></i>`;
+  t.onclick = () => removeToast(t);
+  container.appendChild(t);
+  setTimeout(() => removeToast(t), 3500);
+}
+function removeToast(t) {
+  t.classList.add('removing');
+  setTimeout(() => t.remove(), 250);
+}
+
+/* ════════════════════════════════════
+   6. SPARKLINE helper
+════════════════════════════════════ */
+function makeSpark(data, color) {
+  const w = 80, h = 28, p = 2;
+  const min = Math.min(...data), max = Math.max(...data);
+  const range = max - min || 1;
+  const pts = data.map((v, i) => {
+    const x = p + (i / (data.length - 1)) * (w - p * 2);
+    const y = p + (1 - (v - min) / range) * (h - p * 2);
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(' ');
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <polyline points="${pts}" stroke="${color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="${pts.split(' ').pop().split(',')[0]}" cy="${pts.split(' ').pop().split(',')[1]}" r="2.5" fill="${color}"/>
+  </svg>`;
+}
+
+/* ════════════════════════════════════
+   RENDER LIST
+════════════════════════════════════ */
+function renderList() {
+  const container = document.getElementById('customerList');
+  const q = searchQuery.toLowerCase().trim();
+
+  const filtered = customers.filter(c => {
+    const matchFilter = c.filter.includes(activeFilter);
+    const matchSearch = !q || c.name.toLowerCase().includes(q) || c.phone.includes(q);
+    return matchFilter && matchSearch;
+  });
+
+  if (filtered.length === 0) {
+    /* 4. EMPTY STATE with character */
+    container.innerHTML = `
+      <div class="no-results">
+        <div class="no-results-icon"><i class="fas fa-user-magnifying-glass"></i></div>
+        <div class="no-results-title">Δεν βρέθηκαν πελάτες</div>
+        <div class="no-results-sub">${q ? `Δοκιμάστε διαφορετική αναζήτηση για "${q}"` : 'Δεν υπάρχουν πελάτες σε αυτή την κατηγορία'}</div>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = filtered.map(c => {
+    const isActive = c.id === activeCustomerId;
+    const tagsHtml = c.listTags.map(t =>
+      `<span class="tag tag-${t.type}" style="font-size:8px;padding:2px 4px">${t.label}</span>`
+    ).join('');
+    const avatarContent = c.photo
+      ? `<img src="${c.photo}" alt="${c.name}">`
+      : c.initials;
+    const visitsText = c.visits === 1 ? '1 επίσκεψη' : `${c.visits} επισκέψεις`;
+    return `
+      <div class="c-item${isActive ? ' active' : ''}" onclick="selectCustomer(${c.id})" data-id="${c.id}" role="listitem" tabindex="0" onkeydown="if(event.key==='Enter')selectCustomer(${c.id})" aria-label="${c.name}">
+        <div class="c-av">${avatarContent}</div>
+        <div class="c-info">
+          <div class="c-name">${c.name}${c.isVip ? '<i class="fas fa-star icon-vip"></i>' : ''}${tagsHtml}</div>
+          <div class="c-phone">${c.phone}</div>
+        </div>
+        <div class="c-meta"><div class="c-visits">${visitsText}</div></div>
+      </div>`;
+  }).join('');
+}
+
+/* ════════════════════════════════════
+   2. SKELETON → then real content
+════════════════════════════════════ */
+function showSkeleton() {
+  document.getElementById('detailPanel').innerHTML = `
+    <div class="detail-header">
+      <div class="d-profile">
+        <div class="sk sk-avatar"></div>
+        <div style="flex:1">
+          <div class="sk sk-line w-60" style="margin-bottom:10px"></div>
+          <div class="sk sk-line w-40"></div>
+        </div>
+      </div>
+    </div>
+    <div class="detail-body">
+      <div class="stats-grid">
+        ${[1,2,3,4].map(()=>`<div class="sk sk-stat"></div>`).join('')}
+      </div>
+      <div class="sk sk-block"></div>
+      <div class="sk sk-block" style="height:60px"></div>
+      <div class="sk sk-block" style="height:80px"></div>
+    </div>`;
+}
+
+/* ════════════════════════════════════
+   RENDER DETAIL
+════════════════════════════════════ */
+function renderDetail(c) {
+  const loyaltyPct = Math.min(100, Math.round((c.loyaltyPoints / c.loyaltyThreshold) * 100));
+  const loyaltyLeft = c.loyaltyThreshold - c.loyaltyPoints;
+  const noShowClass = c.noShows > 0 ? 'bad' : 'good';
+  const noShowHint = c.noShows === 0
+    ? '<div class="noshows-hint"><i class="fas fa-check" style="font-size:8px"></i> Άριστο</div>' : '';
+  const statusLabels = { active:'Προγραμματισμένο', done:'Ολοκληρώθηκε' };
+  const statusColors = { active:'var(--s-active)', done:'var(--s-done)' };
+
+  const historyHtml = c.history.map(h => {
+    const isTodayStyle = h.status === 'active'
+      ? 'background:rgba(196,135,79,0.05);padding:12px;border-radius:var(--r-sm);border:1px solid rgba(196,135,79,0.2);'
+      : '';
+    const dayColor = h.status === 'active' ? 'color:var(--c-accent)' : '';
+    const noteSpan = h.note ? ` <span style="color:var(--c-mid);font-weight:400">(${h.note})</span>` : '';
+    return `<div class="hist-item" style="${isTodayStyle}">
+      <div class="hist-date"><div class="hd-day" style="${dayColor}">${h.date}</div><div class="hd-mo">${h.month}</div></div>
+      <div class="hist-content">
+        <div class="hc-title">${h.service}${noteSpan}</div>
+        <div class="hc-sub">${h.sub} <span style="margin:0 4px">•</span> <span style="color:${statusColors[h.status]};font-weight:700">${statusLabels[h.status]}</span></div>
+      </div>
+      <div class="hist-price">${h.price}</div>
+    </div>`;
+  }).join('');
+
+  /* #2: Compute days since last visit (actionable) */
+  const lastVisitDays = c.lastVisitDays !== undefined ? c.lastVisitDays : (c.history.length > 0 ? c.daysSinceLast || 29 : null);
+
+  /* #5: No "Προβολή όλων" button — dead link removed */
+
+  const warningHtml = c.warningTags.map(w =>
+    `<span class="tag tag-red"><i class="fas fa-triangle-exclamation" style="font-size:8px"></i> ${w}</span>`
+  ).join('');
+
+  const detailTagsHtml = c.detailTags.map(t =>
+    `<span class="tag tag-${t.type}"><i class="fas fa-circle-info" style="font-size:8px"></i> ${t.label}</span>`
+  ).join('');
+
+  const loyaltySection = c.loyaltyTier ? `
+    <div class="loyalty-card">
+      <div class="lc-header">
+        <div class="lc-title">Loyalty Club (${c.loyaltyTier})</div>
+        <i class="fas fa-crown" style="color:var(--c-accent);font-size:18px"></i>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:12px">
+        <div class="lc-points">${c.loyaltyPoints}<span>πόντοι</span></div>
+        <button class="btn-redeem" onclick="showToast('Εξαργύρωση πόντων για ${c.name}! 🎉','success')">Εξαργύρωση</button>
+      </div>
+      <div class="lc-progress-bg"><div class="lc-progress-fill" style="width:0%" id="loyaltyBar"></div></div>
+      <div class="lc-desc">${loyaltyLeft > 0 ? `${loyaltyLeft} πόντοι ακόμα για δωρεάν υπηρεσία!` : 'Έτοιμο για εξαργύρωση!'}</div>
+    </div>` : '';
+
+  const emailRow = c.email ? `
+    <div class="info-row">
+      <div class="info-icon"><i class="far fa-envelope"></i></div>
+      <div><div class="info-text">${c.email}</div><div class="info-sub">Email (Δέχεται Newsletters)</div></div>
+    </div>` : '';
+
+  const avatarContent = c.photo ? `<img src="${c.photo}" alt="${c.name}">` : c.initials;
+
+  /* #2: Last visit urgency color */
+  const lastVisitColor = lastVisitDays === null ? 'var(--c-mid)'
+    : lastVisitDays > 45 ? 'var(--s-urgent)'
+    : lastVisitDays > 30 ? 'var(--c-accent)'
+    : 'var(--s-done)';
+
+  document.getElementById('detailPanel').innerHTML = `
+    <div class="detail-header" style="animation:fadeUp 0.3s ease">
+      <div class="d-profile">
+        <div class="d-av-wrap" onclick="triggerAvatarUpload(${c.id})" title="Αλλαγή φωτογραφίας" tabindex="0" onkeydown="if(event.key==='Enter')triggerAvatarUpload(${c.id})">
+          <div class="d-av" id="detailAv">${avatarContent}</div>
+          <div class="d-av-overlay">
+            <i class="fas fa-camera" style="font-size:16px"></i>
+            <span style="font-size:10px;font-weight:700">Αλλαγή</span>
+          </div>
+        </div>
+        <input type="file" class="d-av-input" id="avatarInput-${c.id}" accept="image/*" onchange="handleAvatarUpload(event,${c.id})">
+        <div>
+          <div class="d-name">
+            ${c.name}
+            ${c.isVip ? '<i class="fas fa-star icon-vip" style="font-size:20px;vertical-align:middle"></i>' : ''}
+          </div>
+          <div class="d-since">
+            Πελάτης από: ${c.since} ·
+            <span style="color:var(--s-done);font-weight:700">${c.status === 'new' ? 'Νέος' : 'Ενεργός'}</span>
+            ${detailTagsHtml ? '&nbsp;&nbsp;' + detailTagsHtml : ''}
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn-topbar" style="background:var(--c-bg)" onclick="showToast('Επεξεργασία: ${c.name}','info')" title="Επεξεργασία">
+          <i class="fas fa-pen" style="margin:0;font-size:11px"></i>
+        </button>
+        <button class="btn-topbar btn-topbar-primary" onclick="showToast('Νέο ραντεβού για ${c.name}','success')">
+          <i class="fas fa-plus"></i> Νέο Ραντεβού
+        </button>
+      </div>
+    </div>
+
+    <div class="detail-body">
+
+      <!-- #2: Stats — 4 cards, avgDays replaced with lastVisit (actionable) -->
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="sb-val">${c.visits}</div>
+          <div class="sb-lbl">Επισκέψεις</div>
+          <div class="sparkline">${makeSpark(c.sparkVisits,'#C4874F')}</div>
+        </div>
+        <div class="stat-box">
+          <div class="sb-val">${c.revenue}</div>
+          <div class="sb-lbl">Συνολικά Έσοδα</div>
+          <div class="sparkline">${makeSpark(c.sparkRevenue,'#5A8A6A')}</div>
+        </div>
+        <div class="stat-box">
+          <div class="sb-val" style="color:${lastVisitColor}">${lastVisitDays !== null ? lastVisitDays : '—'}</div>
+          <div class="sb-lbl">Μέρες από τελ. επίσκεψη</div>
+          ${lastVisitDays !== null && lastVisitDays > 30 ? `<div class="noshows-hint" style="color:${lastVisitColor};margin-top:2px"><i class="fas fa-phone" style="font-size:8px"></i> Καλέστε</div>` : '<div class="noshows-hint"><i class="fas fa-check" style="font-size:8px"></i> Πρόσφατη</div>'}
+        </div>
+        <div class="stat-box">
+          <div class="sb-val ${noShowClass}">${c.noShows}</div>
+          <div class="sb-lbl">No-Shows</div>
+          ${noShowHint}
+        </div>
+      </div>
+
+      <!-- #9: SINGLE COLUMN — priority order: History → Loyalty → Contact → Notes -->
+
+      <!-- Ιστορικό πρώτο — πιο actionable -->
+      <div>
+        <div class="section-title">Ιστορικό Επισκέψεων</div>
+        <div class="history-list">${historyHtml}</div>
+        <!-- #5: "Προβολή όλων" removed — dead link -->
+      </div>
+
+      <!-- Loyalty -->
+      ${loyaltySection ? `<div>${loyaltySection}</div>` : ''}
+
+      <!-- #3: Section title "Επικοινωνία & Προτιμήσεις" removed — self-evident -->
+      <div>
+        <div class="info-list" style="margin-bottom:20px">
+          <div class="info-row">
+            <div class="info-icon"><i class="fas fa-mobile-alt"></i></div>
+            <div style="flex:1">
+              <div class="info-text">${c.phone}</div>
+              <div class="info-sub">Κύριο Τηλέφωνο</div>
+            </div>
+            <div class="contact-actions">
+              <button class="btn-contact whatsapp" onclick="showToast('WhatsApp: ${c.phone}','success')"><i class="fab fa-whatsapp"></i></button>
+              <button class="btn-contact viber" onclick="showToast('Viber: ${c.phone}','info')"><i class="fab fa-viber"></i></button>
+              <button class="btn-contact" onclick="showToast('SMS σε: ${c.phone}','info')"><i class="fas fa-comment-sms"></i> SMS</button>
+            </div>
+          </div>
+          ${emailRow}
+        </div>
+
+        <!-- #4: "(ορατές μόνο στο μαγαζί)" → 🔒 icon only -->
+        <div class="section-title">Σημειώσεις <i class="fas fa-lock" style="font-size:9px;opacity:0.4;margin-left:4px"></i></div>
+        <textarea class="notes-box" id="notesBox-${c.id}" placeholder="Προσθέστε σημειώσεις..." oninput="scheduleNoteSave(${c.id})">${c.notes}</textarea>
+        <div class="notes-save-indicator" id="notesSaveIndicator-${c.id}">
+          <i class="fas fa-check" style="font-size:9px"></i> Αποθηκεύτηκε
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+          ${warningHtml}
+          <button class="btn-topbar" style="height:24px;padding:0 8px;font-size:10px" onclick="showToast('Προσθήκη tag','info')">
+            <i class="fas fa-plus" style="font-size:9px"></i> Νέο Tag
+          </button>
+        </div>
+      </div>
+
+    </div>`;
+
+  /* Animate loyalty bar after render */
+  if (c.loyaltyTier) {
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        const bar = document.getElementById('loyaltyBar');
+        if (bar) bar.style.width = loyaltyPct + '%';
+      }, 100);
+    });
+  }
+}
+
+/* ════════════════════════════════════
+   SELECT CUSTOMER with skeleton
+════════════════════════════════════ */
+function selectCustomer(id) {
+  activeCustomerId = id;
+  document.querySelectorAll('.c-item').forEach(el => el.classList.remove('active'));
+  const activeItem = document.querySelector(`.c-item[data-id="${id}"]`);
+  if (activeItem) activeItem.classList.add('active');
+
+  /* 2. Show skeleton, then real content */
+  showSkeleton();
+  setTimeout(() => {
+    const customer = customers.find(c => c.id === id);
+    if (customer) renderDetail(customer);
+  }, 380);
+
+  /* Mobile switching */
+  if (window.innerWidth <= 768) {
+    document.getElementById('crmContainer').classList.add('detail-visible');
+    document.getElementById('mobileBackBtn').style.display = 'flex';
+    document.getElementById('mobileMenuBtn').style.display = 'none';
+  }
+  document.getElementById('detailPanel').scrollTop = 0;
+}
+
+/* ════════════════════════════════════
+   10. AVATAR UPLOAD
+════════════════════════════════════ */
+function triggerAvatarUpload(id) {
+  document.getElementById(`avatarInput-${id}`).click();
+}
+function handleAvatarUpload(event, id) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const customer = customers.find(c => c.id === id);
+    if (customer) {
+      customer.photo = e.target.result;
+      /* Update both list and detail avatars */
+      const listAv = document.querySelector(`.c-item[data-id="${id}"] .c-av`);
+      if (listAv) listAv.innerHTML = `<img src="${e.target.result}" alt="${customer.name}">`;
+      const detailAv = document.getElementById('detailAv');
+      if (detailAv) detailAv.innerHTML = `<img src="${e.target.result}" alt="${customer.name}">`;
+      showToast('Φωτογραφία αποθηκεύτηκε!', 'success');
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+/* ════════════════════════════════════
+   NOTES AUTOSAVE
+════════════════════════════════════ */
+function scheduleNoteSave(id) {
+  const indicator = document.getElementById(`notesSaveIndicator-${id}`);
+  if (!indicator) return;
+  indicator.className = 'notes-save-indicator saving visible';
+  indicator.innerHTML = '<i class="fas fa-circle-notch fa-spin" style="font-size:9px"></i> Αποθήκευση...';
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    const textarea = document.getElementById(`notesBox-${id}`);
+    const customer = customers.find(c => c.id === id);
+    if (customer && textarea) customer.notes = textarea.value;
+    indicator.className = 'notes-save-indicator visible';
+    indicator.innerHTML = '<i class="fas fa-check" style="font-size:9px"></i> Αποθηκεύτηκε';
+    setTimeout(() => indicator.classList.remove('visible'), 2000);
+  }, 1000);
+}
+
+/* ════════════════════════════════════
+   SEARCH & FILTER
+════════════════════════════════════ */
+function filterCustomers() {
+  searchQuery = document.getElementById('searchInput').value;
+  renderList();
+}
+function setFilter(el, filter) {
+  activeFilter = filter;
+  document.querySelectorAll('.f-tag').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderList();
+}
+
+/* ════════════════════════════════════
+   7. COMMAND PALETTE
+════════════════════════════════════ */
+const quickActions = [
+  { icon:'fa-plus', label:'Νέος Πελάτης', sub:'Δημιουργία νέας καρτέλας', action: () => showToast('Άνοιγμα φόρμας νέου πελάτη','info') },
+  { icon:'fa-calendar-plus', label:'Νέο Ραντεβού', sub:'Γρήγορη προγραμματισμός', action: () => showToast('Νέο ραντεβού','success') },
+  { icon:'fa-chart-line', label:'Πίνακας Ελέγχου', sub:'Μετάβαση στο dashboard', action: () => { window.location.href='front.html'; } },
+  { icon:'fa-moon', label:'Dark / Light Mode', sub:'Εναλλαγή θέματος', action: () => { toggleTheme(); closePalette(); } },
+];
+
+function openPalette() {
+  document.getElementById('cmdOverlay').style.display = 'flex';
+  setTimeout(() => document.getElementById('cmdInput').focus(), 50);
+  paletteSelectedIndex = 0;
+  renderPalette();
+}
+function closePalette(e) {
+  if (!e || e.target === document.getElementById('cmdOverlay'))
+    document.getElementById('cmdOverlay').style.display = 'none';
+}
+function renderPalette() {
+  const q = document.getElementById('cmdInput').value.toLowerCase().trim();
+  const matchedCustomers = customers.filter(c =>
+    c.name.toLowerCase().includes(q) || c.phone.includes(q)
+  ).slice(0, 5);
+  const matchedActions = q
+    ? quickActions.filter(a => a.label.toLowerCase().includes(q))
+    : quickActions;
+
+  let html = '';
+  if (matchedCustomers.length) {
+    html += `<div class="cmd-section-lbl">Πελάτες</div>`;
+    html += matchedCustomers.map((c, i) => {
+      const avatarContent = c.photo ? `<img src="${c.photo}" alt="${c.name}" style="width:100%;height:100%;object-fit:cover">` : c.initials;
+      return `<div class="cmd-item${i === paletteSelectedIndex ? ' selected':''}" onclick="cmdSelectCustomer(${c.id})" data-cmd-idx="${i}">
+        <div class="cmd-item-av">${avatarContent}</div>
+        <div><div class="cmd-item-name">${c.name}</div><div class="cmd-item-sub">${c.phone} · ${c.visits} επισκέψεις</div></div>
+      </div>`;
+    }).join('');
+  }
+  if (matchedActions.length) {
+    const offset = matchedCustomers.length;
+    html += `<div class="cmd-section-lbl">Ενέργειες</div>`;
+    html += matchedActions.map((a, i) =>
+      `<div class="cmd-item${(i + offset) === paletteSelectedIndex ? ' selected':''}" onclick="cmdRunAction(${quickActions.indexOf(a)})" data-cmd-idx="${i+offset}">
+        <div class="cmd-item-icon"><i class="fas ${a.icon}"></i></div>
+        <div><div class="cmd-item-name">${a.label}</div><div class="cmd-item-sub">${a.sub}</div></div>
+      </div>`
+    ).join('');
+  }
+  if (!html) html = '<div style="padding:24px;text-align:center;color:var(--c-primary);opacity:0.5;font-size:13px">Δεν βρέθηκαν αποτελέσματα</div>';
+  document.getElementById('cmdResults').innerHTML = html;
+}
+function cmdSelectCustomer(id) {
+  document.getElementById('cmdOverlay').style.display = 'none';
+  document.getElementById('cmdInput').value = '';
+  selectCustomer(id);
+}
+function cmdRunAction(idx) {
+  document.getElementById('cmdOverlay').style.display = 'none';
+  document.getElementById('cmdInput').value = '';
+  quickActions[idx].action();
+}
+function paletteKey(e) {
+  const items = document.querySelectorAll('.cmd-item');
+  if (e.key === 'ArrowDown') { e.preventDefault(); paletteSelectedIndex = Math.min(paletteSelectedIndex + 1, items.length - 1); renderPalette(); }
+  if (e.key === 'ArrowUp') { e.preventDefault(); paletteSelectedIndex = Math.max(paletteSelectedIndex - 1, 0); renderPalette(); }
+  if (e.key === 'Enter') { e.preventDefault(); items[paletteSelectedIndex]?.click(); }
+  if (e.key === 'Escape') closePalette(); 
+}
+/* Global keyboard shortcuts */
+document.addEventListener('keydown', e => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); openPalette(); }
+  if (e.key === 'Escape' && document.getElementById('cmdOverlay').style.display !== 'none') closePalette();
+});
+
+/* ════════════════════════════════════
+   SIDEBAR & MOBILE
+════════════════════════════════════ */
+function toggleCollapse() { document.getElementById('sidebar').classList.toggle('collapsed'); }
+function openMobile() {
+  document.getElementById('sidebar').classList.add('mobile-open');
+  document.getElementById('mobileOverlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobile() {
+  document.getElementById('sidebar').classList.remove('mobile-open');
+  document.getElementById('mobileOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+}
+function goBackToList() {
+  document.getElementById('crmContainer').classList.remove('detail-visible');
+  document.getElementById('mobileBackBtn').style.display = 'none';
+  document.getElementById('mobileMenuBtn').style.display = 'flex';
+}
+
+/* ════════════════════════════════════
+   INIT
+════════════════════════════════════ */
+renderList();
+if (window.innerWidth > 768) selectCustomer(1);
+</script>
+</body>
+</html>

@@ -1,0 +1,993 @@
+<!doctype html>
+<html lang="el" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Glamour Nails — Νέο Ραντεβού</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet"/>
+<style>
+/* ── TOKENS (ίδια με front.html) ── */
+:root {
+  --c-bg:#F9F6F3; --c-surface:#FFFFFF; --c-dark:#2E1A18; --c-mid:#6B3F3A;
+  --c-primary:#9D6A65; --c-accent:#C4874F; --c-light:#E8C9BC; --c-muted:#F0EAE6;
+  --c-shadow:rgba(46,26,24,0.10); --s-active:#C4874F; --s-next:#4A7FA5;
+  --s-done:#5A8A6A; --s-urgent:#B85450;
+  --r-xs:6px; --r-sm:10px; --r-md:14px; --r-lg:20px; --r-xl:28px;
+  --sidebar-w:240px; --focus-ring:0 0 0 3px rgba(196,135,79,0.4); --sb-bg:#2E1A18;
+}
+[data-theme="dark"] {
+  --c-bg:#1A1210; --c-surface:#231815; --c-dark:#F2EBE6; --c-mid:#C4A49F;
+  --c-primary:#B08A85; --c-accent:#D49A60; --c-light:#4A2E2A; --c-muted:#2E1E1B;
+  --c-shadow:rgba(0,0,0,0.4); --sb-bg:#150e0d;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--c-bg);color:var(--c-dark);min-height:100vh;display:flex;transition:background .3s,color .3s;}
+:focus{outline:none;}
+:focus-visible{box-shadow:var(--focus-ring)!important;border-radius:var(--r-xs);}
+
+/* ── SIDEBAR (ίδιο με front.html) ── */
+.sidebar{width:var(--sidebar-w);min-height:100vh;background:var(--sb-bg);display:flex;flex-direction:column;flex-shrink:0;overflow:hidden;}
+.sidebar-logo{padding:24px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(232,201,188,0.1);min-height:80px;}
+.logo-mark{width:40px;height:40px;border-radius:10px;background:rgba(196,135,79,0.15);border:1.5px solid rgba(196,135,79,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.logo-mark i{font-size:16px;color:var(--c-accent);}
+.logo-brand{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;color:var(--c-bg);}
+.logo-tag{font-size:9px;font-weight:700;color:var(--c-accent);text-transform:uppercase;opacity:.7;margin-top:2px;}
+.nav-section{padding:12px;}
+.nav-label{font-size:9px;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:rgba(249,246,243,0.2);padding:12px 8px 6px;}
+.nav-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--r-sm);cursor:pointer;transition:background .2s;text-decoration:none;margin-bottom:4px;position:relative;}
+.nav-item:hover{background:rgba(249,246,243,0.07);}
+.nav-item.active{background:rgba(196,135,79,0.15);}
+.nav-item.active::before{content:'';position:absolute;left:0;top:8px;bottom:8px;width:3px;background:var(--c-accent);border-radius:0 3px 3px 0;}
+.nav-icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:14px;color:rgba(249,246,243,0.35);}
+.nav-item.active .nav-icon{color:var(--c-accent);}
+.nav-lbl{font-size:13px;font-weight:500;color:rgba(249,246,243,0.8);}
+.nav-item.active .nav-lbl{color:var(--c-bg);font-weight:700;}
+.sidebar-spacer{flex:1;}
+
+/* ── MAIN WRAP ── */
+.main-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
+.topbar{height:60px;background:rgba(249,246,243,0.88);backdrop-filter:blur(24px);border-bottom:1px solid rgba(232,201,188,0.45);display:flex;align-items:center;padding:0 28px;gap:16px;flex-shrink:0;position:sticky;top:0;z-index:30;}
+[data-theme="dark"] .topbar{background:rgba(26,18,16,0.92);border-color:rgba(74,46,42,0.5);}
+.topbar-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--c-dark);flex:1;}
+.btn-topbar{height:36px;padding:0 14px;border-radius:var(--r-sm);border:1.5px solid var(--c-light);background:var(--c-surface);color:var(--c-mid);font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:7px;transition:all .2s;}
+.btn-topbar:hover{border-color:var(--c-dark);color:var(--c-dark);}
+.page-content{flex:1;overflow-y:auto;padding:28px 28px 60px;}
+
+/* ── STEP RAIL ── */
+.booking-layout{display:grid;grid-template-columns:200px 1fr;gap:24px;max-width:900px;}
+.step-rail{display:flex;flex-direction:column;gap:0;padding-top:4px;}
+.rail-step{display:flex;align-items:flex-start;gap:12px;padding-bottom:32px;position:relative;cursor:pointer;}
+.rail-step::after{content:'';position:absolute;left:15px;top:32px;bottom:0;width:1px;background:var(--c-light);}
+.rail-step:last-child::after{display:none;}
+.rail-step.done::after{background:var(--s-done);}
+.rail-step.active::after{background:var(--c-light);}
+.rail-num{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;transition:all .25s;border:2px solid var(--c-light);background:var(--c-surface);color:var(--c-mid);}
+.rail-step.active .rail-num{border-color:var(--c-accent);background:var(--c-accent);color:#fff;}
+.rail-step.done .rail-num{border-color:var(--s-done);background:var(--s-done);color:#fff;font-size:10px;}
+.rail-info{padding-top:4px;}
+.rail-title{font-size:13px;font-weight:700;color:var(--c-dark);opacity:.4;transition:opacity .2s;}
+.rail-step.active .rail-title{opacity:1;color:var(--c-accent);}
+.rail-step.done .rail-title{opacity:.7;color:var(--s-done);}
+.rail-sub{font-size:11px;color:var(--c-mid);margin-top:2px;opacity:0;transition:opacity .2s;line-height:1.4;}
+.rail-step.done .rail-sub{opacity:.6;}
+.rail-step.active .rail-sub{opacity:.7;}
+
+/* ── STEP CONTENT ── */
+.step-content{background:var(--c-surface);border:1.5px solid var(--c-light);border-radius:var(--r-xl);overflow:hidden;}
+.step-header{padding:22px 26px;border-bottom:1px solid var(--c-muted);}
+.step-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--c-dark);}
+.step-desc{font-size:12px;color:var(--c-primary);opacity:.7;margin-top:3px;}
+.step-body{padding:24px 26px;display:flex;flex-direction:column;gap:20px;}
+.step-footer{padding:16px 26px;border-top:1px solid var(--c-muted);background:rgba(249,246,243,0.5);display:flex;align-items:center;justify-content:space-between;gap:12px;}
+[data-theme="dark"] .step-footer{background:rgba(26,18,16,0.5);}
+
+/* ── FIELDS ── */
+.field-group{display:flex;flex-direction:column;gap:6px;}
+.field-label{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--c-mid);}
+.field-input{width:100%;border:1.5px solid var(--c-light);border-radius:var(--r-sm);padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--c-dark);background:var(--c-surface);transition:border-color .2s;}
+.field-input:hover{border-color:var(--c-primary);}
+.field-input:focus{border-color:var(--c-accent);box-shadow:var(--focus-ring);}
+.field-input::placeholder{color:var(--c-light);}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+
+/* ── DATE NAV ── */
+.date-nav{display:flex;align-items:center;gap:0;border:1.5px solid var(--c-light);border-radius:var(--r-sm);overflow:hidden;width:fit-content;}
+.date-nav-btn{width:36px;height:36px;border:none;background:var(--c-surface);color:var(--c-mid);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;transition:background .2s;}
+.date-nav-btn:hover{background:var(--c-muted);}
+.date-nav-input{border:none;border-left:1px solid var(--c-light);border-right:1px solid var(--c-light);height:36px;padding:0 12px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;color:var(--c-dark);background:var(--c-surface);cursor:pointer;min-width:150px;text-align:center;}
+.date-nav-input:focus{outline:none;background:var(--c-muted);}
+
+/* ── EMPLOYEE PILLS ── */
+.emp-pills{display:flex;gap:8px;flex-wrap:wrap;}
+.emp-pill{display:flex;align-items:center;gap:8px;padding:7px 14px;border:1.5px solid var(--c-light);border-radius:24px;cursor:pointer;transition:all .2s;font-size:12px;font-weight:600;color:var(--c-mid);}
+.emp-pill:hover{border-color:var(--c-primary);}
+.emp-pill.sel{border-color:var(--c-accent);background:rgba(196,135,79,0.08);color:var(--c-dark);}
+.emp-avatar{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#fff;flex-shrink:0;}
+
+/* ── SLOT GRID ── */
+.slots-label{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--c-mid);margin-bottom:10px;}
+.slots-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:8px;}
+.slot{padding:9px 8px;border:1.5px solid var(--c-light);border-radius:var(--r-sm);text-align:center;font-size:12px;font-weight:700;color:var(--c-mid);cursor:pointer;transition:all .2s;}
+.slot:hover{border-color:var(--c-primary);color:var(--c-dark);}
+.slot.sel{border-color:var(--c-accent);background:rgba(196,135,79,0.1);color:var(--c-dark);}
+.slot.taken{background:var(--c-muted);color:var(--c-light);cursor:not-allowed;border-color:transparent;}
+.slots-empty{text-align:center;padding:24px;color:var(--c-mid);font-size:13px;opacity:.6;}
+.slots-loading{display:flex;align-items:center;gap:8px;color:var(--c-mid);font-size:13px;padding:12px 0;}
+.sl-dot{width:6px;height:6px;border-radius:50%;background:var(--c-accent);animation:pulse .9s infinite;}
+.sl-dot:nth-child(2){animation-delay:.2s;}
+.sl-dot:nth-child(3){animation-delay:.4s;}
+@keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}
+
+/* ── CUSTOMER SEARCH ── */
+.search-wrap{position:relative;}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--c-primary);opacity:.6;}
+.search-input{padding-left:36px;padding-right:80px;}
+.search-spinner{position:absolute;right:44px;top:50%;transform:translateY(-50%);display:none;}
+.search-spinner.show{display:block;}
+.search-clear{position:absolute;right:12px;top:50%;transform:translateY(-50%);border:none;background:none;color:var(--c-mid);cursor:pointer;font-size:12px;opacity:.5;transition:opacity .2s;padding:4px;}
+.search-clear:hover{opacity:1;}
+.customer-card{border:1.5px solid var(--c-light);border-radius:var(--r-md);padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .2s;}
+.customer-card:hover{border-color:var(--c-accent);background:rgba(196,135,79,0.04);}
+.customer-card.sel{border-color:var(--c-accent);background:rgba(196,135,79,0.08);}
+.cust-avatar{width:40px;height:40px;border-radius:50%;background:var(--sb-bg);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#E8C9BC;flex-shrink:0;}
+.cust-name{font-size:14px;font-weight:700;color:var(--c-dark);}
+.cust-phone{font-size:11px;color:var(--c-mid);margin-top:2px;}
+.cust-pts{margin-left:auto;text-align:right;flex-shrink:0;}
+.pts-num{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--c-accent);line-height:1;}
+.pts-lbl{font-size:9px;color:var(--c-mid);text-transform:uppercase;letter-spacing:.08em;}
+.new-customer-toggle{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--c-primary);cursor:pointer;font-weight:700;padding:4px 0;}
+.new-customer-toggle i{font-size:11px;}
+.new-cust-form{border:1.5px dashed var(--c-light);border-radius:var(--r-md);padding:16px;display:none;flex-direction:column;gap:12px;}
+.new-cust-form.show{display:flex;animation:fadeUp .2s ease both;}
+
+/* ── SERVICE CARDS ── */
+.svc-grid{display:flex;flex-direction:column;gap:8px;max-height:360px;overflow-y:auto;padding-right:2px;}
+.svc-card{border:1.5px solid var(--c-light);border-radius:var(--r-md);padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .2s;}
+.svc-card:hover{border-color:var(--c-primary);background:rgba(157,106,101,0.03);}
+.svc-card.sel{border-color:var(--c-accent);background:rgba(196,135,79,0.08);}
+.svc-icon{width:38px;height:38px;border-radius:var(--r-sm);background:var(--c-muted);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;transition:background .2s;}
+.svc-card.sel .svc-icon{background:rgba(196,135,79,0.15);}
+.svc-name{font-size:13px;font-weight:700;color:var(--c-dark);}
+.svc-dur{font-size:11px;color:var(--c-mid);margin-top:2px;display:flex;align-items:center;gap:4px;}
+.svc-price{margin-left:auto;font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--c-dark);flex-shrink:0;}
+.svc-active-badge{font-size:9px;font-weight:700;letter-spacing:.06em;padding:2px 6px;border-radius:4px;background:rgba(90,138,106,0.12);color:var(--s-done);}
+
+/* ── CONFIRM SUMMARY ── */
+.summary-hero{background:var(--sb-bg);border-radius:var(--r-lg);padding:20px 22px;display:flex;align-items:center;gap:18px;margin-bottom:4px;}
+.sh-time{font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:600;color:#E8C9BC;line-height:1;flex-shrink:0;}
+.sh-detail{flex:1;}
+.sh-date{font-size:12px;color:rgba(249,246,243,0.5);margin-bottom:2px;}
+.sh-emp{font-size:14px;font-weight:700;color:#F9F6F3;}
+.sh-store{font-size:11px;color:rgba(249,246,243,0.4);}
+.summary-rows{display:flex;flex-direction:column;gap:0;}
+.sum-row{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--c-muted);}
+.sum-row:last-child{border:none;}
+.sum-icon{width:32px;height:32px;border-radius:var(--r-xs);background:var(--c-muted);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--c-primary);flex-shrink:0;}
+.sum-key{font-size:11px;color:var(--c-mid);font-weight:600;}
+.sum-val{font-size:13px;color:var(--c-dark);font-weight:700;margin-top:1px;}
+.sum-pts{font-size:10px;color:var(--s-done);font-weight:700;}
+.notes-area{width:100%;border:1.5px solid var(--c-light);border-radius:var(--r-sm);padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--c-dark);background:var(--c-surface);resize:none;min-height:72px;transition:border-color .2s;}
+.notes-area:focus{border-color:var(--c-accent);outline:none;box-shadow:var(--focus-ring);}
+.sms-toggle{display:flex;align-items:center;gap:10px;padding:12px 14px;background:rgba(74,127,165,0.07);border:1.5px solid rgba(74,127,165,0.2);border-radius:var(--r-sm);cursor:pointer;transition:all .2s;}
+.sms-toggle:hover{background:rgba(74,127,165,0.12);}
+.sms-toggle input{display:none;}
+.sms-check{width:20px;height:20px;border-radius:4px;border:2px solid rgba(74,127,165,0.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;}
+.sms-toggle.on .sms-check{background:var(--s-next);border-color:var(--s-next);}
+.sms-check i{font-size:9px;color:#fff;display:none;}
+.sms-toggle.on .sms-check i{display:block;}
+.sms-lbl{font-size:12px;font-weight:700;color:var(--s-next);}
+.sms-sub{font-size:11px;color:var(--c-mid);margin-top:1px;}
+
+/* ── BUTTONS ── */
+.btn-cancel{height:40px;padding:0 20px;border-radius:var(--r-sm);background:transparent;border:1px solid transparent;color:var(--c-mid);font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;}
+.btn-cancel:hover{background:rgba(46,26,24,0.05);}
+.btn-save{height:40px;padding:0 24px;border-radius:var(--r-sm);background:var(--c-dark);color:var(--c-bg);border:none;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px;}
+.btn-save:hover{background:var(--c-accent);box-shadow:0 4px 14px rgba(196,135,79,.35);transform:translateY(-1px);}
+.btn-save:disabled{opacity:.4;cursor:default;transform:none;}
+.btn-ghost{height:40px;padding:0 16px;border-radius:var(--r-sm);background:transparent;border:1.5px solid var(--c-light);color:var(--c-mid);font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px;}
+.btn-ghost:hover{border-color:var(--c-primary);}
+
+/* ── SUCCESS ── */
+.success-wrap{text-align:center;padding:48px 24px;}
+.suc-ring{width:72px;height:72px;border-radius:50%;background:rgba(90,138,106,0.12);border:2px solid var(--s-done);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;color:var(--s-done);animation:pop .4s cubic-bezier(.34,1.56,.64,1) both;}
+@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+.suc-title{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:600;color:var(--c-dark);margin-bottom:6px;}
+.suc-sub{font-size:13px;color:var(--c-mid);margin-bottom:24px;}
+.suc-card{background:var(--c-muted);border-radius:var(--r-md);padding:16px 20px;max-width:320px;margin:0 auto 24px;text-align:left;}
+.suc-row{display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid var(--c-light);}
+.suc-row:last-child{border:none;}
+.suc-k{color:var(--c-mid);}
+.suc-v{font-weight:700;color:var(--c-dark);}
+
+/* ── UTILS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fadeUp .25s ease both;}
+.tag{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;}
+.tag-done{background:rgba(90,138,106,0.12);color:var(--s-done);}
+.tag-next{background:rgba(74,127,165,0.10);color:var(--s-next);}
+#toast{position:fixed;bottom:24px;right:24px;background:var(--c-dark);color:var(--c-bg);padding:12px 18px;border-radius:var(--r-md);font-size:12px;font-weight:700;display:flex;align-items:center;gap:8px;box-shadow:0 8px 24px var(--c-shadow);transform:translateY(80px);opacity:0;transition:.4s cubic-bezier(.175,.885,.32,1.275);z-index:200;max-width:300px;}
+#toast.show{transform:translateY(0);opacity:1;}
+#toast.ok i{color:var(--s-done);}
+#toast.err i{color:var(--s-urgent);}
+#toast.info i{color:var(--s-next);}
+
+@media(max-width:800px){.booking-layout{grid-template-columns:1fr;}.step-rail{display:none;}}
+@media(max-width:640px){.sidebar{display:none;}.page-content{padding:16px;}}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark"><i class="fas fa-spa"></i></div>
+    <div><div class="logo-brand">Glamour Nails</div><div class="logo-tag">Management</div></div>
+  </div>
+  <nav class="nav-section">
+    <div class="nav-label">Διαχείριση</div>
+    <a href="front.html" class="nav-item active">
+      <div class="nav-icon"><i class="fas fa-calendar-alt"></i></div>
+      <span class="nav-lbl">Ραντεβού</span>
+    </a>
+    <a href="customer.html" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-users"></i></div>
+      <span class="nav-lbl">Πελάτες</span>
+    </a>
+    <a href="services.html" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-list-check"></i></div>
+      <span class="nav-lbl">Υπηρεσίες</span>
+    </a>
+    <div class="nav-label">Marketing</div>
+    <a href="campaign-ai.html" class="nav-item">
+      <div class="nav-icon"><i class="fas fa-bullhorn"></i></div>
+      <span class="nav-lbl">Campaigns</span>
+    </a>
+  </nav>
+  <div class="sidebar-spacer"></div>
+</aside>
+
+<!-- MAIN -->
+<div class="main-wrap">
+  <div class="topbar">
+    <div class="topbar-title">Νέο Ραντεβού</div>
+    <button class="btn-topbar" onclick="history.back()"><i class="fas fa-arrow-left"></i> Πίσω</button>
+    <button class="btn-topbar" onclick="toggleTheme()"><i class="fas fa-moon" id="themeIcon"></i></button>
+  </div>
+
+  <div class="page-content">
+    <div class="booking-layout">
+
+      <!-- ── STEP RAIL ── -->
+      <div class="step-rail" id="stepRail">
+        <div class="rail-step active" id="rs1">
+          <div class="rail-num" id="rn1">1</div>
+          <div class="rail-info">
+            <div class="rail-title">Ημερομηνία & Ώρα</div>
+            <div class="rail-sub" id="rsub1">Επέλεξε υπάλληλο και slot</div>
+          </div>
+        </div>
+        <div class="rail-step" id="rs2">
+          <div class="rail-num" id="rn2">2</div>
+          <div class="rail-info">
+            <div class="rail-title">Πελάτης</div>
+            <div class="rail-sub" id="rsub2">Αναζήτηση ή νέος</div>
+          </div>
+        </div>
+        <div class="rail-step" id="rs3">
+          <div class="rail-num" id="rn3">3</div>
+          <div class="rail-info">
+            <div class="rail-title">Υπηρεσία</div>
+            <div class="rail-sub" id="rsub3">Επέλεξε υπηρεσία</div>
+          </div>
+        </div>
+        <div class="rail-step" id="rs4">
+          <div class="rail-num" id="rn4">4</div>
+          <div class="rail-info">
+            <div class="rail-title">Επιβεβαίωση</div>
+            <div class="rail-sub" id="rsub4">Έλεγχος & αποστολή</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── STEP CONTENT ── -->
+      <div class="step-content" id="stepBox">
+
+        <!-- ═══ STEP 1: DATE & TIME ═══ -->
+        <div id="step1" class="fade-up">
+          <div class="step-header">
+            <div class="step-title">Ημερομηνία & Ώρα</div>
+            <div class="step-desc">Επέλεξε υπάλληλο, ημερομηνία και διαθέσιμο slot</div>
+          </div>
+          <div class="step-body">
+
+            <!-- Store -->
+            <div class="field-group">
+              <label class="field-label">Κατάστημα</label>
+              <select class="field-input" id="storeSelect" onchange="onStoreChange()">
+                <option value="">Φόρτωση...</option>
+              </select>
+            </div>
+
+            <!-- Employees -->
+            <div class="field-group">
+              <label class="field-label">Υπάλληλος</label>
+              <div class="emp-pills" id="empPills"></div>
+            </div>
+
+            <!-- Date -->
+            <div class="field-group">
+              <label class="field-label">Ημερομηνία</label>
+              <div class="date-nav">
+                <button class="date-nav-btn" onclick="shiftDate(-1)" title="Προηγούμενη"><i class="fas fa-chevron-left"></i></button>
+                <input type="date" class="date-nav-input" id="dateInput" onchange="loadSlots()"/>
+                <button class="date-nav-btn" onclick="shiftDate(1)" title="Επόμενη"><i class="fas fa-chevron-right"></i></button>
+              </div>
+            </div>
+
+            <!-- Slots -->
+            <div class="field-group">
+              <div class="slots-label">Διαθέσιμα Slots — <span id="slotsDateLabel"></span></div>
+              <div id="slotsContainer"><div class="slots-empty">Επέλεξε υπάλληλο και ημερομηνία</div></div>
+            </div>
+
+          </div>
+          <div class="step-footer">
+            <span style="font-size:11px;color:var(--c-mid);">Slots 30 λεπτών από το ωράριο υπαλλήλου</span>
+            <button class="btn-save" id="btn1next" onclick="goStep(2)" disabled>
+              Επόμενο <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- ═══ STEP 2: CUSTOMER ═══ -->
+        <div id="step2" style="display:none">
+          <div class="step-header">
+            <div class="step-title">Πελάτης</div>
+            <div class="step-desc">Αναζήτησε με κινητό ή δημιούργησε νέο πελάτη</div>
+          </div>
+          <div class="step-body">
+
+            <div class="field-group">
+              <label class="field-label">Αναζήτηση με κινητό</label>
+              <div class="search-wrap">
+                <i class="fas fa-search search-icon"></i>
+                <input type="tel" class="field-input search-input" id="custSearch"
+                  placeholder="6912345678" maxlength="10"
+                  oninput="onCustSearch(this.value)"/>
+                <div class="search-spinner show" id="searchSpinner" style="display:none">
+                  <div class="sl-dot"></div>
+                </div>
+                <button class="search-clear" onclick="clearCustSearch()" title="Καθαρισμός"><i class="fas fa-times"></i></button>
+              </div>
+            </div>
+
+            <div id="custResults" style="display:none;flex-direction:column;gap:8px;"></div>
+
+            <div class="new-customer-toggle" id="newCustToggle" onclick="toggleNewCust()">
+              <i class="fas fa-plus-circle"></i>
+              Νέος πελάτης
+            </div>
+
+            <div class="new-cust-form" id="newCustForm">
+              <div class="grid-2">
+                <div class="field-group">
+                  <label class="field-label">Όνομα</label>
+                  <input type="text" class="field-input" id="newFirstName" placeholder="Μαρία"/>
+                </div>
+                <div class="field-group">
+                  <label class="field-label">Επώνυμο</label>
+                  <input type="text" class="field-input" id="newLastName" placeholder="Παπαδοπούλου"/>
+                </div>
+              </div>
+              <div class="field-group">
+                <label class="field-label">Κινητό</label>
+                <input type="tel" class="field-input" id="newMobile" placeholder="6912345678" maxlength="10"/>
+              </div>
+            </div>
+
+          </div>
+          <div class="step-footer">
+            <button class="btn-ghost" onclick="goStep(1)"><i class="fas fa-arrow-left"></i> Πίσω</button>
+            <button class="btn-save" id="btn2next" onclick="handleStep2Next()" disabled>
+              Επόμενο <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- ═══ STEP 3: SERVICE ═══ -->
+        <div id="step3" style="display:none">
+          <div class="step-header">
+            <div class="step-title">Υπηρεσία</div>
+            <div class="step-desc">Επέλεξε τι θα κάνει ο/η πελάτης</div>
+          </div>
+          <div class="step-body">
+            <div class="svc-grid" id="svcGrid">
+              <div class="slots-loading"><div class="sl-dot"></div><div class="sl-dot"></div><div class="sl-dot"></div><span>Φόρτωση υπηρεσιών...</span></div>
+            </div>
+          </div>
+          <div class="step-footer">
+            <button class="btn-ghost" onclick="goStep(2)"><i class="fas fa-arrow-left"></i> Πίσω</button>
+            <button class="btn-save" id="btn3next" onclick="goStep(4)" disabled>
+              Επόμενο <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- ═══ STEP 4: CONFIRM ═══ -->
+        <div id="step4" style="display:none">
+          <div class="step-header">
+            <div class="step-title">Επιβεβαίωση</div>
+            <div class="step-desc">Έλεγχος στοιχείων και αποστολή</div>
+          </div>
+          <div class="step-body">
+            <div class="summary-hero" id="sumHero"></div>
+            <div class="summary-rows" id="sumRows"></div>
+
+            <div class="field-group" style="margin-top:4px;">
+              <label class="field-label">Σημειώσεις (προαιρετικό)</label>
+              <textarea class="notes-area" id="apptNotes" placeholder="π.χ. Αλλεργία σε ακρυλικά, προτιμά ροζ χρώματα..."></textarea>
+            </div>
+
+            <div class="sms-toggle on" id="smsToggle" onclick="toggleSms()">
+              <div class="sms-check"><i class="fas fa-check"></i></div>
+              <div>
+                <div class="sms-lbl"><i class="fas fa-sms" style="margin-right:4px;"></i> Αποστολή SMS επιβεβαίωσης</div>
+                <div class="sms-sub">Αυτόματο μήνυμα στο κινητό του πελάτη</div>
+              </div>
+            </div>
+          </div>
+          <div class="step-footer">
+            <button class="btn-ghost" onclick="goStep(3)"><i class="fas fa-arrow-left"></i> Πίσω</button>
+            <button class="btn-save" id="btnConfirm" onclick="confirmBooking()">
+              <i class="fas fa-calendar-check"></i> Κλείσιμο Ραντεβού
+            </button>
+          </div>
+        </div>
+
+        <!-- ═══ SUCCESS ═══ -->
+        <div id="stepSuccess" style="display:none">
+          <div class="success-wrap fade-up">
+            <div class="suc-ring"><i class="fas fa-check"></i></div>
+            <div class="suc-title">Ραντεβού Κλείστηκε!</div>
+            <div class="suc-sub" id="sucSubText"></div>
+            <div class="suc-card" id="sucCard"></div>
+            <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+              <button class="btn-ghost" onclick="window.location.href='front.html'"><i class="fas fa-calendar-alt"></i> Πίσω στο Ημερολόγιο</button>
+              <button class="btn-save" onclick="resetBooking()"><i class="fas fa-plus"></i> Νέο Ραντεβού</button>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- step-content -->
+    </div><!-- booking-layout -->
+  </div><!-- page-content -->
+</div><!-- main-wrap -->
+
+<div id="toast"><i class="fas fa-check"></i><span id="toastMsg"></span></div>
+
+<script>
+/* ── CONFIG ── */
+const API = localStorage.getItem('gn_api') || 'http://localhost:8000';
+const TOKEN = localStorage.getItem('gn_jwt') || '';
+const TENANT = (() => { try { const p=JSON.parse(atob(TOKEN.split('.')[1]||'')); return p.tenant_slug||''; } catch(e){return '';} })();
+
+function headers(tenantRequired=true) {
+  const h = { 'Content-Type':'application/json', 'Authorization':`Bearer ${TOKEN}` };
+  if(tenantRequired && TENANT) h['X-Tenant-ID'] = TENANT;
+  return h;
+}
+
+async function apiGet(path, tenant=true) {
+  const r = await fetch(API+path, { headers: headers(tenant) });
+  if(!r.ok) throw new Error(r.status);
+  return r.json();
+}
+async function apiPost(path, body, tenant=true) {
+  const r = await fetch(API+path, { method:'POST', headers: headers(tenant), body: JSON.stringify(body) });
+  if(!r.ok) { const e = await r.json().catch(()=>{}); throw new Error(e?.['hydra:description']||r.status); }
+  return r.json();
+}
+
+/* ── MOCK DATA (fallback when API not configured) ── */
+const MOCK = {
+  stores: [
+    { id:'store-01', name:'Κεντρικό', address:'Ερμού 10', isActive:true },
+    { id:'store-02', name:'Βόρειο', address:'Λεωφ. Βορείου 45', isActive:true },
+  ],
+  employees: [
+    { id:'emp-01', fullName:'Αντωνία Γ.', color:'#9D5B56', storeId:'store-01' },
+    { id:'emp-02', fullName:'Δήμητρα Σ.', color:'#4A7FA5', storeId:'store-01' },
+    { id:'emp-03', fullName:'Φωτεινή Κ.', color:'#5A8A6A', storeId:'store-02' },
+  ],
+  services: [
+    { id:'svc-01', name:'Manicure Απλό', price:'18.00', duration:30, isActive:true, icon:'💅' },
+    { id:'svc-02', name:'Manicure Gel', price:'25.00', duration:45, isActive:true, icon:'✨' },
+    { id:'svc-03', name:'Pedicure Απλό', price:'22.00', duration:40, isActive:true, icon:'🦶' },
+    { id:'svc-04', name:'Pedicure Spa', price:'35.00', duration:60, isActive:true, icon:'💆' },
+    { id:'svc-05', name:'Nail Art (ανά νύχι)', price:'5.00', duration:15, isActive:true, icon:'🎨' },
+    { id:'svc-06', name:'Αφαίρεση Gel', price:'10.00', duration:20, isActive:true, icon:'🧴' },
+  ],
+  slots: ['09:00','09:30','10:00','10:30','11:30','12:00','14:00','14:30','15:30','16:00','16:30','17:00'],
+  taken: ['10:30','14:30'],
+};
+
+/* ── STATE ── */
+const S = {
+  step: 1,
+  storeId: '',
+  storeName: '',
+  empId: '',
+  empName: '',
+  date: '',
+  slot: '',
+  custId: null,
+  custName: '',
+  custMobile: '',
+  custPoints: 0,
+  isNewCust: false,
+  svcId: '',
+  svcName: '',
+  svcDuration: 30,
+  svcPrice: '0.00',
+  sendSms: true,
+  createdApptId: null,
+};
+
+/* ── INIT ── */
+window.onload = () => {
+  applyTheme();
+  setToday();
+  loadStores();
+  loadServices();
+};
+
+function applyTheme() {
+  const t = localStorage.getItem('gn_theme');
+  if(t) document.documentElement.setAttribute('data-theme', t);
+  updateThemeIcon();
+}
+function toggleTheme() {
+  const cur = document.documentElement.getAttribute('data-theme');
+  const next = cur==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('gn_theme', next);
+  updateThemeIcon();
+}
+function updateThemeIcon() {
+  const dark = document.documentElement.getAttribute('data-theme')==='dark';
+  document.getElementById('themeIcon').className = dark?'fas fa-sun':'fas fa-moon';
+}
+
+function setToday() {
+  const d = new Date();
+  d.setMinutes(d.getMinutes()-d.getTimezoneOffset());
+  document.getElementById('dateInput').value = d.toISOString().slice(0,10);
+  S.date = d.toISOString().slice(0,10);
+  updateSlotsLabel();
+}
+
+/* ── STORES ── */
+async function loadStores() {
+  let stores = MOCK.stores;
+  if(TOKEN) {
+    try { const r = await apiGet('/api/stores'); stores = r.member || MOCK.stores; } catch(e){}
+  }
+  const sel = document.getElementById('storeSelect');
+  sel.innerHTML = stores.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+  S.storeId = stores[0]?.id || '';
+  S.storeName = stores[0]?.name || '';
+  renderEmployees();
+}
+
+function onStoreChange() {
+  S.storeId = document.getElementById('storeSelect').value;
+  const stores = MOCK.stores;
+  S.storeName = stores.find(s=>s.id===S.storeId)?.name || S.storeId;
+  S.empId = ''; S.slot = '';
+  renderEmployees();
+  clearSlots();
+}
+
+/* ── EMPLOYEES ── */
+function renderEmployees() {
+  const emps = MOCK.employees.filter(e => !S.storeId || e.storeId===S.storeId);
+  const colors = ['#9D5B56','#4A7FA5','#5A8A6A','#7B52A5','#C4874F'];
+  document.getElementById('empPills').innerHTML = emps.map((e,i) =>
+    `<div class="emp-pill${S.empId===e.id?' sel':''}" onclick="pickEmp('${e.id}','${e.fullName}')">
+      <div class="emp-avatar" style="background:${colors[i%colors.length]}">${e.fullName.charAt(0)}</div>
+      ${e.fullName}
+    </div>`
+  ).join('');
+}
+
+function pickEmp(id, name) {
+  S.empId = id; S.empName = name;
+  renderEmployees();
+  loadSlots();
+}
+
+/* ── DATE ── */
+function shiftDate(delta) {
+  const d = new Date(document.getElementById('dateInput').value);
+  d.setDate(d.getDate() + delta);
+  const val = d.toISOString().slice(0,10);
+  document.getElementById('dateInput').value = val;
+  S.date = val;
+  updateSlotsLabel();
+  if(S.empId) loadSlots();
+}
+
+function updateSlotsLabel() {
+  const d = new Date(S.date + 'T12:00:00');
+  document.getElementById('slotsDateLabel').textContent =
+    d.toLocaleDateString('el-GR', { weekday:'long', day:'numeric', month:'long' });
+}
+
+/* ── SLOTS ── */
+async function loadSlots() {
+  S.date = document.getElementById('dateInput').value;
+  updateSlotsLabel();
+  if(!S.empId) return;
+
+  S.slot = '';
+  document.getElementById('btn1next').disabled = true;
+  document.getElementById('slotsContainer').innerHTML =
+    `<div class="slots-loading"><div class="sl-dot"></div><div class="sl-dot"></div><div class="sl-dot"></div><span>Φόρτωση slots...</span></div>`;
+
+  let available = MOCK.slots;
+  let taken = MOCK.taken;
+
+  if(TOKEN) {
+    try {
+      const r = await apiGet(`/api/availability/${S.empId}/${S.date}`);
+      available = r.availableSlots || MOCK.slots;
+      taken = [];
+    } catch(e) { /* use mock */ }
+  }
+
+  renderSlots(available, taken);
+}
+
+function renderSlots(available, taken) {
+  const allSlots = [];
+  for(let h=9; h<18; h++) {
+    allSlots.push(`${String(h).padStart(2,'0')}:00`);
+    allSlots.push(`${String(h).padStart(2,'0')}:30`);
+  }
+
+  const grid = document.getElementById('slotsContainer');
+  if(!available.length) {
+    grid.innerHTML = '<div class="slots-empty">Δεν υπάρχουν διαθέσιμα slots για αυτή την ημέρα</div>';
+    return;
+  }
+
+  grid.innerHTML = `<div class="slots-grid">${
+    available.map(slot => {
+      const isTaken = taken.includes(slot);
+      return `<div class="slot${isTaken?' taken':''}" onclick="${isTaken?'':''}"
+        ${isTaken?'title="Κατειλημμένο"':''} data-slot="${slot}"
+        onclick="pickSlot('${slot}',${isTaken})">${slot}</div>`;
+    }).join('')
+  }</div>`;
+}
+
+function pickSlot(slot, isTaken) {
+  if(isTaken) return;
+  S.slot = slot;
+  document.querySelectorAll('.slot').forEach(el => {
+    el.className = 'slot' + (el.dataset.slot===slot?' sel':'') + (MOCK.taken.includes(el.dataset.slot)?' taken':'');
+  });
+  document.getElementById('btn1next').disabled = false;
+}
+
+function clearSlots() {
+  document.getElementById('slotsContainer').innerHTML = '<div class="slots-empty">Επέλεξε υπάλληλο και ημερομηνία</div>';
+}
+
+/* ── SERVICES ── */
+async function loadServices() {
+  let svcs = MOCK.services;
+  if(TOKEN) {
+    try { const r = await apiGet('/api/services'); svcs = r.member || MOCK.services; } catch(e){}
+  }
+  const grid = document.getElementById('svcGrid');
+  if(!svcs.length) { grid.innerHTML = '<div class="slots-empty">Δεν βρέθηκαν υπηρεσίες</div>'; return; }
+  grid.innerHTML = svcs.map(s =>
+    `<div class="svc-card" id="svc-${s.id}" onclick="pickService('${s.id}','${s.name}',${s.duration||30},'${s.price||'0.00'}')">
+      <div class="svc-icon">${s.icon||'💅'}</div>
+      <div style="flex:1;min-width:0;">
+        <div class="svc-name">${s.name}</div>
+        <div class="svc-dur"><i class="fas fa-clock" style="font-size:9px;"></i> ${s.duration||30} λεπτά ${s.isActive?'<span class="svc-active-badge">Ενεργό</span>':''}</div>
+      </div>
+      <div class="svc-price">${parseFloat(s.price||0).toFixed(2)}€</div>
+    </div>`
+  ).join('');
+}
+
+function pickService(id, name, dur, price) {
+  S.svcId = id; S.svcName = name; S.svcDuration = dur; S.svcPrice = price;
+  document.querySelectorAll('.svc-card').forEach(c => c.classList.remove('sel'));
+  document.getElementById('svc-'+id)?.classList.add('sel');
+  document.getElementById('btn3next').disabled = false;
+  updateRailSub(3, `${name} · ${dur}λ.`);
+}
+
+/* ── CUSTOMER SEARCH ── */
+let searchTimer = null;
+function onCustSearch(val) {
+  clearTimeout(searchTimer);
+  S.custId = null; S.custName = ''; S.custMobile = '';
+  document.getElementById('btn2next').disabled = true;
+  if(val.length < 6) { document.getElementById('custResults').style.display='none'; return; }
+  searchTimer = setTimeout(() => searchCustomer(val), 500);
+}
+
+async function searchCustomer(mobile) {
+  document.getElementById('searchSpinner').style.display = 'block';
+  let results = [];
+
+  if(TOKEN) {
+    try {
+      const r = await apiGet(`/api/customers?mobile=${mobile}`);
+      results = r.member || [];
+    } catch(e){}
+  } else {
+    // Mock: simulate finding a customer
+    if(mobile.startsWith('691')) {
+      results = [{ id:'cust-01', firstName:'Μαρία', lastName:'Παπαδοπούλου', mobile, totalPoints:125 }];
+    }
+  }
+
+  document.getElementById('searchSpinner').style.display = 'none';
+  renderCustResults(results);
+}
+
+function renderCustResults(results) {
+  const el = document.getElementById('custResults');
+  if(!results.length) {
+    el.style.display='flex';
+    el.innerHTML = '<div style="font-size:12px;color:var(--c-mid);padding:8px 0;">Δεν βρέθηκε πελάτης με αυτό το κινητό — δημιούργησε νέο παρακάτω.</div>';
+    return;
+  }
+  el.style.display='flex';
+  el.innerHTML = results.slice(0,3).map(c => `
+    <div class="customer-card" id="cc-${c.id}" onclick="selectCustomer('${c.id}','${c.firstName} ${c.lastName}','${c.mobile||''}',${c.totalPoints||0})">
+      <div class="cust-avatar">${c.firstName[0]}${c.lastName[0]}</div>
+      <div>
+        <div class="cust-name">${c.firstName} ${c.lastName}</div>
+        <div class="cust-phone">${c.mobile||''}</div>
+      </div>
+      <div class="cust-pts">
+        <div class="pts-num">${c.totalPoints||0}</div>
+        <div class="pts-lbl">πόντοι</div>
+      </div>
+    </div>`).join('');
+}
+
+function selectCustomer(id, name, mobile, points) {
+  S.custId = id; S.custName = name; S.custMobile = mobile; S.custPoints = points;
+  S.isNewCust = false;
+  document.querySelectorAll('.customer-card').forEach(c => c.classList.remove('sel'));
+  document.getElementById('cc-'+id)?.classList.add('sel');
+  document.getElementById('btn2next').disabled = false;
+  updateRailSub(2, name);
+}
+
+function clearCustSearch() {
+  document.getElementById('custSearch').value = '';
+  document.getElementById('custResults').style.display = 'none';
+  S.custId = null; S.custName = ''; S.custMobile = '';
+  document.getElementById('btn2next').disabled = true;
+}
+
+let newCustOpen = false;
+function toggleNewCust() {
+  newCustOpen = !newCustOpen;
+  const form = document.getElementById('newCustForm');
+  form.className = 'new-cust-form' + (newCustOpen?' show':'');
+  document.getElementById('newCustToggle').innerHTML = newCustOpen
+    ? '<i class="fas fa-times"></i> Ακύρωση'
+    : '<i class="fas fa-plus-circle"></i> Νέος πελάτης';
+  if(newCustOpen) {
+    S.isNewCust = true;
+    document.getElementById('btn2next').disabled = false;
+    document.getElementById('newFirstName').focus();
+  } else {
+    S.isNewCust = false;
+    document.getElementById('btn2next').disabled = !S.custId;
+  }
+}
+
+async function handleStep2Next() {
+  if(S.isNewCust) {
+    const fn = document.getElementById('newFirstName').value.trim();
+    const ln = document.getElementById('newLastName').value.trim();
+    const mob = document.getElementById('newMobile').value.trim();
+    if(!fn||!ln||!mob) { showToast('Συμπλήρωσε όλα τα πεδία','err'); return; }
+    // Create customer via API
+    if(TOKEN) {
+      try {
+        const store = S.storeId ? `/api/stores/${S.storeId}` : undefined;
+        const body = { firstName:fn, lastName:ln, mobile:mob, ...(store?{preferredStore:store}:{}) };
+        const created = await apiPost('/api/customers', body);
+        S.custId = created.id;
+        S.custName = `${fn} ${ln}`;
+        S.custMobile = mob;
+        S.custPoints = 0;
+        showToast(`Πελάτης δημιουργήθηκε`, 'ok');
+      } catch(e) {
+        showToast(`Σφάλμα: ${e.message}`, 'err'); return;
+      }
+    } else {
+      S.custId = 'new-'+Date.now();
+      S.custName = `${fn} ${ln}`;
+      S.custMobile = mob;
+      S.custPoints = 0;
+    }
+    updateRailSub(2, S.custName);
+  }
+  goStep(3);
+}
+
+/* ── STEP NAVIGATION ── */
+function goStep(n) {
+  document.getElementById(`step${S.step}`).style.display = 'none';
+  S.step = n;
+  document.getElementById(`step${n}`).style.display = 'block';
+  document.getElementById(`step${n}`).classList.add('fade-up');
+  updateRail();
+  if(n===4) buildSummary();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function updateRail() {
+  [1,2,3,4].forEach(i => {
+    const rs = document.getElementById(`rs${i}`);
+    const rn = document.getElementById(`rn${i}`);
+    if(i < S.step) { rs.className='rail-step done'; rn.innerHTML='<i class="fas fa-check" style="font-size:9px;"></i>'; }
+    else if(i === S.step) { rs.className='rail-step active'; rn.textContent=i; }
+    else { rs.className='rail-step'; rn.textContent=i; }
+  });
+}
+
+function updateRailSub(step, text) {
+  document.getElementById(`rsub${step}`).textContent = text;
+}
+
+/* ── CONFIRM ── */
+function buildSummary() {
+  const d = new Date(`${S.date}T${S.slot}:00`);
+  const endD = new Date(d.getTime() + S.svcDuration * 60000);
+  const fmt = t => t.toLocaleTimeString('el-GR', {hour:'2-digit',minute:'2-digit'});
+  const fmtD = t => t.toLocaleDateString('el-GR', {weekday:'short',day:'numeric',month:'short'});
+
+  document.getElementById('sumHero').innerHTML = `
+    <div class="sh-time">${fmt(d)}</div>
+    <div class="sh-detail">
+      <div class="sh-date">${fmtD(d)} · έως ${fmt(endD)}</div>
+      <div class="sh-emp">${S.empName}</div>
+      <div class="sh-store">${S.storeName}</div>
+    </div>`;
+
+  const pts = Math.floor(parseFloat(S.svcPrice));
+  document.getElementById('sumRows').innerHTML = [
+    { icon:'fa-user', key:'Πελάτης', val:S.custName, sub: S.custPoints ? `${S.custPoints} πόντοι + ${pts} νέοι` : null },
+    { icon:'fa-spa', key:'Υπηρεσία', val:S.svcName, sub:null },
+    { icon:'fa-clock', key:'Διάρκεια', val:`${S.svcDuration} λεπτά`, sub:null },
+    { icon:'fa-euro-sign', key:'Τιμή', val:`${parseFloat(S.svcPrice).toFixed(2)}€`, sub:null },
+  ].map(r => `
+    <div class="sum-row">
+      <div class="sum-icon"><i class="fas ${r.icon}"></i></div>
+      <div>
+        <div class="sum-key">${r.key}</div>
+        <div class="sum-val">${r.val}${r.sub?`<span class="sum-pts" style="margin-left:8px;">${r.sub}</span>`:''}</div>
+      </div>
+    </div>`).join('');
+}
+
+let smsOn = true;
+function toggleSms() {
+  smsOn = !smsOn; S.sendSms = smsOn;
+  document.getElementById('smsToggle').className = 'sms-toggle' + (smsOn?' on':'');
+}
+
+/* ── CONFIRM BOOKING ── */
+async function confirmBooking() {
+  const btn = document.getElementById('btnConfirm');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Αποθήκευση...';
+
+  const startDt = new Date(`${S.date}T${S.slot}:00`);
+  const endDt = new Date(startDt.getTime() + S.svcDuration*60000);
+  const iso = d => d.toISOString();
+
+  try {
+    let apptId = 'mock-'+Date.now();
+
+    if(TOKEN) {
+      const appt = await apiPost('/api/appointments', {
+        startTime: iso(startDt),
+        endTime: iso(endDt),
+        status: 'SCHEDULED',
+        price: S.svcPrice,
+        store: `/api/stores/${S.storeId}`,
+        customer: `/api/customers/${S.custId}`,
+        service: `/api/services/${S.svcId}`,
+        employeeId: S.empId,
+        notes: document.getElementById('apptNotes').value || undefined,
+      });
+      apptId = appt.id;
+
+      if(smsOn && S.custMobile) {
+        const msg = `Επιβεβαίωση ραντεβού: ${S.svcName} στις ${S.slot} (${startDt.toLocaleDateString('el-GR')}). Glamour Nails.`;
+        await apiPost('/api/notifications', {
+          recipient: S.custMobile,
+          channel: 'SMS',
+          message: msg,
+          status: 'SENT',
+          cost: 1,
+          sentAt: new Date().toISOString(),
+          customer: `/api/customers/${S.custId}`,
+        }).catch(()=>{});
+      }
+    }
+
+    showSuccess(startDt, endDt);
+  } catch(e) {
+    showToast(`Σφάλμα: ${e.message}`, 'err');
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-calendar-check"></i> Κλείσιμο Ραντεβού';
+  }
+}
+
+function showSuccess(startDt, endDt) {
+  document.getElementById('step4').style.display = 'none';
+  document.getElementById('stepSuccess').style.display = 'block';
+  const fmt = t => t.toLocaleTimeString('el-GR',{hour:'2-digit',minute:'2-digit'});
+  const fmtD = t => t.toLocaleDateString('el-GR',{weekday:'long',day:'numeric',month:'long'});
+  document.getElementById('sucSubText').textContent =
+    smsOn && S.custMobile ? `SMS επιβεβαίωσης στάλθηκε στο ${S.custMobile}` : 'Χωρίς SMS επιβεβαίωση';
+  document.getElementById('sucCard').innerHTML = [
+    ['Πελάτης', S.custName],
+    ['Ημερομηνία', fmtD(startDt)],
+    ['Ώρα', `${fmt(startDt)} — ${fmt(endDt)}`],
+    ['Υπηρεσία', S.svcName],
+    ['Υπάλληλος', S.empName],
+    ['Τιμή', `${parseFloat(S.svcPrice).toFixed(2)}€`],
+  ].map(([k,v])=>`<div class="suc-row"><span class="suc-k">${k}</span><span class="suc-v">${v}</span></div>`).join('');
+  showToast('Ραντεβού κλείστηκε!', 'ok');
+}
+
+function resetBooking() {
+  Object.assign(S, { step:1, empId:'', slot:'', custId:null, custName:'', custMobile:'', svcId:'', svcName:'', svcPrice:'0.00', svcDuration:30, sendSms:true });
+  ['step2','step3','step4','stepSuccess'].forEach(id=>document.getElementById(id).style.display='none');
+  document.getElementById('step1').style.display='block';
+  document.getElementById('btn1next').disabled=true;
+  document.getElementById('btn2next').disabled=true;
+  document.getElementById('btn3next').disabled=true;
+  document.getElementById('custSearch').value='';
+  document.getElementById('custResults').style.display='none';
+  document.getElementById('apptNotes').value='';
+  if(newCustOpen) toggleNewCust();
+  updateRail();
+  clearSlots();
+  renderEmployees();
+  smsOn=true;
+  document.getElementById('smsToggle').className='sms-toggle on';
+  document.getElementById('btnConfirm').disabled=false;
+  document.getElementById('btnConfirm').innerHTML='<i class="fas fa-calendar-check"></i> Κλείσιμο Ραντεβού';
+}
+
+/* ── TOAST ── */
+function showToast(msg, type='info') {
+  const t = document.getElementById('toast');
+  const icons = {ok:'fas fa-check',err:'fas fa-exclamation-circle',info:'fas fa-info-circle'};
+  t.innerHTML = `<i class="${icons[type]||icons.info}"></i><span>${msg}</span>`;
+  t.className = 'show ' + type;
+  clearTimeout(t._t);
+  t._t = setTimeout(()=>t.className='',3000);
+}
+</script>
+</body>
+</html>

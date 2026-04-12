@@ -1,0 +1,781 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Glamour Nails — Audience Builder</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg:#FAF7F4; --surface:#FFFFFF; --dark:#1A0E0C; --mid:#6B3F3A;
+  --primary:#9D5B56; --primary-h:#7D3F3A; --accent:#C4874F;
+  --light:#E8C9BC; --muted:#F0EAE6; --muted2:#E4DAD6;
+  --gold:#C9A96E; --sidebar:#1E100E; --sidebar-hover:#2E1815;
+  --sidebar-active:#3D1F1A; --sub:#9B7E7A;
+  --shadow:0 4px 24px rgba(26,14,12,.07);
+  --shadow-lg:0 16px 48px rgba(26,14,12,.13);
+  --font:'DM Sans',sans-serif; --serif:'Cormorant Garamond',serif;
+  --r:12px; --transition:.25s cubic-bezier(.4,0,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font);background:var(--bg);color:var(--dark);min-height:100vh;}
+.app{display:flex;min-height:100vh;}
+
+/* SIDEBAR */
+.sidebar{width:240px;background:var(--sidebar);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;flex-shrink:0;}
+.sidebar-logo{padding:26px 24px 18px;border-bottom:1px solid rgba(255,255,255,.06);}
+.logo-mark{font-family:var(--serif);font-size:1.3rem;font-weight:700;color:#E8C9BC;letter-spacing:.02em;}
+.logo-sub{font-size:.62rem;color:rgba(232,201,188,.35);letter-spacing:.14em;text-transform:uppercase;margin-top:2px;}
+.sidebar-nav{padding:14px 12px;flex:1;}
+.nav-lbl{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.22);padding:8px 12px 4px;margin-top:6px;}
+.nav-item{display:flex;align-items:center;gap:11px;padding:9px 12px;border-radius:8px;color:rgba(232,201,188,.5);text-decoration:none;font-size:.84rem;font-weight:500;transition:var(--transition);cursor:pointer;border:none;background:none;width:100%;}
+.nav-item i{width:17px;text-align:center;font-size:.82rem;}
+.nav-item:hover{background:var(--sidebar-hover);color:#E8C9BC;}
+.nav-item.active{background:var(--sidebar-active);color:#E8C9BC;border-left:2px solid var(--gold);}
+
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;min-width:0;}
+.topbar{background:var(--surface);border-bottom:1px solid var(--muted);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.breadcrumb{display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--sub);}
+.breadcrumb span{color:var(--mid);}
+.topbar-r{display:flex;gap:10px;align-items:center;}
+.btn{padding:10px 18px;border-radius:9px;font-family:var(--font);font-size:.84rem;font-weight:600;cursor:pointer;border:none;transition:var(--transition);display:inline-flex;align-items:center;gap:7px;}
+.btn-ghost{background:var(--muted);color:var(--mid);}
+.btn-ghost:hover{background:var(--muted2);}
+.btn-primary{background:var(--primary);color:#fff;}
+.btn-primary:hover{background:var(--primary-h);transform:translateY(-1px);}
+.btn-accent{background:var(--accent);color:#fff;}
+.btn-accent:hover{opacity:.9;transform:translateY(-1px);}
+.btn-sm{padding:7px 13px;font-size:.77rem;border-radius:7px;}
+.btn-icon{width:34px;height:34px;padding:0;justify-content:center;border-radius:8px;}
+
+/* LAYOUT */
+.workspace{display:grid;grid-template-columns:1fr 320px;gap:20px;padding:24px 28px;align-items:start;flex:1;}
+
+/* LEFT PANEL */
+.builder-panel{display:flex;flex-direction:column;gap:16px;}
+
+/* PRESETS */
+.presets-bar{background:var(--surface);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);}
+.section-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.section-title{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--sub);font-weight:700;}
+.presets-scroll{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;}
+.presets-scroll::-webkit-scrollbar{display:none;}
+.preset-chip{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:12px 16px;background:var(--muted);border-radius:10px;cursor:pointer;transition:var(--transition);min-width:140px;border:1.5px solid transparent;flex-shrink:0;}
+.preset-chip:hover{background:#FDF5F2;border-color:var(--light);}
+.preset-chip.active{background:#FDF0EC;border-color:var(--primary);}
+.preset-chip .p-icon{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.8rem;margin-bottom:4px;}
+.preset-chip .p-name{font-size:.8rem;font-weight:700;color:var(--dark);}
+.preset-chip .p-desc{font-size:.7rem;color:var(--sub);line-height:1.3;}
+
+/* LOGIC TOGGLE */
+.logic-wrap{display:flex;align-items:center;gap:10px;margin-bottom:4px;}
+.logic-toggle{display:flex;background:var(--muted);border-radius:24px;padding:3px;gap:2px;}
+.logic-btn{padding:5px 14px;border-radius:20px;font-size:.75rem;font-weight:700;cursor:pointer;border:none;background:transparent;color:var(--sub);transition:var(--transition);letter-spacing:.05em;}
+.logic-btn.active{background:var(--dark);color:#fff;}
+.logic-label{font-size:.78rem;color:var(--sub);}
+
+/* RULES CONTAINER */
+.rules-card{background:var(--surface);border-radius:var(--r);padding:22px;box-shadow:var(--shadow);}
+.rules-list{display:flex;flex-direction:column;gap:10px;min-height:80px;}
+.rule-row{display:grid;grid-template-columns:28px 1fr 140px 160px 38px;gap:8px;align-items:center;background:var(--muted);border-radius:9px;padding:10px 12px;transition:var(--transition);border:1.5px solid transparent;}
+.rule-row:hover{border-color:var(--muted2);}
+.rule-row.highlight{border-color:var(--primary);background:#FDF5F2;}
+.rule-num{width:22px;height:22px;background:var(--muted2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;color:var(--sub);}
+.rule-select{width:100%;border:1.5px solid var(--muted2);border-radius:7px;padding:7px 10px;font-family:var(--font);font-size:.82rem;color:var(--dark);cursor:pointer;background:var(--surface);transition:var(--transition);}
+.rule-select:focus{outline:none;border-color:var(--primary);}
+.rule-del{width:32px;height:32px;border-radius:7px;border:none;background:transparent;color:var(--sub);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:var(--transition);}
+.rule-del:hover{background:#FEE;color:#A32D2D;}
+
+/* RANGE RULE */
+.range-wrap{display:flex;align-items:center;gap:6px;}
+.range-input{width:64px;border:1.5px solid var(--muted2);border-radius:6px;padding:6px 8px;font-size:.8rem;font-family:var(--font);text-align:center;color:var(--dark);}
+.range-input:focus{outline:none;border-color:var(--primary);}
+.range-sep{font-size:.75rem;color:var(--sub);}
+
+/* EMPTY STATE */
+.empty-rules{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:36px;color:var(--sub);gap:8px;}
+.empty-rules i{font-size:1.6rem;opacity:.3;}
+.empty-rules p{font-size:.85rem;}
+
+/* ADD RULE */
+.add-rule-bar{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:1px dashed var(--muted2);}
+.add-tag{display:flex;align-items:center;gap:6px;padding:6px 12px;border:1.5px dashed var(--muted2);border-radius:20px;font-size:.76rem;font-weight:600;color:var(--sub);cursor:pointer;transition:var(--transition);}
+.add-tag:hover{border-color:var(--primary);color:var(--primary);background:#FDF5F2;}
+.add-tag i{font-size:.7rem;}
+
+/* RIGHT PANEL */
+.right-panel{display:flex;flex-direction:column;gap:16px;position:sticky;top:24px;}
+
+/* AUDIENCE METER */
+.audience-card{background:var(--surface);border-radius:var(--r);padding:24px;box-shadow:var(--shadow);text-align:center;}
+.audience-ring{position:relative;width:140px;height:140px;margin:16px auto;}
+.ring-svg{width:140px;height:140px;transform:rotate(-90deg);}
+.ring-bg{fill:none;stroke:var(--muted);stroke-width:10;}
+.ring-fill{fill:none;stroke:var(--primary);stroke-width:10;stroke-linecap:round;stroke-dasharray:345;stroke-dashoffset:345;transition:stroke-dashoffset 1s cubic-bezier(.4,0,.2,1);}
+.ring-count{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.ring-num{font-family:var(--serif);font-size:2.2rem;font-weight:700;color:var(--dark);line-height:1;}
+.ring-lbl{font-size:.68rem;color:var(--sub);margin-top:2px;}
+.audience-bar{margin-top:12px;}
+.aud-pct-label{display:flex;justify-content:space-between;font-size:.75rem;color:var(--sub);margin-bottom:6px;}
+.aud-pct-bar{height:5px;background:var(--muted);border-radius:3px;overflow:hidden;}
+.aud-pct-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:3px;transition:width 1s cubic-bezier(.4,0,.2,1);}
+.audience-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px;}
+.aud-stat{background:var(--muted);border-radius:8px;padding:10px;text-align:center;}
+.aud-stat-num{font-family:var(--serif);font-size:1.3rem;font-weight:600;color:var(--dark);}
+.aud-stat-lbl{font-size:.65rem;color:var(--sub);margin-top:2px;}
+
+/* PREVIEW TABLE */
+.preview-card{background:var(--surface);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);}
+.preview-list{display:flex;flex-direction:column;gap:6px;margin-top:12px;max-height:260px;overflow-y:auto;}
+.preview-item{display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--muted);border-radius:8px;}
+.p-avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;flex-shrink:0;}
+.p-info{flex:1;min-width:0;}
+.p-name{font-size:.8rem;font-weight:600;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.p-meta{font-size:.68rem;color:var(--sub);}
+.p-pts{font-size:.72rem;font-weight:700;color:var(--accent);white-space:nowrap;}
+.preview-more{text-align:center;font-size:.75rem;color:var(--sub);padding:6px;margin-top:4px;}
+
+/* SAVE CARD */
+.save-card{background:var(--surface);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);}
+.group-name-input{width:100%;border:1.5px solid var(--muted);border-radius:8px;padding:10px 12px;font-family:var(--font);font-size:.9rem;color:var(--dark);margin-bottom:10px;transition:var(--transition);}
+.group-name-input:focus{outline:none;border-color:var(--primary);}
+.group-color-row{display:flex;gap:8px;margin-bottom:12px;}
+.color-dot{width:24px;height:24px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:var(--transition);}
+.color-dot.selected{border-color:var(--dark);transform:scale(1.15);}
+
+/* SAVED GROUPS */
+.groups-card{background:var(--surface);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);}
+.groups-list{display:flex;flex-direction:column;gap:8px;margin-top:12px;max-height:200px;overflow-y:auto;}
+.group-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--muted);border-radius:8px;cursor:pointer;transition:var(--transition);}
+.group-item:hover{background:var(--muted2);}
+.group-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.group-info{flex:1;min-width:0;}
+.g-name{font-size:.82rem;font-weight:600;color:var(--dark);}
+.g-count{font-size:.7rem;color:var(--sub);}
+.g-actions{display:flex;gap:4px;}
+.g-btn{width:26px;height:26px;border-radius:6px;border:none;background:transparent;cursor:pointer;color:var(--sub);display:flex;align-items:center;justify-content:center;font-size:.72rem;transition:var(--transition);}
+.g-btn:hover{background:var(--muted2);color:var(--dark);}
+.g-btn.del:hover{background:#FEE;color:#A32D2D;}
+
+/* LOGIC CONNECTOR */
+.logic-connector{display:flex;align-items:center;gap:8px;padding:2px 0;}
+.connector-line{flex:1;height:1px;background:var(--muted2);}
+.connector-pill{font-size:.65rem;font-weight:800;letter-spacing:.1em;padding:3px 10px;border-radius:12px;background:var(--dark);color:#fff;}
+.connector-pill.or{background:var(--accent);}
+
+/* SHIMMER */
+.shimmer{background:linear-gradient(90deg,var(--muted) 25%,var(--muted2) 50%,var(--muted) 75%);background-size:200%;animation:shim 1.4s infinite;border-radius:8px;}
+@keyframes shim{0%{background-position:200%}100%{background-position:-200%}}
+
+/* TOAST */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--dark);color:#fff;padding:11px 22px;border-radius:28px;font-size:.85rem;font-weight:500;transition:.45s cubic-bezier(.175,.885,.32,1.275);opacity:0;z-index:200;}
+#toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+#toast.ok{background:#3B6D11;}
+#toast.err{background:#A32D2D;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fadeUp .28s ease both;}
+
+@media(max-width:1024px){.workspace{grid-template-columns:1fr;}.right-panel{position:static;display:grid;grid-template-columns:1fr 1fr;}.save-card,.groups-card{grid-column:1/-1;}}
+@media(max-width:720px){.sidebar{display:none;}.workspace{padding:14px;}.right-panel{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">Glamour Nails</div>
+      <div class="logo-sub">Dashboard</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-lbl">Διαχείριση</div>
+      <a class="nav-item" href="#"><i class="fas fa-calendar-alt"></i> Ραντεβού</a>
+      <a class="nav-item" href="#"><i class="fas fa-users"></i> Πελάτες</a>
+      <a class="nav-item" href="#"><i class="fas fa-list-check"></i> Υπηρεσίες</a>
+      <a class="nav-item" href="#"><i class="fas fa-store"></i> Καταστήματα</a>
+      <div class="nav-lbl">Marketing</div>
+      <a class="nav-item" href="campaign-studio.html"><i class="fas fa-bullhorn"></i> Campaigns</a>
+      <a class="nav-item active" href="#"><i class="fas fa-layer-group"></i> Κοινά</a>
+      <a class="nav-item" href="#"><i class="fas fa-file-alt"></i> Πρότυπα</a>
+      <a class="nav-item" href="#"><i class="fas fa-chart-bar"></i> Αναφορές</a>
+      <div class="nav-lbl">Ρυθμίσεις</div>
+      <a class="nav-item" href="#"><i class="fas fa-cog"></i> Ρυθμίσεις</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div class="breadcrumb">
+        <i class="fas fa-layer-group" style="color:var(--accent)"></i>
+        <span>Κοινά</span> / Νέο Κοινό
+      </div>
+      <div class="topbar-r">
+        <button class="btn btn-ghost btn-sm" onclick="clearAll()"><i class="fas fa-rotate-left"></i> Καθαρισμός</button>
+        <button class="btn btn-accent btn-sm" onclick="saveGroup()"><i class="fas fa-save"></i> Αποθήκευση Κοινού</button>
+      </div>
+    </div>
+
+    <div class="workspace">
+      <!-- LEFT: BUILDER -->
+      <div class="builder-panel">
+
+        <!-- PRESETS -->
+        <div class="presets-bar">
+          <div class="section-hd">
+            <div class="section-title">Έτοιμα Κοινά</div>
+            <span style="font-size:.72rem;color:var(--sub);">Κλικ για γρήγορη εφαρμογή</span>
+          </div>
+          <div class="presets-scroll">
+            <div class="preset-chip" onclick="applyPreset('vip')">
+              <div class="p-icon" style="background:#FFF3E0;color:#E65100;"><i class="fas fa-crown"></i></div>
+              <div class="p-name">VIP Πελάτες</div>
+              <div class="p-desc">200+ πόντοι · 5+ επισκέψεις</div>
+            </div>
+            <div class="preset-chip" onclick="applyPreset('inactive')">
+              <div class="p-icon" style="background:#FBE9E7;color:#BF360C;"><i class="fas fa-clock-rotate-left"></i></div>
+              <div class="p-name">Ανενεργοί</div>
+              <div class="p-desc">Καμία επίσκεψη 60+ ημέρες</div>
+            </div>
+            <div class="preset-chip" onclick="applyPreset('new')">
+              <div class="p-icon" style="background:#E8F5E9;color:#2E7D32;"><i class="fas fa-seedling"></i></div>
+              <div class="p-name">Νέοι Πελάτες</div>
+              <div class="p-desc">Εγγραφή τελευταίο μήνα</div>
+            </div>
+            <div class="preset-chip" onclick="applyPreset('birthday')">
+              <div class="p-icon" style="background:#F3E5F5;color:#7B1FA2;"><i class="fas fa-cake-candles"></i></div>
+              <div class="p-name">Γενέθλια Μήνα</div>
+              <div class="p-desc">Γενέθλια τρέχοντα μήνα</div>
+            </div>
+            <div class="preset-chip" onclick="applyPreset('loyal')">
+              <div class="p-icon" style="background:#E3F2FD;color:#1565C0;"><i class="fas fa-medal"></i></div>
+              <div class="p-name">Loyal Fans</div>
+              <div class="p-desc">10+ επισκέψεις όλο το χρόνο</div>
+            </div>
+            <div class="preset-chip" onclick="applyPreset('highspend')">
+              <div class="p-icon" style="background:#FDF8E1;color:#F57F17;"><i class="fas fa-euro-sign"></i></div>
+              <div class="p-name">High Spenders</div>
+              <div class="p-desc">Μέσος όρος &gt;40€ / επίσκεψη</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RULES -->
+        <div class="rules-card">
+          <div class="section-hd">
+            <div class="section-title">Κανόνες Φίλτρου</div>
+            <div class="logic-wrap">
+              <span class="logic-label">Λογική:</span>
+              <div class="logic-toggle">
+                <button class="logic-btn active" id="lb-and" onclick="setLogic('AND')">ΚΑΙ</button>
+                <button class="logic-btn" id="lb-or" onclick="setLogic('OR')">Ή</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="rules-list" id="rulesList">
+            <div class="empty-rules" id="emptyState">
+              <i class="fas fa-filter"></i>
+              <p>Επέλεξε ένα έτοιμο κοινό ή πρόσθεσε κανόνες παρακάτω</p>
+            </div>
+          </div>
+
+          <!-- ADD RULE TAGS -->
+          <div class="add-rule-bar">
+            <span style="font-size:.72rem;color:var(--sub);font-weight:600;align-self:center;">+ Προσθήκη:</span>
+            <div class="add-tag" onclick="addRule('points')"><i class="fas fa-star"></i> Πόντοι</div>
+            <div class="add-tag" onclick="addRule('visits')"><i class="fas fa-calendar-check"></i> Επισκέψεις</div>
+            <div class="add-tag" onclick="addRule('lastvisit')"><i class="fas fa-clock"></i> Τελευταία Επίσκεψη</div>
+            <div class="add-tag" onclick="addRule('avgspend')"><i class="fas fa-euro-sign"></i> Μέση Δαπάνη</div>
+            <div class="add-tag" onclick="addRule('store')"><i class="fas fa-store"></i> Κατάστημα</div>
+            <div class="add-tag" onclick="addRule('mobile')"><i class="fas fa-mobile"></i> Κινητό</div>
+            <div class="add-tag" onclick="addRule('regdate')"><i class="fas fa-user-plus"></i> Ημ. Εγγραφής</div>
+            <div class="add-tag" onclick="addRule('status')"><i class="fas fa-toggle-on"></i> Κατάσταση</div>
+          </div>
+        </div>
+
+        <!-- SQL PREVIEW -->
+        <div class="rules-card" id="sqlCard" style="display:none;">
+          <div class="section-hd">
+            <div class="section-title">Παραγόμενο Φίλτρο API</div>
+            <button class="btn btn-ghost btn-sm" onclick="copyQuery()"><i class="fas fa-copy"></i> Αντιγραφή</button>
+          </div>
+          <div style="background:var(--muted);border-radius:8px;padding:14px;margin-top:8px;font-family:monospace;font-size:.75rem;color:var(--mid);line-height:1.7;word-break:break-all;" id="queryDisplay"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT: AUDIENCE + SAVE -->
+      <div class="right-panel">
+
+        <!-- AUDIENCE METER -->
+        <div class="audience-card">
+          <div class="section-title" style="text-align:center;">Εκτιμώμενο Κοινό</div>
+          <div class="audience-ring">
+            <svg class="ring-svg" viewBox="0 0 120 120">
+              <circle class="ring-bg" cx="60" cy="60" r="55"/>
+              <circle class="ring-fill" id="ringFill" cx="60" cy="60" r="55"/>
+            </svg>
+            <div class="ring-count">
+              <div class="ring-num" id="audienceNum">—</div>
+              <div class="ring-lbl">πελάτες</div>
+            </div>
+          </div>
+          <div class="audience-bar">
+            <div class="aud-pct-label">
+              <span>Ποσοστό βάσης</span>
+              <span id="pctLabel">—%</span>
+            </div>
+            <div class="aud-pct-bar"><div class="aud-pct-fill" id="pctBar" style="width:0%"></div></div>
+          </div>
+          <div class="audience-stats">
+            <div class="aud-stat">
+              <div class="aud-stat-num" id="sAvgPts">—</div>
+              <div class="aud-stat-lbl">Μέσοι Πόντοι</div>
+            </div>
+            <div class="aud-stat">
+              <div class="aud-stat-num" id="sAvgVisits">—</div>
+              <div class="aud-stat-lbl">Μέσες Επισκέψεις</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PREVIEW LIST -->
+        <div class="preview-card">
+          <div class="section-hd">
+            <div class="section-title">Δείγμα Κοινού</div>
+            <button class="btn btn-ghost btn-sm" onclick="refreshPreview()"><i class="fas fa-rotate"></i></button>
+          </div>
+          <div class="preview-list" id="previewList">
+            <div style="text-align:center;padding:20px;color:var(--sub);font-size:.82rem;">
+              Πρόσθεσε κανόνες για προεπισκόπηση
+            </div>
+          </div>
+          <div class="preview-more" id="previewMore"></div>
+        </div>
+
+        <!-- SAVE -->
+        <div class="save-card">
+          <div class="section-title" style="margin-bottom:12px;">Αποθήκευση Κοινού</div>
+          <input class="group-name-input" id="groupName" type="text" placeholder="π.χ. VIP Αθήνα Q2 2026"/>
+          <div style="font-size:.72rem;color:var(--sub);margin-bottom:8px;">Χρώμα ετικέτας</div>
+          <div class="group-color-row" id="colorRow">
+            <div class="color-dot selected" style="background:#9D5B56" data-c="#9D5B56" onclick="selectColor(this)"></div>
+            <div class="color-dot" style="background:#C4874F" data-c="#C4874F" onclick="selectColor(this)"></div>
+            <div class="color-dot" style="background:#3563CC" data-c="#3563CC" onclick="selectColor(this)"></div>
+            <div class="color-dot" style="background:#2E7D32" data-c="#2E7D32" onclick="selectColor(this)"></div>
+            <div class="color-dot" style="background:#7B1FA2" data-c="#7B1FA2" onclick="selectColor(this)"></div>
+            <div class="color-dot" style="background:#1565C0" data-c="#1565C0" onclick="selectColor(this)"></div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-ghost" style="flex:1;font-size:.8rem;" onclick="sendToCampaign()"><i class="fas fa-bullhorn"></i> Campaign</button>
+            <button class="btn btn-primary" style="flex:1;font-size:.8rem;" onclick="saveGroup()"><i class="fas fa-save"></i> Αποθήκευση</button>
+          </div>
+        </div>
+
+        <!-- SAVED GROUPS -->
+        <div class="groups-card">
+          <div class="section-hd">
+            <div class="section-title">Αποθηκευμένα Κοινά</div>
+            <span id="groupCount" style="font-size:.72rem;color:var(--sub);"></span>
+          </div>
+          <div class="groups-list" id="groupsList">
+            <div style="text-align:center;padding:14px;color:var(--sub);font-size:.78rem;">Δεν υπάρχουν αποθηκευμένα κοινά</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ── STATE ──────────────────────────────────────────────
+const state = {
+  rules: [],
+  logic: 'AND',
+  selectedColor: '#9D5B56',
+  totalCustomers: 253,
+  savedGroups: []
+};
+
+// Mock customer data (from GET /api/customers in real app)
+const MOCK_CUSTOMERS = [
+  {id:'c01',firstName:'Μαρία',lastName:'Παπαδοπούλου',mobile:'6912345678',totalPoints:312,visits:18,avgSpend:45,lastVisitDays:3,regDays:420,store:'Κεντρικό',hasApp:true},
+  {id:'c02',firstName:'Ελένη',lastName:'Νικολάου',mobile:'6923456789',totalPoints:215,visits:12,avgSpend:38,lastVisitDays:12,regDays:380,store:'Κεντρικό',hasApp:false},
+  {id:'c03',firstName:'Σοφία',lastName:'Κωνσταντίνου',mobile:'6934567890',totalPoints:89,visits:5,avgSpend:28,lastVisitDays:65,regDays:200,store:'Βόρειο',hasApp:false},
+  {id:'c04',firstName:'Κατερίνα',lastName:'Αναστασίου',mobile:'6945678901',totalPoints:420,visits:24,avgSpend:52,lastVisitDays:7,regDays:730,store:'Κεντρικό',hasApp:true},
+  {id:'c05',firstName:'Ιωάννα',lastName:'Παπαδάκη',mobile:'6956789012',totalPoints:15,visits:2,avgSpend:22,lastVisitDays:14,regDays:20,store:'Νότιο',hasApp:false},
+  {id:'c06',firstName:'Δήμητρα',lastName:'Σταθοπούλου',mobile:'6967890123',totalPoints:178,visits:9,avgSpend:35,lastVisitDays:45,regDays:260,store:'Βόρειο',hasApp:true},
+  {id:'c07',firstName:'Αντωνία',lastName:'Γεωργίου',mobile:'6978901234',totalPoints:55,visits:4,avgSpend:30,lastVisitDays:90,regDays:150,store:'Νότιο',hasApp:false},
+  {id:'c08',firstName:'Χριστίνα',lastName:'Λεβέντη',mobile:'6989012345',totalPoints:340,visits:20,avgSpend:60,lastVisitDays:2,regDays:600,store:'Κεντρικό',hasApp:true},
+  {id:'c09',firstName:'Βασιλική',lastName:'Τσιάμη',mobile:'6990123456',totalPoints:125,visits:7,avgSpend:33,lastVisitDays:28,regDays:310,store:'Κεντρικό',hasApp:false},
+  {id:'c10',firstName:'Αθηνά',lastName:'Μαρκοπούλου',mobile:'6901234567',totalPoints:0,visits:1,avgSpend:18,lastVisitDays:120,regDays:15,store:'Βόρειο',hasApp:false},
+  {id:'c11',firstName:'Φωτεινή',lastName:'Κοντού',mobile:'6911234567',totalPoints:290,visits:15,avgSpend:48,lastVisitDays:5,regDays:500,store:'Νότιο',hasApp:true},
+  {id:'c12',firstName:'Ρόζα',lastName:'Σαμαρά',mobile:'6922345678',totalPoints:67,visits:3,avgSpend:25,lastVisitDays:75,regDays:90,store:'Κεντρικό',hasApp:false},
+];
+
+// Extend with more mock data
+for(let i=13; i<=state.totalCustomers; i++){
+  MOCK_CUSTOMERS.push({
+    id:'c'+i,firstName:'Πελάτης',lastName:'#'+i,mobile:'69'+String(i).padStart(8,'0'),
+    totalPoints:Math.floor(Math.random()*500),visits:Math.floor(Math.random()*25)+1,
+    avgSpend:Math.floor(Math.random()*60)+15,lastVisitDays:Math.floor(Math.random()*150),
+    regDays:Math.floor(Math.random()*900)+10,
+    store:['Κεντρικό','Βόρειο','Νότιο'][Math.floor(Math.random()*3)],hasApp:Math.random()>.5
+  });
+}
+
+// ── RULE DEFINITIONS ──────────────────────────────────
+const RULE_DEFS = {
+  points:    { label:'Loyalty Πόντοι',    icon:'fa-star',              type:'range', field:'totalPoints',   unit:'pts', min:0, max:1000, defaultMin:100, defaultMax:500, apiParam:'totalPoints[gte]' },
+  visits:    { label:'Αριθμός Επισκέψεων',icon:'fa-calendar-check',   type:'range', field:'visits',        unit:'',   min:0, max:50,   defaultMin:5,   defaultMax:25,  apiParam:'visits[gte]' },
+  lastvisit: { label:'Τελευταία Επίσκεψη',icon:'fa-clock',            type:'days',  field:'lastVisitDays', unit:'μέρες', min:0, max:365, defaultMin:0, defaultMax:60, apiParam:'lastAppointmentDate[lte]' },
+  avgspend:  { label:'Μέση Δαπάνη',       icon:'fa-euro-sign',        type:'range', field:'avgSpend',      unit:'€',  min:0, max:200,  defaultMin:30,  defaultMax:80,  apiParam:'avgSpend[gte]' },
+  store:     { label:'Κατάστημα',          icon:'fa-store',            type:'select',field:'store',         options:['Κεντρικό','Βόρειο','Νότιο'],       apiParam:'preferredStore' },
+  mobile:    { label:'Έχει Κινητό',        icon:'fa-mobile',           type:'bool',  field:'mobile',        apiParam:'exists[mobile]' },
+  regdate:   { label:'Ημ. Εγγραφής',       icon:'fa-user-plus',        type:'days',  field:'regDays',       unit:'μέρες', min:0, max:1000, defaultMin:0, defaultMax:30, apiParam:'createdAt[gte]' },
+  status:    { label:'Κατάσταση',          icon:'fa-toggle-on',        type:'select',field:'hasApp',        options:['Ενεργός','Ανενεργός'], apiParam:'status' },
+};
+
+const PRESETS = {
+  vip:       [{ type:'points', min:200, max:1000 }, { type:'visits', min:5, max:50 }],
+  inactive:  [{ type:'lastvisit', min:60, max:365 }],
+  new:       [{ type:'regdate', min:0, max:30 }],
+  birthday:  [{ type:'visits', min:1, max:50 }],
+  loyal:     [{ type:'visits', min:10, max:50 }],
+  highspend: [{ type:'avgspend', min:40, max:200 }],
+};
+
+let ruleIdCounter = 0;
+
+// ── RULE RENDERING ─────────────────────────────────────
+function addRule(type, opts = {}) {
+  const def = RULE_DEFS[type];
+  if (!def) return;
+  const id = ++ruleIdCounter;
+  const rule = { id, type, def, ...opts };
+  state.rules.push(rule);
+  renderRules();
+  recalculate();
+}
+
+function removeRule(id) {
+  state.rules = state.rules.filter(r => r.id !== id);
+  renderRules();
+  recalculate();
+}
+
+function renderRules() {
+  const list = document.getElementById('rulesList');
+  const empty = document.getElementById('emptyState');
+  if (state.rules.length === 0) {
+    list.innerHTML = '';
+    list.appendChild(empty);
+    empty.style.display = 'flex';
+    document.getElementById('sqlCard').style.display = 'none';
+    return;
+  }
+  empty.style.display = 'none';
+  list.innerHTML = '';
+
+  state.rules.forEach((rule, idx) => {
+    const def = rule.def;
+    // Connector
+    if (idx > 0) {
+      const conn = document.createElement('div');
+      conn.className = 'logic-connector';
+      conn.innerHTML = `<div class="connector-line"></div><div class="connector-pill ${state.logic==='OR'?'or':''}">${state.logic}</div><div class="connector-line"></div>`;
+      list.appendChild(conn);
+    }
+    const row = document.createElement('div');
+    row.className = 'rule-row fade-up';
+    row.innerHTML = `
+      <div class="rule-num">${idx+1}</div>
+      <div style="display:flex;align-items:center;gap:7px;min-width:0;">
+        <i class="fas ${def.icon}" style="color:var(--accent);font-size:.8rem;flex-shrink:0;width:16px;"></i>
+        <span style="font-size:.82rem;font-weight:600;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${def.label}</span>
+      </div>
+      ${renderRuleControls(rule)}
+      <button class="rule-del" onclick="removeRule(${rule.id})" title="Αφαίρεση"><i class="fas fa-xmark"></i></button>
+    `;
+    list.appendChild(row);
+  });
+  document.getElementById('sqlCard').style.display = 'block';
+  updateQueryDisplay();
+}
+
+function renderRuleControls(rule) {
+  const def = rule.def;
+  if (def.type === 'range') {
+    const mn = rule.min ?? def.defaultMin ?? def.min;
+    const mx = rule.max ?? def.defaultMax ?? def.max;
+    return `<div class="range-wrap">
+      <input class="range-input" type="number" value="${mn}" min="${def.min}" max="${def.max}" onchange="updateRule(${rule.id},'min',this.value)" style="width:64px;"/>
+      <span class="range-sep">—</span>
+      <input class="range-input" type="number" value="${mx}" min="${def.min}" max="${def.max}" onchange="updateRule(${rule.id},'max',this.value)" style="width:64px;"/>
+      <span style="font-size:.72rem;color:var(--sub);">${def.unit||''}</span>
+    </div>`;
+  }
+  if (def.type === 'days') {
+    const mx = rule.max ?? def.defaultMax ?? def.max;
+    return `<select class="rule-select" onchange="updateRule(${rule.id},'op',this.value)" style="max-width:120px;">
+      <option value="lte" ${(rule.op||'lte')==='lte'?'selected':''}>εντός</option>
+      <option value="gte" ${rule.op==='gte'?'selected':''}>πριν από</option>
+    </select>
+    <div class="range-wrap">
+      <input class="range-input" type="number" value="${mx}" min="0" max="365" onchange="updateRule(${rule.id},'max',this.value)"/>
+      <span style="font-size:.72rem;color:var(--sub);">${def.unit}</span>
+    </div>`;
+  }
+  if (def.type === 'select') {
+    const opts = def.options.map(o => `<option value="${o}" ${(rule.val||def.options[0])===o?'selected':''}>${o}</option>`).join('');
+    return `<div></div><select class="rule-select" onchange="updateRule(${rule.id},'val',this.value)">${opts}</select>`;
+  }
+  if (def.type === 'bool') {
+    return `<div></div><select class="rule-select" onchange="updateRule(${rule.id},'val',this.value)">
+      <option value="yes" ${rule.val!=='no'?'selected':''}>Ναι — Έχει κινητό</option>
+      <option value="no" ${rule.val==='no'?'selected':''}>Όχι — Δεν έχει</option>
+    </select>`;
+  }
+  return '<div></div><div></div>';
+}
+
+function updateRule(id, key, val) {
+  const rule = state.rules.find(r => r.id === id);
+  if (rule) { rule[key] = isNaN(val) ? val : Number(val); recalculate(); }
+}
+
+function setLogic(l) {
+  state.logic = l;
+  document.getElementById('lb-and').className = 'logic-btn' + (l==='AND'?' active':'');
+  document.getElementById('lb-or').className = 'logic-btn' + (l==='OR'?' active':'');
+  renderRules();
+  recalculate();
+}
+
+function clearAll() {
+  state.rules = [];
+  renderRules();
+  resetAudience();
+}
+
+// ── PRESETS ────────────────────────────────────────────
+function applyPreset(key) {
+  state.rules = [];
+  const preset = PRESETS[key];
+  if (!preset) return;
+  preset.forEach(p => addRule(p.type, { min: p.min, max: p.max }));
+  document.querySelectorAll('.preset-chip').forEach(c => c.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  const names = {vip:'VIP Πελάτες',inactive:'Ανενεργοί',new:'Νέοι Πελάτες',birthday:'Γενέθλια Μήνα',loyal:'Loyal Fans',highspend:'High Spenders'};
+  document.getElementById('groupName').value = names[key] || '';
+}
+
+// ── FILTER LOGIC ───────────────────────────────────────
+function matchCustomer(c) {
+  const results = state.rules.map(rule => {
+    const def = rule.def;
+    const val = c[def.field];
+    if (def.type === 'range') {
+      const mn = rule.min ?? def.defaultMin ?? 0;
+      const mx = rule.max ?? def.defaultMax ?? 9999;
+      return val >= mn && val <= mx;
+    }
+    if (def.type === 'days') {
+      const mx = rule.max ?? def.defaultMax ?? 365;
+      const op = rule.op || 'lte';
+      return op === 'lte' ? val <= mx : val >= mx;
+    }
+    if (def.type === 'select') {
+      if (def.field === 'hasApp') {
+        const want = rule.val || def.options[0];
+        return want === 'Ενεργός' ? c.hasApp : !c.hasApp;
+      }
+      return val === (rule.val || def.options[0]);
+    }
+    if (def.type === 'bool') return rule.val !== 'no' ? !!val : !val;
+    return true;
+  });
+  if (results.length === 0) return false;
+  return state.logic === 'AND' ? results.every(Boolean) : results.some(Boolean);
+}
+
+function recalculate() {
+  if (state.rules.length === 0) { resetAudience(); return; }
+  const matched = MOCK_CUSTOMERS.filter(matchCustomer);
+  const pct = Math.round((matched.length / state.totalCustomers) * 100);
+  const avgPts = matched.length ? Math.round(matched.reduce((a,c)=>a+c.totalPoints,0)/matched.length) : 0;
+  const avgV = matched.length ? (matched.reduce((a,c)=>a+c.visits,0)/matched.length).toFixed(1) : 0;
+  // Ring
+  const circumference = 2 * Math.PI * 55;
+  const offset = circumference - (pct / 100) * circumference;
+  document.getElementById('ringFill').style.strokeDasharray = circumference;
+  document.getElementById('ringFill').style.strokeDashoffset = offset;
+  document.getElementById('audienceNum').textContent = matched.length;
+  document.getElementById('pctLabel').textContent = pct + '%';
+  document.getElementById('pctBar').style.width = Math.min(pct, 100) + '%';
+  document.getElementById('sAvgPts').textContent = avgPts;
+  document.getElementById('sAvgVisits').textContent = avgV;
+  renderPreviewList(matched);
+  updateQueryDisplay();
+}
+
+function resetAudience() {
+  document.getElementById('ringFill').style.strokeDashoffset = 345;
+  document.getElementById('audienceNum').textContent = '—';
+  document.getElementById('pctLabel').textContent = '—%';
+  document.getElementById('pctBar').style.width = '0%';
+  document.getElementById('sAvgPts').textContent = '—';
+  document.getElementById('sAvgVisits').textContent = '—';
+  document.getElementById('previewList').innerHTML = '<div style="text-align:center;padding:20px;color:var(--sub);font-size:.82rem;">Πρόσθεσε κανόνες για προεπισκόπηση</div>';
+  document.getElementById('previewMore').textContent = '';
+}
+
+function refreshPreview() { recalculate(); }
+
+// ── PREVIEW LIST ───────────────────────────────────────
+const AVATARS_BG = ['#9D5B56','#C4874F','#3563CC','#2E7D32','#7B1FA2','#1565C0'];
+function renderPreviewList(matched) {
+  const list = document.getElementById('previewList');
+  const sample = matched.slice(0, 8);
+  if (!sample.length) { list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--sub);font-size:.82rem;">Κανένας πελάτης δεν ταιριάζει</div>'; return; }
+  list.innerHTML = sample.map((c,i) => {
+    const initials = c.firstName[0] + (c.lastName[0]||'');
+    const bg = AVATARS_BG[i % AVATARS_BG.length];
+    return `<div class="preview-item fade-up" style="animation-delay:${i*30}ms">
+      <div class="p-avatar" style="background:${bg};color:#fff;">${initials}</div>
+      <div class="p-info">
+        <div class="p-name">${c.firstName} ${c.lastName}</div>
+        <div class="p-meta">${c.store} · ${c.visits} επισκέψεις · ${c.lastVisitDays}μ. πριν</div>
+      </div>
+      <div class="p-pts"><i class="fas fa-star" style="font-size:.6rem;"></i> ${c.totalPoints}</div>
+    </div>`;
+  }).join('');
+  const more = matched.length - sample.length;
+  document.getElementById('previewMore').textContent = more > 0 ? `+ ${more} ακόμα πελάτες` : '';
+}
+
+// ── QUERY DISPLAY ──────────────────────────────────────
+function updateQueryDisplay() {
+  if (!state.rules.length) return;
+  const params = state.rules.map(rule => {
+    const def = rule.def;
+    if (def.type === 'range') {
+      const mn = rule.min ?? def.defaultMin ?? 0;
+      const mx = rule.max ?? def.defaultMax ?? 9999;
+      return `${def.apiParam}=${mn}&${def.apiParam.replace('[gte]','[lte]')}=${mx}`;
+    }
+    if (def.type === 'days') {
+      const mx = rule.max ?? def.defaultMax ?? 30;
+      const op = rule.op || 'lte';
+      const now = new Date();
+      now.setDate(now.getDate() - mx);
+      return `${def.apiParam}=${now.toISOString().slice(0,10)}`;
+    }
+    if (def.type === 'select') return `${def.apiParam}=${encodeURIComponent(rule.val||def.options[0])}`;
+    if (def.type === 'bool') return `${def.apiParam}=${rule.val!=='no'}`;
+    return '';
+  }).filter(Boolean);
+  const url = `GET /api/customers?${params.join('&')}\nX-Tenant-ID: {tenant-slug}\nAuthorization: Bearer {jwt}`;
+  document.getElementById('queryDisplay').textContent = url;
+}
+
+function copyQuery() {
+  const text = document.getElementById('queryDisplay').textContent;
+  navigator.clipboard.writeText(text).then(() => showToast('Αντιγράφηκε!', 'ok'));
+}
+
+// ── COLOR ──────────────────────────────────────────────
+function selectColor(el) {
+  document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('selected'));
+  el.classList.add('selected');
+  state.selectedColor = el.dataset.c;
+}
+
+// ── SAVE ───────────────────────────────────────────────
+function saveGroup() {
+  if (!state.rules.length) { showToast('Πρόσθεσε τουλάχιστον έναν κανόνα', 'err'); return; }
+  const name = document.getElementById('groupName').value.trim() || ('Κοινό ' + (state.savedGroups.length + 1));
+  const matched = MOCK_CUSTOMERS.filter(matchCustomer);
+  const group = {
+    id: Date.now(),
+    name,
+    color: state.selectedColor,
+    count: matched.length,
+    rules: JSON.parse(JSON.stringify(state.rules)),
+    logic: state.logic,
+    createdAt: new Date().toLocaleDateString('el-GR')
+  };
+  state.savedGroups.unshift(group);
+  renderGroups();
+  showToast(`✓ Αποθηκεύτηκε: ${name}`, 'ok');
+  document.getElementById('groupName').value = '';
+}
+
+function renderGroups() {
+  const list = document.getElementById('groupsList');
+  document.getElementById('groupCount').textContent = state.savedGroups.length + ' κοινά';
+  if (!state.savedGroups.length) {
+    list.innerHTML = '<div style="text-align:center;padding:14px;color:var(--sub);font-size:.78rem;">Δεν υπάρχουν αποθηκευμένα κοινά</div>';
+    return;
+  }
+  list.innerHTML = state.savedGroups.map(g => `
+    <div class="group-item" onclick="loadGroup(${g.id})">
+      <div class="group-dot" style="background:${g.color}"></div>
+      <div class="group-info">
+        <div class="g-name">${g.name}</div>
+        <div class="g-count">${g.count} πελάτες · ${g.createdAt}</div>
+      </div>
+      <div class="g-actions">
+        <button class="g-btn" title="Campaign" onclick="event.stopPropagation();sendToCampaignById(${g.id})"><i class="fas fa-bullhorn"></i></button>
+        <button class="g-btn del" title="Διαγραφή" onclick="event.stopPropagation();deleteGroup(${g.id})"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function loadGroup(id) {
+  const g = state.savedGroups.find(x => x.id === id);
+  if (!g) return;
+  state.rules = g.rules;
+  state.logic = g.logic;
+  document.getElementById('groupName').value = g.name;
+  document.getElementById('lb-and').className = 'logic-btn' + (g.logic==='AND'?' active':'');
+  document.getElementById('lb-or').className = 'logic-btn' + (g.logic==='OR'?' active':'');
+  renderRules();
+  recalculate();
+  showToast(`Φορτώθηκε: ${g.name}`);
+}
+
+function deleteGroup(id) {
+  state.savedGroups = state.savedGroups.filter(g => g.id !== id);
+  renderGroups();
+}
+
+function sendToCampaign() {
+  if (!state.rules.length) { showToast('Δεν υπάρχουν κανόνες', 'err'); return; }
+  const matched = MOCK_CUSTOMERS.filter(matchCustomer);
+  showToast(`→ Campaign με ${matched.length} παραλήπτες`, 'ok');
+}
+function sendToCampaignById(id) {
+  const g = state.savedGroups.find(x => x.id === id);
+  if (g) showToast(`→ Campaign με ${g.count} παραλήπτες`);
+}
+
+// ── TOAST ──────────────────────────────────────────────
+function showToast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = type;
+  t.classList.add('show');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>

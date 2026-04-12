@@ -1,0 +1,716 @@
+<!doctype html>
+<html lang="el" data-theme="light">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Glamour Nails — Ειδοποιήσεις</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700;9..40,900&display=swap" rel="stylesheet"/>
+<style>
+:root{--c-bg:#F9F6F3;--c-surface:#FFFFFF;--c-dark:#2E1A18;--c-mid:#6B3F3A;--c-primary:#9D6A65;--c-accent:#C4874F;--c-light:#E8C9BC;--c-muted:#F0EAE6;--c-shadow:rgba(46,26,24,0.10);--s-done:#5A8A6A;--s-next:#4A7FA5;--s-urgent:#B85450;--s-warn:#B8813A;--r-xs:6px;--r-sm:10px;--r-md:14px;--r-lg:20px;--r-xl:28px;--sidebar-w:240px;--sidebar-w-col:64px;--focus-ring:0 0 0 3px rgba(196,135,79,0.4);--sb-bg:#2E1A18;}
+[data-theme="dark"]{--c-bg:#1A1210;--c-surface:#231815;--c-dark:#F2EBE6;--c-mid:#C4A49F;--c-primary:#B08A85;--c-accent:#D49A60;--c-light:#4A2E2A;--c-muted:#2E1E1B;--c-shadow:rgba(0,0,0,0.4);--sb-bg:#150e0d;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--c-bg);color:var(--c-dark);min-height:100vh;display:flex;overflow:hidden;transition:background .3s,color .3s;}
+.skip-link{position:absolute;top:-100%;left:16px;background:var(--c-accent);color:#fff;padding:8px 16px;border-radius:var(--r-sm);font-weight:700;font-size:13px;z-index:9999;text-decoration:none;transition:top .2s;}.skip-link:focus{top:8px;}
+:focus{outline:none;}:focus-visible{box-shadow:var(--focus-ring)!important;outline:none;border-radius:var(--r-xs);}
+/* SIDEBAR */
+.sidebar{width:var(--sidebar-w);min-height:100vh;background:var(--sb-bg);display:flex;flex-direction:column;flex-shrink:0;position:relative;transition:width .3s cubic-bezier(.4,0,.2,1);overflow:hidden;z-index:50;}
+.sidebar.collapsed{width:var(--sidebar-w-col);}
+.sidebar-logo{padding:24px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(232,201,188,0.1);min-height:80px;}
+.logo-img-wrap{width:40px;height:40px;border-radius:10px;overflow:hidden;flex-shrink:0;border:1.5px solid rgba(196,135,79,0.4);}
+.logo-img-wrap img{width:100%;height:100%;object-fit:cover;}
+.logo-text{white-space:nowrap;transition:opacity .2s;}.sidebar.collapsed .logo-text{opacity:0;pointer-events:none;}
+.logo-brand{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;color:var(--c-bg);}
+.logo-tagline{font-size:9px;font-weight:700;color:var(--c-accent);text-transform:uppercase;margin-top:2px;}
+.nav-section{padding:12px;}
+.nav-label{font-size:9px;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:rgba(249,246,243,0.2);padding:12px 8px 6px;white-space:nowrap;}.sidebar.collapsed .nav-label{opacity:0;}
+.nav-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--r-sm);cursor:pointer;transition:background .2s;position:relative;text-decoration:none;margin-bottom:4px;}
+.nav-item:hover{background:rgba(249,246,243,0.07);}.nav-item.active{background:rgba(196,135,79,0.15);}
+.nav-item.active::before{content:'';position:absolute;left:0;top:8px;bottom:8px;width:3px;background:var(--c-accent);border-radius:0 3px 3px 0;}
+.nav-icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:14px;color:rgba(249,246,243,0.35);flex-shrink:0;}
+.nav-item.active .nav-icon{color:var(--c-accent);}
+.nav-lbl{font-size:13px;font-weight:500;color:rgba(249,246,243,0.8);transition:opacity .2s;white-space:nowrap;}.nav-item.active .nav-lbl{color:var(--c-bg);font-weight:700;}
+.sidebar.collapsed .nav-lbl{opacity:0;pointer-events:none;width:0;}
+.nav-badge{margin-left:auto;min-width:18px;height:18px;padding:0 5px;border-radius:99px;background:var(--c-accent);color:#fff;font-size:9px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:opacity .2s;}.sidebar.collapsed .nav-badge{opacity:0;}
+.nav-tip{position:absolute;left:70px;top:50%;transform:translateY(-50%);background:var(--sb-bg);color:white;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;white-space:nowrap;opacity:0;pointer-events:none;transition:all .2s;border:1px solid rgba(255,255,255,0.1);box-shadow:0 4px 12px rgba(0,0,0,0.3);z-index:100;}
+.sidebar.collapsed .nav-item:hover .nav-tip{opacity:1;left:60px;}
+.collapse-btn{position:absolute;top:28px;right:-12px;width:24px;height:24px;border-radius:50%;background:var(--c-accent);border:2px solid var(--c-bg);color:#fff;font-size:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:60;box-shadow:0 2px 8px rgba(0,0,0,0.2);outline:none;}
+.sidebar.collapsed .collapse-btn .arrow{transform:rotate(180deg);display:inline-block;}
+.sidebar-spacer{flex:1;}
+.credits-bar{margin:8px 12px;padding:12px 14px;border-radius:var(--r-md);background:rgba(249,246,243,0.04);border:1px solid rgba(232,201,188,0.1);overflow:hidden;transition:opacity .2s;}.sidebar.collapsed .credits-bar{opacity:0;pointer-events:none;}
+.credits-label{font-size:9px;font-weight:900;letter-spacing:.15em;text-transform:uppercase;color:rgba(249,246,243,0.3);margin-bottom:6px;}
+.credits-value{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--c-bg);line-height:1;}
+.credits-sub{font-size:10px;color:var(--c-accent);opacity:.7;margin-top:2px;}
+.credits-track{height:3px;background:rgba(249,246,243,0.08);border-radius:99px;margin-top:10px;}
+.credits-fill{height:100%;background:var(--c-accent);border-radius:99px;opacity:.6;transition:width .5s ease;}
+/* TOPBAR */
+.main-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
+.topbar{height:60px;background:rgba(249,246,243,0.88);backdrop-filter:blur(24px) saturate(160%);border-bottom:1px solid rgba(232,201,188,0.45);display:flex;align-items:center;padding:0 28px;gap:16px;flex-shrink:0;z-index:30;transition:background .3s,border-color .3s;}
+[data-theme="dark"] .topbar{background:rgba(26,18,16,0.92);border-color:rgba(74,46,42,0.5);}
+.topbar-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--c-dark);flex:1;}
+.topbar-actions{display:flex;gap:8px;align-items:center;}
+.btn-tb{height:36px;padding:0 14px;border-radius:var(--r-sm);border:1.5px solid var(--c-light);background:var(--c-surface);color:var(--c-mid);font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:7px;transition:all .2s;outline:none;}
+.btn-tb:hover{border-color:var(--c-dark);color:var(--c-dark);box-shadow:0 2px 8px var(--c-shadow);}
+.btn-tb.primary{background:var(--c-dark);color:var(--c-bg);border-color:var(--c-dark);}.btn-tb.primary:hover{background:var(--c-mid);border-color:var(--c-mid);}
+.theme-btn{width:36px;height:36px;border-radius:var(--r-sm);border:1.5px solid var(--c-light);background:var(--c-surface);color:var(--c-mid);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s;outline:none;}
+.theme-btn:hover{border-color:var(--c-accent);color:var(--c-accent);}
+.topbar-account{display:flex;align-items:center;gap:10px;padding-left:16px;border-left:1px solid var(--c-light);}
+.user-av{width:34px;height:34px;border-radius:var(--r-xs);background:rgba(196,135,79,0.2);border:1.5px solid rgba(196,135,79,0.3);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:var(--c-accent);font-family:'Cormorant Garamond',serif;}
+.user-name{font-size:12px;font-weight:700;color:var(--c-dark);}.user-role{font-size:10px;color:var(--c-primary);opacity:.8;margin-top:1px;}
+.user-logout{margin-left:8px;border:none;background:transparent;color:var(--c-primary);font-size:13px;cursor:pointer;padding:4px;border-radius:4px;outline:none;transition:color .2s;}.user-logout:hover{color:var(--s-urgent);}
+.mobile-menu-btn{display:none;width:36px;height:36px;border-radius:var(--r-sm);border:1.5px solid var(--c-light);background:var(--c-surface);color:var(--c-mid);font-size:14px;cursor:pointer;align-items:center;justify-content:center;flex-shrink:0;outline:none;}
+.mobile-overlay{display:none;position:fixed;inset:0;background:rgba(46,26,24,.5);z-index:40;backdrop-filter:blur(2px);}.mobile-overlay.show{display:block;}
+/* PAGE */
+.page-content{flex:1;overflow-y:auto;padding:28px;padding-bottom:100px;}
+/* TABS */
+.page-tabs{display:flex;gap:0;border-bottom:2px solid var(--c-muted);margin-bottom:24px;}
+.page-tab{padding:10px 20px;font-size:13px;font-weight:700;color:var(--c-primary);cursor:pointer;border:none;background:transparent;font-family:inherit;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;display:flex;align-items:center;gap:8px;outline:none;}
+.page-tab:hover{color:var(--c-dark);}.page-tab.active{color:var(--c-dark);border-bottom-color:var(--c-accent);}
+.tab-count{min-width:18px;height:18px;padding:0 5px;border-radius:99px;background:var(--c-muted);color:var(--c-primary);font-size:9px;font-weight:900;display:flex;align-items:center;justify-content:center;}
+.page-tab.active .tab-count{background:rgba(196,135,79,0.15);color:var(--c-accent);}
+/* TOOLBAR */
+.toolbar{display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+.search-wrap{position:relative;min-width:200px;max-width:300px;}
+.search-wrap input{width:100%;height:38px;border-radius:var(--r-sm);border:1.5px solid var(--c-light);background:var(--c-surface);font-family:inherit;font-size:13px;color:var(--c-dark);padding:0 36px 0 14px;outline:none;transition:border-color .2s;}
+.search-wrap input:focus{border-color:var(--c-primary);}.search-wrap input::placeholder{color:var(--c-primary);opacity:.5;}
+.search-icon{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--c-primary);opacity:.4;pointer-events:none;}
+.filter-tabs{display:flex;gap:6px;flex-wrap:wrap;}
+.ftab{height:36px;padding:0 14px;border-radius:99px;border:1.5px solid var(--c-light);background:transparent;font-family:inherit;font-size:12px;font-weight:700;color:var(--c-mid);cursor:pointer;transition:all .2s;outline:none;white-space:nowrap;}
+.ftab:hover{border-color:var(--c-primary);color:var(--c-dark);}.ftab.active{background:var(--c-dark);color:var(--c-bg);border-color:var(--c-dark);}
+/* LOG */
+.notif-list{background:var(--c-surface);border:1.5px solid var(--c-light);border-radius:var(--r-xl);overflow:hidden;animation:fadeUp .35s ease both;}
+.notif-head{display:grid;grid-template-columns:44px 2fr 80px 90px 110px 80px 60px;padding:10px 20px;border-bottom:2px solid var(--c-muted);background:var(--c-muted);}
+.nth{font-size:10px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--c-primary);opacity:.7;}
+.notif-row{display:grid;grid-template-columns:44px 2fr 80px 90px 110px 80px 60px;padding:13px 20px;border-bottom:1px solid var(--c-muted);align-items:center;transition:background .15s;cursor:pointer;}
+.notif-row:last-child{border-bottom:none;}.notif-row:hover{background:rgba(196,135,79,0.04);}
+.ch-av{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.ch-sms{background:rgba(74,127,165,0.12);color:var(--s-next);}.ch-email{background:rgba(196,135,79,0.12);color:var(--c-accent);}
+.notif-recipient{font-size:13px;font-weight:600;color:var(--c-dark);}
+.notif-preview{font-size:11px;color:var(--c-primary);opacity:.65;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:340px;}
+.ch-label-sms{font-size:11px;font-weight:700;color:var(--s-next);}.ch-label-email{font-size:11px;font-weight:700;color:var(--c-accent);}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:99px;font-size:10px;font-weight:800;}
+.badge-sent{background:rgba(90,138,106,0.12);color:var(--s-done);}.badge-pending{background:rgba(184,129,58,0.12);color:var(--s-warn);}.badge-failed{background:rgba(184,84,80,0.1);color:var(--s-urgent);}
+.badge-dot{width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0;}
+.notif-date{font-size:11px;color:var(--c-primary);opacity:.6;}.notif-cost{font-size:12px;font-weight:700;color:var(--c-mid);}
+.row-acts{display:flex;gap:5px;}
+.row-btn{width:28px;height:28px;border-radius:var(--r-xs);border:1.5px solid var(--c-light);background:transparent;color:var(--c-mid);font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;outline:none;}
+.row-btn:hover{border-color:var(--c-accent);color:var(--c-accent);background:rgba(196,135,79,0.06);}
+.row-btn.del:hover{border-color:var(--s-urgent);color:var(--s-urgent);background:rgba(184,84,80,0.06);}
+/* TEMPLATES */
+.tpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;animation:fadeUp .35s ease both;}
+.tpl-card{background:var(--c-surface);border:1.5px solid var(--c-light);border-radius:var(--r-lg);padding:20px;display:flex;flex-direction:column;gap:14px;transition:box-shadow .2s,transform .2s,border-color .2s;}
+.tpl-card:hover{box-shadow:0 8px 24px var(--c-shadow);transform:translateY(-2px);border-color:var(--c-primary);}
+.tpl-card.system{border-style:dashed;}.tpl-card.system:hover{transform:none;box-shadow:none;}
+.tpl-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+.tpl-ch-badge{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:99px;font-size:10px;font-weight:800;}
+.tpl-ch-sms{background:rgba(74,127,165,0.1);color:var(--s-next);}.tpl-ch-email{background:rgba(196,135,79,0.1);color:var(--c-accent);}
+.tpl-lock{font-size:10px;font-weight:700;color:var(--c-primary);opacity:.4;display:flex;align-items:center;gap:4px;}
+.tpl-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--c-dark);}
+.tpl-content{font-size:12px;color:var(--c-mid);opacity:.75;line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+.tpl-footer{display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--c-muted);}
+.tpl-use-btn{height:30px;padding:0 12px;border-radius:var(--r-xs);border:1.5px solid var(--c-light);background:transparent;font-family:inherit;font-size:11px;font-weight:700;color:var(--c-mid);cursor:pointer;transition:all .2s;outline:none;}
+.tpl-use-btn:hover{border-color:var(--c-accent);color:var(--c-accent);}
+.tpl-actions{display:flex;gap:5px;}
+/* GROUPS */
+.group-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px;animation:fadeUp .35s ease both;}
+.group-card{background:var(--c-surface);border:1.5px solid var(--c-light);border-radius:var(--r-xl);overflow:hidden;transition:box-shadow .2s,border-color .2s;}
+.group-card:hover{box-shadow:0 8px 28px var(--c-shadow);border-color:var(--c-primary);}
+.group-card-header{padding:20px 20px 14px;display:flex;align-items:flex-start;gap:14px;}
+.group-icon{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.group-name{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--c-dark);line-height:1.2;}
+.group-tpl-link{font-size:11px;color:var(--c-primary);opacity:.6;margin-top:3px;display:flex;align-items:center;gap:4px;}
+.group-header-right{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;}
+.auto-toggle-wrap{display:flex;align-items:center;gap:7px;}
+.auto-lbl{font-size:10px;font-weight:700;transition:color .2s;white-space:nowrap;}
+.auto-lbl.on{color:var(--s-done);}.auto-lbl.off{color:var(--c-primary);opacity:.5;}
+.toggle{position:relative;width:36px;height:20px;cursor:pointer;flex-shrink:0;}
+.toggle input{opacity:0;width:0;height:0;position:absolute;}
+.toggle-track{position:absolute;inset:0;border-radius:99px;background:rgba(46,26,24,0.12);transition:background .25s;}
+.toggle input:checked~.toggle-track{background:var(--s-done);}
+.toggle-thumb{position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,0.2);transition:transform .25s cubic-bezier(.34,1.3,.64,1);}
+.toggle input:checked~.toggle-track~.toggle-thumb{transform:translateX(16px);}
+.auto-event-badge{font-size:9px;font-weight:800;padding:2px 8px;border-radius:99px;background:rgba(90,138,106,0.1);color:var(--s-done);letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;}
+.auto-rule-row{padding:0 20px 12px;font-size:11px;color:var(--s-done);display:flex;align-items:center;gap:5px;}
+.group-divider{height:1px;background:var(--c-muted);margin:0 20px;}
+.group-stats{padding:14px 20px;display:flex;gap:20px;align-items:center;}
+.group-stat{display:flex;flex-direction:column;gap:2px;}
+.group-stat-val{font-size:18px;font-weight:900;color:var(--c-dark);line-height:1;font-family:'Cormorant Garamond',serif;}
+.group-stat-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--c-primary);opacity:.6;}
+.group-stat-sep{width:1px;background:var(--c-muted);align-self:stretch;margin:0 4px;}
+.group-last{padding:0 20px 12px;font-size:11px;color:var(--c-primary);opacity:.5;display:flex;align-items:center;gap:5px;}
+.group-footer{padding:14px 20px;border-top:1px solid var(--c-muted);display:flex;gap:8px;align-items:center;}
+.btn-sub{height:32px;padding:0 12px;border-radius:var(--r-sm);border:1.5px solid var(--c-light);background:transparent;font-family:inherit;font-size:11px;font-weight:700;color:var(--c-mid);cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .2s;outline:none;}
+.btn-sub:hover{border-color:var(--c-primary);color:var(--c-dark);}
+.btn-send-now{margin-left:auto;height:32px;padding:0 16px;border-radius:var(--r-sm);border:none;background:var(--c-dark);color:var(--c-bg);font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .2s;outline:none;}
+.btn-send-now:hover{background:var(--c-mid);}.btn-send-now:disabled{opacity:.4;cursor:not-allowed;background:var(--c-mid);}
+/* SUBSCRIBERS DRAWER */
+.sub-search-wrap{position:relative;margin-bottom:16px;}
+.sub-search-wrap input{width:100%;height:40px;border-radius:var(--r-sm);border:1.5px solid var(--c-light);background:var(--c-bg);font-family:inherit;font-size:13px;color:var(--c-dark);padding:0 38px 0 14px;outline:none;transition:border-color .2s;}
+.sub-search-wrap input:focus{border-color:var(--c-accent);}.sub-search-wrap input::placeholder{color:var(--c-primary);opacity:.5;}
+.sub-sec-lbl{font-size:10px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--c-mid);opacity:.6;margin-bottom:10px;margin-top:20px;}
+.sub-list{display:flex;flex-direction:column;gap:6px;max-height:260px;overflow-y:auto;}
+.sub-item{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:var(--r-sm);border:1.5px solid var(--c-light);background:var(--c-bg);transition:all .2s;}
+.sub-item.in-group{border-color:rgba(90,138,106,0.35);background:rgba(90,138,106,0.04);}
+.sub-av{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;font-family:'Cormorant Garamond',serif;background:rgba(196,135,79,0.1);color:var(--c-accent);flex-shrink:0;}
+.sub-name{font-size:13px;font-weight:600;color:var(--c-dark);flex:1;}.sub-mobile{font-size:11px;color:var(--c-primary);opacity:.6;}
+.sub-btn{height:28px;padding:0 10px;border-radius:99px;font-family:inherit;font-size:10px;font-weight:800;cursor:pointer;transition:all .2s;outline:none;border:1.5px solid;white-space:nowrap;}
+.sub-btn.add{border-color:var(--c-light);color:var(--c-mid);background:transparent;}.sub-btn.add:hover{border-color:var(--s-done);color:var(--s-done);}
+.sub-btn.remove{border-color:rgba(90,138,106,0.4);color:var(--s-done);background:rgba(90,138,106,0.08);}.sub-btn.remove:hover{border-color:var(--s-urgent);color:var(--s-urgent);background:rgba(184,84,80,0.06);}
+.auto-note{display:flex;align-items:flex-start;gap:8px;padding:12px 14px;background:rgba(90,138,106,0.06);border:1.5px solid rgba(90,138,106,0.2);border-radius:var(--r-sm);font-size:12px;color:var(--s-done);line-height:1.5;margin-bottom:16px;}
+/* SEND MODAL */
+.send-overlay{position:fixed;inset:0;background:rgba(46,26,24,0.55);backdrop-filter:blur(6px);z-index:300;display:flex;align-items:center;justify-content:center;animation:fadeIn .15s ease;}
+.send-box{background:var(--c-surface);border-radius:var(--r-xl);max-width:480px;width:90%;box-shadow:0 24px 64px rgba(46,26,24,0.3);border:1.5px solid var(--c-light);animation:scaleIn .2s cubic-bezier(.34,1.3,.64,1);overflow:hidden;}
+.send-hd{padding:24px 24px 20px;border-bottom:1px solid var(--c-muted);display:flex;align-items:center;gap:14px;}
+.send-hd-icon{width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.send-hd-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--c-dark);}
+.send-hd-sub{font-size:12px;color:var(--c-primary);opacity:.6;margin-top:2px;}
+.send-bd{padding:20px 24px;}
+.send-preview{background:var(--c-muted);border-radius:var(--r-sm);padding:14px;font-size:13px;color:var(--c-mid);line-height:1.65;border:1.5px solid var(--c-light);margin-bottom:16px;font-style:italic;}
+.send-cost-row{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--c-bg);border-radius:var(--r-sm);border:1.5px solid var(--c-light);}
+.cost-left{font-size:13px;color:var(--c-mid);}.cost-left strong{color:var(--c-dark);}
+.cost-right{display:flex;flex-direction:column;align-items:flex-end;gap:2px;}
+.cost-val{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--c-dark);line-height:1;}
+.cost-after{font-size:11px;color:var(--c-primary);opacity:.6;}.cost-after.warn{color:var(--s-urgent);opacity:1;font-weight:700;}
+.send-ft{padding:16px 24px;border-top:1px solid var(--c-muted);display:flex;gap:10px;}
+.btn-cancel{flex:1;height:40px;border-radius:var(--r-sm);border:1.5px solid var(--c-light);background:transparent;font-family:inherit;font-size:13px;font-weight:700;color:var(--c-mid);cursor:pointer;transition:all .2s;}.btn-cancel:hover{border-color:var(--c-dark);color:var(--c-dark);}
+.btn-send{flex:2;height:40px;border-radius:var(--r-sm);border:none;background:var(--c-dark);color:var(--c-bg);font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .2s;}.btn-send:hover{background:var(--c-mid);}
+/* DRAWER */
+.drawer-overlay{position:fixed;inset:0;background:rgba(46,26,24,0.45);backdrop-filter:blur(4px);z-index:200;display:flex;justify-content:flex-end;animation:fadeIn .2s ease;}
+.drawer{width:460px;max-width:100vw;height:100%;background:var(--c-surface);display:flex;flex-direction:column;box-shadow:-16px 0 48px rgba(46,26,24,0.2);animation:slideInRight .3s cubic-bezier(.34,1.2,.64,1);}
+.drawer-header{padding:24px 24px 20px;border-bottom:1px solid var(--c-muted);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.drawer-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--c-dark);}
+.drawer-subtitle{font-size:12px;color:var(--c-primary);opacity:.6;margin-top:2px;}
+.drawer-close{width:36px;height:36px;border-radius:var(--r-sm);border:1.5px solid var(--c-light);background:transparent;color:var(--c-mid);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s;outline:none;}.drawer-close:hover{border-color:var(--s-urgent);color:var(--s-urgent);}
+.drawer-body{flex:1;overflow-y:auto;padding:24px;}
+.drawer-footer{padding:16px 24px;border-top:1px solid var(--c-muted);display:flex;gap:10px;flex-shrink:0;}
+/* FORM */
+.field{margin-bottom:18px;}.field label{display:block;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--c-mid);margin-bottom:7px;}
+.field input,.field textarea,.field select{width:100%;background:var(--c-bg);border:1.5px solid var(--c-light);border-radius:var(--r-sm);font-family:inherit;font-size:14px;color:var(--c-dark);padding:10px 14px;outline:none;transition:border-color .2s;resize:vertical;}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--c-accent);}.field textarea{min-height:110px;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.field-hint{font-size:11px;color:var(--c-primary);opacity:.55;margin-top:5px;}
+.field-error{font-size:11px;color:var(--s-urgent);margin-top:5px;display:none;}
+.field input.error,.field textarea.error,.field select.error{border-color:var(--s-urgent);}
+.seg-ctrl{display:flex;border:1.5px solid var(--c-light);border-radius:var(--r-sm);overflow:hidden;background:var(--c-bg);}
+.seg-btn{flex:1;height:40px;border:none;background:transparent;font-family:inherit;font-size:13px;font-weight:700;color:var(--c-mid);cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:7px;outline:none;}
+.seg-btn.active{background:var(--c-dark);color:var(--c-bg);}.seg-btn:not(.active):hover{background:rgba(196,135,79,0.06);color:var(--c-dark);}
+.tpl-preview-box{background:var(--c-muted);border-radius:var(--r-sm);padding:14px;font-size:13px;color:var(--c-mid);line-height:1.6;min-height:60px;border:1.5px solid var(--c-light);margin-top:6px;font-style:italic;opacity:.8;}
+/* CONFIRM */
+.confirm-overlay{position:fixed;inset:0;background:rgba(46,26,24,0.55);backdrop-filter:blur(6px);z-index:400;display:flex;align-items:center;justify-content:center;animation:fadeIn .15s ease;}
+.confirm-box{background:var(--c-surface);border-radius:var(--r-xl);padding:32px;max-width:400px;width:90%;box-shadow:0 24px 64px rgba(46,26,24,0.3);border:1.5px solid var(--c-light);animation:scaleIn .2s cubic-bezier(.34,1.3,.64,1);}
+.confirm-icon{width:52px;height:52px;border-radius:16px;background:rgba(184,84,80,0.1);color:var(--s-urgent);font-size:22px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+.confirm-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--c-dark);margin-bottom:8px;}
+.confirm-text{font-size:13px;color:var(--c-mid);line-height:1.55;margin-bottom:24px;}
+.confirm-btns{display:flex;gap:10px;}
+.btn-danger{flex:1;height:40px;border-radius:var(--r-sm);border:none;background:var(--s-urgent);color:#fff;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:background .2s;}.btn-danger:hover{background:#a03030;}
+/* EMPTY */
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;gap:12px;}
+.empty-icon{font-size:44px;color:var(--c-primary);opacity:.12;margin-bottom:4px;}
+.empty-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--c-dark);opacity:.45;}
+.empty-sub{font-size:13px;color:var(--c-primary);opacity:.35;text-align:center;}
+/* TOAST */
+#toastContainer{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none;}
+.toast{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:var(--r-md);background:var(--c-dark);color:var(--c-bg);font-size:13px;font-weight:600;min-width:240px;box-shadow:0 8px 32px rgba(0,0,0,0.25);pointer-events:all;cursor:pointer;animation:toastIn .35s cubic-bezier(.34,1.56,.64,1) both;}
+.toast.removing{animation:toastOut .25s ease forwards;}
+.toast.success .toast-icon{color:#6ec97a;}.toast.error .toast-icon{color:var(--s-urgent);}.toast.info .toast-icon{color:var(--c-accent);}
+.toast-msg{flex:1;}
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideInRight{from{transform:translateX(100%)}to{transform:none}}
+@keyframes scaleIn{from{opacity:0;transform:scale(0.92)}to{opacity:1;transform:none}}
+@keyframes toastIn{from{opacity:0;transform:translateY(12px) scale(0.95)}to{opacity:1;transform:none}}
+@keyframes toastOut{to{opacity:0;transform:translateY(8px) scale(0.96)}}
+/* MOBILE */
+@media(max-width:768px){
+  :root{--sidebar-w:260px;}
+  .sidebar{position:fixed;left:0;top:0;bottom:0;transform:translateX(-100%);transition:transform .3s;}
+  .sidebar.mobile-open{transform:translateX(0);box-shadow:8px 0 48px rgba(46,26,24,.3);}
+  .topbar{padding:0 16px;gap:8px;}
+  .topbar-account .user-name,.topbar-account .user-role{display:none;}
+  .page-content{padding:16px;padding-bottom:90px;}
+  .collapse-btn{display:none;}.mobile-menu-btn{display:flex!important;}
+  .notif-head{display:none;}
+  .notif-row{grid-template-columns:44px 1fr 60px;}
+  .notif-row>*:nth-child(n+3):not(:last-child){display:none;}
+  .group-grid,.tpl-grid{grid-template-columns:1fr;}
+  .drawer{width:100vw;}.field-row{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<a href="#mainContent" class="skip-link">Μετάβαση στο περιεχόμενο</a>
+<div id="toastContainer" role="status" aria-live="polite"></div>
+<div class="mobile-overlay" id="mobileOverlay" onclick="closeMobile()"></div>
+
+<aside class="sidebar" id="sidebar" role="navigation" aria-label="Κύρια πλοήγηση">
+  <button class="collapse-btn" onclick="toggleCollapse()"><span class="arrow">‹</span></button>
+  <div class="sidebar-logo">
+    <div class="logo-img-wrap"><img src="./logo.png" alt="Glamour Nails"/></div>
+    <div class="logo-text"><div class="logo-brand">Glamour Nails</div><div class="logo-tagline">Management</div></div>
+  </div>
+  <nav class="nav-section">
+    <div class="nav-label">Κύρια</div>
+    <a href="front.html" class="nav-item"><div class="nav-icon"><i class="fas fa-chart-line"></i></div><span class="nav-lbl">Πίνακας Ελέγχου</span><span class="nav-tip">Πίνακας Ελέγχου</span></a>
+    <a href="front.html" class="nav-item"><div class="nav-icon"><i class="fas fa-calendar-check"></i></div><span class="nav-lbl">Ραντεβού</span><span class="nav-badge">10</span><span class="nav-tip">Ραντεβού</span></a>
+    <a href="customer.html" class="nav-item"><div class="nav-icon"><i class="fas fa-user-heart"></i></div><span class="nav-lbl">Πελάτες</span><span class="nav-tip">Πελάτες</span></a>
+    <a href="services.html" class="nav-item"><div class="nav-icon"><i class="fas fa-spa"></i></div><span class="nav-lbl">Υπηρεσίες</span><span class="nav-tip">Υπηρεσίες</span></a>
+  </nav>
+  <div class="sidebar-spacer"></div>
+  <nav class="nav-section">
+    <div class="nav-label">Διαχείριση</div>
+    <a href="#" class="nav-item"><div class="nav-icon"><i class="fas fa-store"></i></div><span class="nav-lbl">Καταστήματα</span><span class="nav-tip">Καταστήματα</span></a>
+    <a href="notifications.html" class="nav-item active" aria-current="page"><div class="nav-icon"><i class="fas fa-bell"></i></div><span class="nav-lbl">Ειδοποιήσεις</span><span class="nav-tip">Ειδοποιήσεις</span></a>
+  </nav>
+  <div class="credits-bar">
+    <div class="credits-label">SMS Credits</div>
+    <div class="credits-value" id="creditsVal">325</div>
+    <div class="credits-sub">από 500 διαθέσιμα</div>
+    <div class="credits-track"><div class="credits-fill" id="creditsFill" style="width:65%"></div></div>
+  </div>
+</aside>
+
+<div class="main-wrap">
+  <header class="topbar">
+    <button class="mobile-menu-btn" onclick="openMobile()"><i class="fas fa-bars"></i></button>
+    <div class="topbar-title">Ειδοποιήσεις</div>
+    <div class="topbar-actions">
+      <button class="btn-tb primary" onclick="handleAdd()"><i class="fas fa-plus" style="font-size:11px"></i><span id="addLabel">Νέα Αποστολή</span></button>
+      <button class="theme-btn" onclick="toggleTheme()"><i class="fas fa-moon" id="themeIcon"></i></button>
+      <div class="topbar-account">
+        <div class="user-av">ΜΚ</div>
+        <div><div class="user-name">Μαρία Κωνσταντίνου</div><div class="user-role">Ιδιοκτήτρια</div></div>
+        <button class="user-logout"><i class="fas fa-sign-out-alt"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-content" id="mainContent">
+    <div class="page-tabs" role="tablist">
+      <button class="page-tab active" id="tabLog" onclick="switchTab('log')" role="tab"><i class="fas fa-paper-plane" style="font-size:12px"></i> Αποστολές <span class="tab-count" id="cntLog">0</span></button>
+      <button class="page-tab" id="tabTpl" onclick="switchTab('tpl')" role="tab"><i class="fas fa-file-alt" style="font-size:12px"></i> Πρότυπα <span class="tab-count" id="cntTpl">0</span></button>
+      <button class="page-tab" id="tabGrp" onclick="switchTab('grp')" role="tab"><i class="fas fa-layer-group" style="font-size:12px"></i> Ομάδες <span class="tab-count" id="cntGrp">0</span></button>
+    </div>
+
+    <div id="panelLog">
+      <div class="toolbar">
+        <div class="search-wrap"><input type="search" id="logSearch" placeholder="Αναζήτηση..." oninput="renderLog()"/><i class="fas fa-search search-icon"></i></div>
+        <div class="filter-tabs" id="logFilters">
+          <button class="ftab active" data-f="all" onclick="setLF('all')">Όλες</button>
+          <button class="ftab" data-f="SMS" onclick="setLF('SMS')"><i class="fas fa-comment-sms" style="font-size:11px"></i> SMS</button>
+          <button class="ftab" data-f="EMAIL" onclick="setLF('EMAIL')"><i class="fas fa-envelope" style="font-size:11px"></i> Email</button>
+          <button class="ftab" data-f="SENT" onclick="setLF('SENT')">Εστάλη</button>
+          <button class="ftab" data-f="PENDING" onclick="setLF('PENDING')">Αναμονή</button>
+          <button class="ftab" data-f="FAILED" onclick="setLF('FAILED')">Αποτυχία</button>
+        </div>
+      </div>
+      <div id="logOut"></div>
+    </div>
+
+    <div id="panelTpl" style="display:none">
+      <div class="toolbar">
+        <div class="search-wrap"><input type="search" id="tplSearch" placeholder="Αναζήτηση..." oninput="renderTpl()"/><i class="fas fa-search search-icon"></i></div>
+        <div class="filter-tabs">
+          <button class="ftab active" data-tf="all" onclick="setTF('all')">Όλα</button>
+          <button class="ftab" data-tf="SMS" onclick="setTF('SMS')"><i class="fas fa-comment-sms" style="font-size:11px"></i> SMS</button>
+          <button class="ftab" data-tf="EMAIL" onclick="setTF('EMAIL')"><i class="fas fa-envelope" style="font-size:11px"></i> Email</button>
+        </div>
+      </div>
+      <div id="tplOut"></div>
+    </div>
+
+    <div id="panelGrp" style="display:none">
+      <div id="grpOut"></div>
+    </div>
+  </main>
+</div>
+
+<!-- DRAWER -->
+<div id="dOverlay" class="drawer-overlay" style="display:none" onclick="closeDrwBg(event)">
+  <div class="drawer" onclick="event.stopPropagation()">
+    <div class="drawer-header">
+      <div><div class="drawer-title" id="dTitle">—</div><div class="drawer-subtitle" id="dSub">—</div></div>
+      <button class="drawer-close" onclick="closeDrw()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="drawer-body" id="dBody"></div>
+    <div class="drawer-footer" id="dFoot">
+      <button class="btn-tb" style="flex:1;justify-content:center" onclick="closeDrw()">Ακύρωση</button>
+      <button class="btn-tb primary" style="flex:2;justify-content:center" onclick="saveDrw()"><i class="fas fa-save" style="font-size:11px"></i> Αποθήκευση</button>
+    </div>
+  </div>
+</div>
+
+<!-- SEND CONFIRM -->
+<div id="sendOv" class="send-overlay" style="display:none">
+  <div class="send-box">
+    <div class="send-hd"><div class="send-hd-icon" id="sendIcon"></div><div><div class="send-hd-title" id="sendTitle">Αποστολή</div><div class="send-hd-sub" id="sendSub"></div></div></div>
+    <div class="send-bd">
+      <div class="send-preview" id="sendPreview"></div>
+      <div class="send-cost-row">
+        <div class="cost-left" id="costLeft"></div>
+        <div class="cost-right"><div class="cost-val" id="costVal"></div><div class="cost-after" id="costAfter"></div></div>
+      </div>
+    </div>
+    <div class="send-ft">
+      <button class="btn-cancel" onclick="closeSend()">Ακύρωση</button>
+      <button class="btn-send" id="sendBtn"><i class="fas fa-paper-plane" style="font-size:12px"></i> Αποστολή τώρα</button>
+    </div>
+  </div>
+</div>
+
+<!-- DELETE CONFIRM -->
+<div id="confOv" class="confirm-overlay" style="display:none">
+  <div class="confirm-box">
+    <div class="confirm-icon"><i class="fas fa-trash-alt"></i></div>
+    <div class="confirm-title" id="confTitle">Διαγραφή;</div>
+    <div class="confirm-text" id="confText"></div>
+    <div class="confirm-btns">
+      <button class="btn-cancel" onclick="closeConf()">Ακύρωση</button>
+      <button class="btn-danger" id="confBtn">Διαγραφή</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* DATA */
+let CREDITS=325;
+const CUSTS=[
+  {id:'c1', name:'Άννα Γεωργίου',      mobile:'6912345678'},
+  {id:'c2', name:'Μαρία Κωνσταντίνου', mobile:'6923456789'},
+  {id:'c3', name:'Ιωάννα Μαυρίδου',   mobile:'6934567890'},
+  {id:'c4', name:'Κατερίνα Λαμπρινού', mobile:'6945678901'},
+  {id:'c5', name:'Γεωργία Παππά',      mobile:'6956789012'},
+  {id:'c6', name:'Σοφία Δημητρίου',    mobile:'6967890123'},
+  {id:'c7', name:'Ελένη Παπαδάκη',     mobile:'6978901234'},
+  {id:'c8', name:'Δήμητρα Κοντού',     mobile:'6989012345'},
+  {id:'c9', name:'Χριστίνα Βασιλείου', mobile:'6990123456'},
+  {id:'c10',name:'Νίκη Αλεξίου',       mobile:'6901234567'},
+];
+let notifs=[
+  /* ── 05/06 · Batch υπενθυμίσεις (auto, ομάδα Υπενθυμίσεις) ── */
+  {id:'n101',recipient:'6912345678',channel:'SMS',message:'Υπενθύμιση ραντεβού σας 05/06 στις 10:00 στο Glamour Nails.',status:'SENT',   cost:1,sentAt:'2025-06-05T08:02:00',customer:'Άννα Γεωργίου',      groupId:'g1'},
+  {id:'n102',recipient:'6923456789',channel:'SMS',message:'Υπενθύμιση ραντεβού σας 05/06 στις 11:30 στο Glamour Nails.',status:'SENT',   cost:1,sentAt:'2025-06-05T08:02:11',customer:'Μαρία Κωνσταντίνου', groupId:'g1'},
+  {id:'n103',recipient:'6934567890',channel:'SMS',message:'Υπενθύμιση ραντεβού σας 05/06 στις 13:00 στο Glamour Nails.',status:'SENT',   cost:1,sentAt:'2025-06-05T08:02:22',customer:'Ιωάννα Μαυρίδου',   groupId:'g1'},
+  {id:'n104',recipient:'6945678901',channel:'SMS',message:'Υπενθύμιση ραντεβού σας 05/06 στις 14:30 στο Glamour Nails.',status:'SENT',   cost:1,sentAt:'2025-06-05T08:02:33',customer:'Κατερίνα Λαμπρινού', groupId:'g1'},
+  {id:'n105',recipient:'6956789012',channel:'SMS',message:'Υπενθύμιση ραντεβού σας 05/06 στις 16:00 στο Glamour Nails.',status:'PENDING',cost:1,sentAt:'2025-06-05T08:02:44',customer:'Γεωργία Παππά',      groupId:'g1'},
+  {id:'n106',recipient:'6967890123',channel:'SMS',message:'Υπενθύμιση ραντεβού σας 05/06 στις 17:00 στο Glamour Nails.',status:'PENDING',cost:1,sentAt:'2025-06-05T08:02:55',customer:'Σοφία Δημητρίου',    groupId:'g1'},
+  {id:'n107',recipient:'6978901234',channel:'SMS',message:'Υπενθύμιση ραντεβού σας 05/06 στις 18:00 στο Glamour Nails.',status:'FAILED', cost:0,sentAt:'2025-06-05T08:03:06',customer:'Ελένη Παπαδάκη',     groupId:'g1'},
+  {id:'n108',recipient:'6989012345',channel:'SMS',message:'Υπενθύμιση ραντεβού σας 05/06 στις 19:00 στο Glamour Nails.',status:'SENT',   cost:1,sentAt:'2025-06-05T08:03:17',customer:'Δήμητρα Κοντού',     groupId:'g1'},
+  /* ── 04/06 · Ατομικές + auto ακύρωση ── */
+  {id:'n201',recipient:'6934567890',channel:'SMS',message:'Το ραντεβού σας για 04/06 ακυρώθηκε. Επικοινωνήστε μαζί μας για νέο ραντεβού.',status:'SENT',cost:1,sentAt:'2025-06-04T09:12:00',customer:'Ιωάννα Μαυρίδου',  groupId:'g2'},
+  {id:'n202',recipient:'6923456789',channel:'SMS',message:'Το ραντεβού σας για 05/06 στις 11:30 επιβεβαιώθηκε. Glamour Nails 💅',         status:'SENT',cost:1,sentAt:'2025-06-04T14:15:00',customer:'Μαρία Κωνσταντίνου'},
+  {id:'n203',recipient:'anna@gmail.com',channel:'EMAIL',message:'Σας υπενθυμίζουμε το ραντεβού σας για 05/06 στις 10:00.\n\nΜε εκτίμηση,\nGlamour Nails',status:'SENT',cost:0,sentAt:'2025-06-04T11:00:00',customer:'Άννα Γεωργίου',subject:'Υπενθύμιση Ραντεβού — Glamour Nails'},
+  {id:'n204',recipient:'6945678901',channel:'SMS',message:'Καλώς ήρθατε στο Glamour Nails, Κατερίνα! Χαρούμαστε που σας γνωρίσαμε 💅', status:'SENT',cost:1,sentAt:'2025-06-04T10:30:00',customer:'Κατερίνα Λαμπρινού'},
+  /* ── 03/06 · Batch Προωθητικά (manual) ── */
+  {id:'n301',recipient:'6923456789',channel:'SMS',message:'🌸 Καλοκαιρινές προσφορές Glamour Nails! -20% σε όλες τις υπηρεσίες τον Ιούλιο.',status:'SENT',cost:1,sentAt:'2025-06-03T17:45:00',customer:'Μαρία Κωνσταντίνου',groupId:'g3'},
+  {id:'n302',recipient:'6956789012',channel:'SMS',message:'🌸 Καλοκαιρινές προσφορές Glamour Nails! -20% σε όλες τις υπηρεσίες τον Ιούλιο.',status:'SENT',cost:1,sentAt:'2025-06-03T17:45:11',customer:'Γεωργία Παππά',     groupId:'g3'},
+  {id:'n303',recipient:'6978901234',channel:'SMS',message:'🌸 Καλοκαιρινές προσφορές Glamour Nails! -20% σε όλες τις υπηρεσίες τον Ιούλιο.',status:'SENT',cost:1,sentAt:'2025-06-03T17:45:22',customer:'Ελένη Παπαδάκη',    groupId:'g3'},
+  {id:'n304',recipient:'6990123456',channel:'SMS',message:'🌸 Καλοκαιρινές προσφορές Glamour Nails! -20% σε όλες τις υπηρεσίες τον Ιούλιο.',status:'FAILED',cost:0,sentAt:'2025-06-03T17:45:33',customer:'Χριστίνα Βασιλείου',groupId:'g3'},
+  {id:'n305',recipient:'6901234567',channel:'SMS',message:'🌸 Καλοκαιρινές προσφορές Glamour Nails! -20% σε όλες τις υπηρεσίες τον Ιούλιο.',status:'SENT',cost:1,sentAt:'2025-06-03T17:45:44',customer:'Νίκη Αλεξίου',      groupId:'g3'},
+  /* ── 02/06 ── */
+  {id:'n401',recipient:'6912345678',channel:'SMS',message:'Το ραντεβού σας για 02/06 επιβεβαιώθηκε. Glamour Nails 💅',status:'SENT',cost:1,sentAt:'2025-06-02T09:00:00',customer:'Άννα Γεωργίου'},
+  {id:'n402',recipient:'maria@email.gr',channel:'EMAIL',message:'Αγαπητή Μαρία,\n\nΣας υπενθυμίζουμε το ραντεβού σας για 03/06 στις 11:30.\n\nΜε εκτίμηση,\nGlamour Nails',status:'SENT',cost:0,sentAt:'2025-06-02T16:00:00',customer:'Μαρία Κωνσταντίνου',subject:'Υπενθύμιση — Glamour Nails'},
+  {id:'n403',recipient:'6967890123',channel:'SMS',message:'Το ραντεβού σας για 02/06 ακυρώθηκε. Επικοινωνήστε μαζί μας.',status:'SENT',cost:1,sentAt:'2025-06-02T11:30:00',customer:'Σοφία Δημητρίου',groupId:'g2'},
+  /* ── 30/05 · Batch VIP ── */
+  {id:'n501',recipient:'6923456789',channel:'SMS',message:'Καλώς ήρθατε στο Glamour Nails, Μαρία! Χαρούμαστε που σας γνωρίσαμε 💅',status:'SENT',cost:1,sentAt:'2025-05-30T10:00:00',customer:'Μαρία Κωνσταντίνου',groupId:'g4'},
+  {id:'n502',recipient:'6956789012',channel:'SMS',message:'Καλώς ήρθατε στο Glamour Nails, Γεωργία! Χαρούμαστε που σας γνωρίσαμε 💅',status:'SENT',cost:1,sentAt:'2025-05-30T10:00:11',customer:'Γεωργία Παππά',     groupId:'g4'},
+  {id:'n503',recipient:'6978901234',channel:'SMS',message:'Καλώς ήρθατε στο Glamour Nails, Ελένη! Χαρούμαστε που σας γνωρίσαμε 💅',status:'SENT',cost:1,sentAt:'2025-05-30T10:00:22',customer:'Ελένη Παπαδάκη',    groupId:'g4'},
+  /* ── 20/05 · Batch υπενθυμίσεις ── */
+  {id:'n601',recipient:'6912345678',channel:'SMS',message:'Υπενθύμιση ραντεβού σας 20/05 στις 09:00 στο Glamour Nails.',status:'SENT',  cost:1,sentAt:'2025-05-20T08:00:00',customer:'Άννα Γεωργίου',    groupId:'g1'},
+  {id:'n602',recipient:'6934567890',channel:'SMS',message:'Υπενθύμιση ραντεβού σας 20/05 στις 15:00 στο Glamour Nails.',status:'SENT',  cost:1,sentAt:'2025-05-20T08:00:11',customer:'Ιωάννα Μαυρίδου',  groupId:'g1'},
+  {id:'n603',recipient:'6945678901',channel:'SMS',message:'Υπενθύμιση ραντεβού σας 20/05 στις 16:30 στο Glamour Nails.',status:'FAILED',cost:0,sentAt:'2025-05-20T08:00:22',customer:'Κατερίνα Λαμπρινού',groupId:'g1'},
+  /* ── 15/05 · Ατομικές ── */
+  {id:'n701',recipient:'6989012345',channel:'SMS',message:'Υπενθύμιση ραντεβού σας 15/05 στις 10:00 στο Glamour Nails.',status:'SENT',cost:1,sentAt:'2025-05-15T08:00:00',customer:'Δήμητρα Κοντού'},
+  {id:'n702',recipient:'dimitra@mail.gr',channel:'EMAIL',message:'Αγαπητή Δήμητρα,\n\nΣας υπενθυμίζουμε το ραντεβού σας για 15/05 στις 10:00.\n\nΜε εκτίμηση,\nGlamour Nails',status:'SENT',cost:0,sentAt:'2025-05-14T20:00:00',customer:'Δήμητρα Κοντού',subject:'Υπενθύμιση Ραντεβού — Glamour Nails'},
+  {id:'n703',recipient:'6990123456',channel:'SMS',message:'Ευχαριστούμε για την επίσκεψή σας, Χριστίνα! Μέχρι την επόμενη φορά 💅',status:'SENT',cost:1,sentAt:'2025-05-15T18:30:00',customer:'Χριστίνα Βασιλείου'},
+];
+let tmpls=[
+  /* ── System (αμετάβλητα) ── */
+  {id:'t1',title:'Υπενθύμιση Ραντεβού',    channel:'SMS',  content:'Υπενθύμιση ραντεβού σας {{date}} στις {{time}} στο Glamour Nails.',                                                                                          isSystemDefault:true},
+  {id:'t2',title:'Επιβεβαίωση Κράτησης',   channel:'SMS',  content:'Το ραντεβού σας επιβεβαιώθηκε για {{date}} στις {{time}}. Glamour Nails 💅',                                                                                    isSystemDefault:true},
+  {id:'t3',title:'Ακύρωση Ραντεβού',       channel:'SMS',  content:'Το ραντεβού σας για {{date}} ακυρώθηκε. Επικοινωνήστε μαζί μας για νέο ραντεβού.',                                                                             isSystemDefault:true},
+  /* ── Custom ── */
+  {id:'t4',title:'Καλωσόρισμα Νέου Πελάτη',channel:'SMS',  content:'Καλώς ήρθατε στο Glamour Nails, {{name}}! Χαρούμαστε που σας γνωρίσαμε 💅',                                                                                    isSystemDefault:false},
+  {id:'t5',title:'Ευχαριστήριο Επίσκεψης', channel:'SMS',  content:'Ευχαριστούμε για την επίσκεψή σας, {{name}}! Μέχρι την επόμενη φορά. Glamour Nails 💅',                                                                        isSystemDefault:false},
+  {id:'t6',title:'Υπενθύμιση — Email',     channel:'EMAIL',content:'Αγαπητή {{name}},\n\nΣας υπενθυμίζουμε το ραντεβού σας για {{date}} στις {{time}}.\nΑν θέλετε να το αλλάξετε, επικοινωνήστε μαζί μας.\n\nΜε εκτίμηση,\nGlamour Nails', isSystemDefault:false, subject:'Υπενθύμιση Ραντεβού — Glamour Nails'},
+  {id:'t7',title:'Προσφορά Καλοκαιριού',   channel:'SMS',  content:'🌸 Καλοκαιρινές προσφορές Glamour Nails! -20% σε όλες τις υπηρεσίες τον Ιούλιο. Κλείστε ραντεβού τώρα!',                                                        isSystemDefault:false},
+  {id:'t8',title:'Πρόσκληση Αξιολόγησης', channel:'EMAIL',content:'Αγαπητή {{name}},\n\nΗ γνώμη σας μετράει! Αφιερώστε 1 λεπτό και αξιολογήστε την εμπειρία σας στο Glamour Nails.\n\nΣας ευχαριστούμε,\nGlamour Nails',             isSystemDefault:false, subject:'Πείτε μας τη γνώμη σας 💅'},
+];
+let groups=[
+  {id:'g1',name:'Υπενθυμίσεις', icon:'🔔',color:'rgba(196,135,79,0.12)',ic:'var(--c-accent)',  templateId:'t1',autoTrigger:true, autoEvent:'24ω πριν το ραντεβού',       autoRule:'Όλοι οι πελάτες με ενεργό ραντεβού', subs:['c1','c2','c3','c4','c5','c6','c7','c8'],    lastSent:'2025-06-05T08:02:00',lastCnt:8},
+  {id:'g2',name:'Ακυρώσεις',    icon:'❌',color:'rgba(184,84,80,0.1)', ic:'var(--s-urgent)',  templateId:'t3',autoTrigger:true, autoEvent:'Appointment → CANCELED',      autoRule:'Πελάτης που ακυρώθηκε το ραντεβού του',subs:['c1','c2','c3','c4','c5','c6','c7','c8'],    lastSent:'2025-06-04T09:12:00',lastCnt:1},
+  {id:'g3',name:'Προωθητικά',   icon:'🎁',color:'rgba(90,138,106,0.1)',ic:'var(--s-done)',    templateId:'t7',autoTrigger:false,autoEvent:null,                           autoRule:null,                                   subs:['c2','c5','c7','c9','c10'],                  lastSent:'2025-06-03T17:45:00',lastCnt:5},
+  {id:'g4',name:'VIP Πελάτες',  icon:'⭐',color:'rgba(74,127,165,0.1)',ic:'var(--s-next)',    templateId:'t4',autoTrigger:false,autoEvent:null,                           autoRule:'Πελάτες με loyalty points ≥ 100',      subs:['c2','c5','c7'],                             lastSent:'2025-05-30T10:00:00',lastCnt:3},
+];
+
+/* STATE */
+let tab='log',lf='all',tf='all',mode=null,eid=null,delId=null,delType=null,activeGrp=null;
+
+/* SIDEBAR/THEME */
+function toggleCollapse(){const s=document.getElementById('sidebar');s.classList.toggle('collapsed');localStorage.setItem('sc',s.classList.contains('collapsed'));}
+function openMobile(){document.getElementById('sidebar').classList.add('mobile-open');document.getElementById('mobileOverlay').classList.add('show');}
+function closeMobile(){document.getElementById('sidebar').classList.remove('mobile-open');document.getElementById('mobileOverlay').classList.remove('show');}
+function toggleTheme(){const d=document.documentElement.getAttribute('data-theme')==='dark';document.documentElement.setAttribute('data-theme',d?'light':'dark');document.getElementById('themeIcon').className=d?'fas fa-moon':'fas fa-sun';localStorage.setItem('theme',d?'light':'dark');}
+
+/* TABS */
+function switchTab(t){
+  tab=t;
+  ['log','tpl','grp'].forEach(x=>{document.getElementById('panel'+x.charAt(0).toUpperCase()+x.slice(1)).style.display=x===t?'':'none';document.getElementById('tab'+x.charAt(0).toUpperCase()+x.slice(1)).classList.toggle('active',x===t);});
+  document.getElementById('addLabel').textContent={log:'Νέα Αποστολή',tpl:'Νέο Πρότυπο',grp:'Νέα Ομάδα'}[t];
+}
+function handleAdd(){if(tab==='log')openNotifNew();else if(tab==='tpl')openTplNew();else openGrpNew();}
+
+/* LOG */
+function setLF(f){lf=f;document.querySelectorAll('#logFilters .ftab').forEach(b=>b.classList.toggle('active',b.dataset.f===f));renderLog();}
+function renderLog(){
+  const q=document.getElementById('logSearch').value.toLowerCase().trim();
+  let it=[...notifs].sort((a,b)=>new Date(b.sentAt)-new Date(a.sentAt));
+  if(lf==='SMS'||lf==='EMAIL')it=it.filter(n=>n.channel===lf);
+  else if(lf!=='all')it=it.filter(n=>n.status===lf);
+  if(q)it=it.filter(n=>n.recipient.toLowerCase().includes(q)||(n.customer||'').toLowerCase().includes(q)||n.message.toLowerCase().includes(q));
+  document.getElementById('cntLog').textContent=notifs.length;
+  const o=document.getElementById('logOut');
+  if(!it.length){o.innerHTML=emptyH('fa-paper-plane','Δεν βρέθηκαν αποστολές',q?'Δοκιμάστε άλλο όρο':'Δεν υπάρχουν αποστολές ακόμα');return;}
+  const sm={SENT:{c:'badge-sent',l:'Εστάλη'},PENDING:{c:'badge-pending',l:'Αναμονή'},FAILED:{c:'badge-failed',l:'Αποτυχία'}};
+  o.innerHTML=`<div class="notif-list"><div class="notif-head"><div class="nth"></div><div class="nth">Παραλήπτης / Μήνυμα</div><div class="nth">Κανάλι</div><div class="nth">Κατάσταση</div><div class="nth">Ημ/νία</div><div class="nth">Credits</div><div class="nth"></div></div>${it.map(n=>{const s=sm[n.status]||sm.SENT,sms=n.channel==='SMS';return`<div class="notif-row" onclick="openNotifEdit('${n.id}')"><div class="ch-av ${sms?'ch-sms':'ch-email'}"><i class="fas ${sms?'fa-comment-sms':'fa-envelope'}"></i></div><div><div class="notif-recipient">${esc(n.customer||n.recipient)}</div><div class="notif-preview">${esc(n.message)}</div></div><div class="${sms?'ch-label-sms':'ch-label-email'}">${n.channel}</div><div><span class="badge ${s.c}"><span class="badge-dot"></span>${s.l}</span></div><div class="notif-date">${rd(n.sentAt)}</div><div class="notif-cost">${n.cost>0?n.cost+' cr.':'—'}</div><div class="row-acts" onclick="event.stopPropagation()"><button class="row-btn del" onclick="askDel('notif','${n.id}')"><i class="fas fa-trash-alt"></i></button></div></div>`;}).join('')}</div>`;
+}
+
+/* TEMPLATES */
+function setTF(f){tf=f;document.querySelectorAll('[data-tf]').forEach(b=>b.classList.toggle('active',b.dataset.tf===f));renderTpl();}
+function renderTpl(){
+  const q=document.getElementById('tplSearch').value.toLowerCase().trim();
+  let it=[...tmpls];
+  if(tf!=='all')it=it.filter(t=>t.channel===tf);
+  if(q)it=it.filter(t=>t.title.toLowerCase().includes(q)||t.content.toLowerCase().includes(q));
+  document.getElementById('cntTpl').textContent=tmpls.length;
+  const o=document.getElementById('tplOut');
+  if(!it.length){o.innerHTML=emptyH('fa-file-alt','Δεν βρέθηκαν πρότυπα',q?'Δοκιμάστε άλλο όρο':'Προσθέστε το πρώτο πρότυπο');return;}
+  o.innerHTML=`<div class="tpl-grid">${it.map(t=>{const sms=t.channel==='SMS',lk=t.isSystemDefault;return`<div class="tpl-card ${lk?'system':''}"><div class="tpl-card-top"><span class="tpl-ch-badge ${sms?'tpl-ch-sms':'tpl-ch-email'}"><i class="fas ${sms?'fa-comment-sms':'fa-envelope'}" style="font-size:10px"></i> ${t.channel}</span>${lk?`<span class="tpl-lock"><i class="fas fa-lock"></i> Σύστημα</span>`:''}</div><div class="tpl-title">${esc(t.title)}</div><div class="tpl-content">${esc(t.content)}</div><div class="tpl-footer"><button class="tpl-use-btn" onclick="useTpl('${t.id}')"><i class="fas fa-paper-plane" style="font-size:10px"></i> Αποστολή</button><div class="tpl-actions">${!lk?`<button class="row-btn" onclick="openTplEdit('${t.id}')"><i class="fas fa-pen"></i></button><button class="row-btn del" onclick="askDel('tpl','${t.id}')"><i class="fas fa-trash-alt"></i></button>`:`<span style="font-size:10px;color:var(--c-primary);opacity:.4">Μη επεξεργάσιμο</span>`}</div></div></div>`;}).join('')}</div>`;
+}
+
+/* GROUPS */
+function renderGrp(){
+  document.getElementById('cntGrp').textContent=groups.length;
+  const o=document.getElementById('grpOut');
+  if(!groups.length){o.innerHTML=emptyH('fa-layer-group','Δεν υπάρχουν ομάδες','Δημιουργήστε την πρώτη ομάδα');return;}
+  o.innerHTML=`<div class="group-grid">${groups.map(g=>{
+    const tpl=tmpls.find(t=>t.id===g.templateId),cnt=g.subs.length,cost=cnt,ok=cnt>0&&CREDITS>=cost;
+    return`<div class="group-card" id="gc-${g.id}">
+      <div class="group-card-header">
+        <div class="group-icon" style="background:${g.color};color:${g.ic}">${g.icon}</div>
+        <div style="flex:1;min-width:0"><div class="group-name">${esc(g.name)}</div><div class="group-tpl-link"><i class="fas fa-file-alt" style="font-size:9px"></i> ${tpl?esc(tpl.title):'Χωρίς πρότυπο'}</div></div>
+        <div class="group-header-right">
+          <div class="auto-toggle-wrap">
+            <span class="auto-lbl ${g.autoTrigger?'on':'off'}" id="albl-${g.id}">${g.autoTrigger?'Auto ON':'Auto OFF'}</span>
+            <label class="toggle"><input type="checkbox" ${g.autoTrigger?'checked':''} onchange="togAuto('${g.id}',this.checked)"/><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+          </div>
+          ${g.autoEvent?`<span class="auto-event-badge"><i class="fas fa-bolt" style="font-size:8px"></i> ${esc(g.autoEvent)}</span>`:''}
+        </div>
+      </div>
+      ${g.autoRule?`<div class="auto-rule-row"><i class="fas fa-magic" style="font-size:9px"></i> Auto-subscribe: ${esc(g.autoRule)}</div>`:''}
+      <div style="height:1px;background:var(--c-muted);margin:0 20px"></div>
+      <div class="group-stats">
+        <div class="group-stat"><div class="group-stat-val">${cnt}</div><div class="group-stat-lbl">Πελάτες</div></div>
+        <div class="group-stat-sep"></div>
+        <div class="group-stat"><div class="group-stat-val">${cost}</div><div class="group-stat-lbl">Credits/αποστολή</div></div>
+        <div class="group-stat-sep"></div>
+        <div class="group-stat"><div class="group-stat-val" style="color:${CREDITS<cost?'var(--s-urgent)':'var(--c-dark)'}">${CREDITS}</div><div class="group-stat-lbl">Διαθέσιμα</div></div>
+      </div>
+      ${g.lastSent?`<div class="group-last"><i class="fas fa-history" style="font-size:10px"></i> Τελευταία: ${rd(g.lastSent)} · ${g.lastCnt} SMS</div>`:''}
+      <div class="group-footer">
+        <button class="btn-sub" onclick="openSubs('${g.id}')"><i class="fas fa-users" style="font-size:10px"></i> Πελάτες</button>
+        <button class="row-btn" onclick="openGrpEdit('${g.id}')" title="Επεξεργασία"><i class="fas fa-pen"></i></button>
+        <button class="btn-send-now" onclick="openSend('${g.id}')" ${!ok?'disabled':''}>${!ok&&CREDITS<cost?'Ανεπαρκή credits':'Αποστολή τώρα'}</button>
+      </div>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+function togAuto(id,val){const g=groups.find(x=>x.id===id);g.autoTrigger=val;const l=document.getElementById('albl-'+id);if(l){l.textContent=val?'Auto ON':'Auto OFF';l.className='auto-lbl '+(val?'on':'off');}showToast(`"${g.name}": Auto ${val?'ενεργό':'ανενεργό'}`,val?'success':'info');}
+
+/* SEND CONFIRM */
+function openSend(gid){
+  const g=groups.find(x=>x.id===gid),tpl=tmpls.find(t=>t.id===g.templateId),cost=g.subs.length,after=CREDITS-cost;
+  document.getElementById('sendIcon').innerHTML=`<span style="font-size:20px">${g.icon}</span>`;
+  document.getElementById('sendIcon').style.background=g.color;
+  document.getElementById('sendTitle').textContent=`Αποστολή σε "${g.name}"`;
+  document.getElementById('sendSub').textContent=`${g.subs.length} παραλήπτες · ${tpl?tpl.channel:'SMS'}`;
+  document.getElementById('sendPreview').textContent=tpl?tpl.content:'—';
+  document.getElementById('costLeft').innerHTML=`<strong>${cost} SMS</strong> προς ${g.subs.length} πελάτες`;
+  document.getElementById('costVal').textContent=cost+' credits';
+  document.getElementById('costAfter').textContent=`Απομένουν: ${after} credits`;
+  document.getElementById('costAfter').className='cost-after'+(after<50?' warn':'');
+  document.getElementById('sendBtn').onclick=()=>doSend(gid);
+  document.getElementById('sendOv').style.display='flex';
+}
+function closeSend(){document.getElementById('sendOv').style.display='none';}
+function doSend(gid){
+  const g=groups.find(x=>x.id===gid),tpl=tmpls.find(t=>t.id===g.templateId),cost=g.subs.length;
+  CREDITS-=cost;
+  document.getElementById('creditsVal').textContent=CREDITS;
+  document.getElementById('creditsFill').style.width=Math.round((CREDITS/500)*100)+'%';
+  const now=new Date().toISOString();
+  g.subs.forEach(cid=>{const c=CUSTS.find(x=>x.id===cid);notifs.unshift({id:'n'+Date.now()+Math.random(),recipient:c?.mobile||cid,channel:tpl?.channel||'SMS',message:tpl?.content||'',status:'SENT',cost:1,sentAt:now,customer:c?.name,groupId:gid});});
+  g.lastSent=now;g.lastCnt=cost;
+  closeSend();renderGrp();
+  showToast(`Εστάλησαν ${cost} μηνύματα στην ομάδα "${g.name}"','success');
+}
+
+/* SUBSCRIBERS DRAWER */
+function openSubs(gid){
+  activeGrp=gid;mode='subs';
+  const g=groups.find(x=>x.id===gid);
+  document.getElementById('dTitle').textContent=`Πελάτες — ${g.name}`;
+  document.getElementById('dSub').textContent=`${g.subs.length} εγγεγραμμένοι`;
+  document.getElementById('dFoot').style.display='none';
+  renderSubsBody(g,'');showDrw();
+}
+function renderSubsBody(g,q){
+  const ql=q.toLowerCase().trim();
+  const inG=CUSTS.filter(c=>g.subs.includes(c.id));
+  const outG=CUSTS.filter(c=>!g.subs.includes(c.id));
+  const fi=ql?inG.filter(c=>c.name.toLowerCase().includes(ql)||c.mobile.includes(ql)):inG;
+  const fo=ql?outG.filter(c=>c.name.toLowerCase().includes(ql)||c.mobile.includes(ql)):outG;
+  const note=g.autoRule?`<div class="auto-note"><i class="fas fa-magic" style="margin-top:2px;flex-shrink:0"></i><span>Αυτόματη εγγραφή: <strong>${esc(g.autoRule)}</strong></span></div>`:'';
+  document.getElementById('dBody').innerHTML=`
+    <div class="sub-search-wrap"><input type="text" id="subSrch" placeholder="Αναζήτηση..." oninput="filterSubs(this.value)" value="${esc(q)}"/><i class="fas fa-search search-icon"></i></div>
+    ${note}
+    <div class="sub-sec-lbl">Εγγεγραμμένοι (${inG.length})</div>
+    <div class="sub-list">${fi.map(c=>subRow(c,true)).join('')||'<div style="font-size:12px;color:var(--c-primary);opacity:.4;padding:8px 0">Κανένας εγγεγραμμένος</div>'}</div>
+    ${fo.length?`<div class="sub-sec-lbl">Προσθήκη πελάτη</div><div class="sub-list">${fo.map(c=>subRow(c,false)).join('')}</div>`:''}`;
+  setTimeout(()=>document.getElementById('subSrch')?.focus(),60);
+}
+function subRow(c,inG){const ini=c.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();return`<div class="sub-item ${inG?'in-group':''}"><div class="sub-av">${ini}</div><div style="flex:1;min-width:0"><div class="sub-name">${esc(c.name)}</div><div class="sub-mobile">${c.mobile}</div></div><button class="sub-btn ${inG?'remove':'add'}" onclick="togSub('${c.id}',${!inG})">${inG?'<i class="fas fa-minus" style="font-size:9px"></i> Αφαίρεση':'<i class="fas fa-plus" style="font-size:9px"></i> Εγγραφή'}</button></div>`;}
+function filterSubs(q){renderSubsBody(groups.find(x=>x.id===activeGrp),q);}
+function togSub(cid,add){
+  const g=groups.find(x=>x.id===activeGrp);
+  if(add){if(!g.subs.includes(cid))g.subs.push(cid);}else{g.subs=g.subs.filter(i=>i!==cid);}
+  document.getElementById('dSub').textContent=`${g.subs.length} εγγεγραμμένοι`;
+  filterSubs(document.getElementById('subSrch')?.value||'');
+  const c=CUSTS.find(x=>x.id===cid);
+  showToast(add?`"${c.name}" προστέθηκε`:`"${c.name}" αφαιρέθηκε`,add?'success':'info');
+}
+
+/* GROUP DRAWER */
+function openGrpNew(){mode='grp-new';eid=null;document.getElementById('dTitle').textContent='Νέα Ομάδα';document.getElementById('dSub').textContent='Ορισμός broadcast group';document.getElementById('dFoot').style.display='';renderGrpForm(null);showDrw();}
+function openGrpEdit(id){const g=groups.find(x=>x.id===id);mode='grp-edit';eid=id;document.getElementById('dTitle').textContent='Επεξεργασία Ομάδας';document.getElementById('dSub').textContent=g.name;document.getElementById('dFoot').style.display='';renderGrpForm(g);showDrw();}
+function renderGrpForm(g){
+  const opts=tmpls.map(t=>`<option value="${t.id}" ${g?.templateId===t.id?'selected':''}>${esc(t.title)} (${t.channel})</option>`).join('');
+  document.getElementById('dBody').innerHTML=`
+    <div class="field"><label for="fgN">Όνομα Ομάδας *</label><input type="text" id="fgN" value="${esc(g?.name||'')}" placeholder="πχ. Προσφορές Σεζόν" maxlength="60"/><div class="field-error" id="fgNErr">Υποχρεωτικό</div></div>
+    <div class="field"><label for="fgT">Συνδεδεμένο Πρότυπο</label><select id="fgT"><option value="">— Χωρίς πρότυπο —</option>${opts}</select></div>
+    <div class="field"><label for="fgR">Κανόνας Αυτόματης Εγγραφής</label><input type="text" id="fgR" value="${esc(g?.autoRule||'')}" placeholder="πχ. Πελάτες με points > 50"/><div class="field-hint">Περιγραφή κανόνα — η λογική υλοποιείται στο backend</div></div>
+    <div class="field"><label for="fgE">Auto Trigger Event</label><input type="text" id="fgE" value="${esc(g?.autoEvent||'')}" placeholder="πχ. Appointment → CANCELED"/><div class="field-hint">Αφήστε κενό για manual-only αποστολή</div></div>`;
+}
+
+/* NOTIF DRAWER */
+function openNotifNew(){mode='notif-new';eid=null;document.getElementById('dTitle').textContent='Νέα Αποστολή';document.getElementById('dSub').textContent='SMS ή Email σε πελάτη';document.getElementById('dFoot').style.display='';renderNF(null);showDrw();}
+function openNotifEdit(id){const n=notifs.find(x=>x.id===id);mode='notif-edit';eid=id;document.getElementById('dTitle').textContent='Επεξεργασία';document.getElementById('dSub').textContent=n.recipient;document.getElementById('dFoot').style.display='';renderNF(n);showDrw();}
+function renderNF(n){
+  const ch=n?.channel||'SMS';
+  document.getElementById('dBody').innerHTML=`
+    <div class="field"><label>Κανάλι</label><div class="seg-ctrl"><button type="button" class="seg-btn ${ch==='SMS'?'active':''}" id="sgS" onclick="swCh('SMS')"><i class="fas fa-comment-sms" style="font-size:12px"></i> SMS</button><button type="button" class="seg-btn ${ch==='EMAIL'?'active':''}" id="sgE" onclick="swCh('EMAIL')"><i class="fas fa-envelope" style="font-size:12px"></i> Email</button></div></div>
+    <div class="field"><label>Παραλήπτης *</label><input type="text" id="fR" value="${esc(n?.recipient||'')}" placeholder="${ch==='SMS'?'πχ. 6912345678':'πχ. email@example.com'}"/><div class="field-error" id="fRErr">Υποχρεωτικό</div></div>
+    <div class="field" id="subF" style="${ch==='EMAIL'?'':'display:none'}"><label>Θέμα Email</label><input type="text" id="fS" value="${esc(n?.subject||'')}"/></div>
+    <div class="field"><label>Μήνυμα *</label><textarea id="fM" maxlength="10000" oninput="updMC()">${esc(n?.message||'')}</textarea><div class="field-hint" id="mCnt">0 / 10.000</div><div class="field-error" id="fMErr">Υποχρεωτικό</div></div>
+    <div class="field-row">
+      <div class="field"><label>Κατάσταση</label><select id="fSt"><option value="SENT" ${(!n||n.status==='SENT')?'selected':''}>Εστάλη</option><option value="PENDING" ${n?.status==='PENDING'?'selected':''}>Αναμονή</option><option value="FAILED" ${n?.status==='FAILED'?'selected':''}>Αποτυχία</option></select></div>
+      <div class="field"><label>Credits</label><input type="number" id="fC" value="${n?.cost??1}" min="0"/></div>
+    </div>`;updMC();
+}
+function swCh(ch){document.getElementById('sgS').classList.toggle('active',ch==='SMS');document.getElementById('sgE').classList.toggle('active',ch==='EMAIL');document.getElementById('subF').style.display=ch==='EMAIL'?'':'none';document.getElementById('fR').placeholder=ch==='SMS'?'πχ. 6912345678':'πχ. email@example.com';}
+function updMC(){const e=document.getElementById('fM'),c=document.getElementById('mCnt');if(e&&c)c.textContent=`${e.value.length} / 10.000`;}
+
+/* TPL DRAWER */
+function openTplNew(){mode='tpl-new';eid=null;document.getElementById('dTitle').textContent='Νέο Πρότυπο';document.getElementById('dSub').textContent='Δημιουργία προτύπου';document.getElementById('dFoot').style.display='';renderTF(null);showDrw();}
+function openTplEdit(id){const t=tmpls.find(x=>x.id===id);mode='tpl-edit';eid=id;document.getElementById('dTitle').textContent='Επεξεργασία Προτύπου';document.getElementById('dSub').textContent=t.title;document.getElementById('dFoot').style.display='';renderTF(t);showDrw();}
+function renderTF(t){const ch=t?.channel||'SMS';document.getElementById('dBody').innerHTML=`
+  <div class="field"><label>Κανάλι</label><div class="seg-ctrl"><button type="button" class="seg-btn ${ch==='SMS'?'active':''}" id="tsS" onclick="swTC('SMS')"><i class="fas fa-comment-sms" style="font-size:12px"></i> SMS</button><button type="button" class="seg-btn ${ch==='EMAIL'?'active':''}" id="tsE" onclick="swTC('EMAIL')"><i class="fas fa-envelope" style="font-size:12px"></i> Email</button></div></div>
+  <div class="field"><label>Τίτλος *</label><input type="text" id="ftT" value="${esc(t?.title||'')}" maxlength="120"/><div class="field-error" id="ftTErr">Υποχρεωτικό</div></div>
+  <div class="field" id="tSubF" style="${ch==='EMAIL'?'':'display:none'}"><label>Θέμα Email</label><input type="text" id="ftS" value="${esc(t?.subject||'')}"/></div>
+  <div class="field"><label>Περιεχόμενο *</label><textarea id="ftC" maxlength="10000" oninput="updTP()">${esc(t?.content||'')}</textarea><div class="field-hint">Χρησιμοποιήστε <code>{{date}}</code> <code>{{time}}</code> <code>{{name}}</code></div><div class="field-error" id="ftCErr">Υποχρεωτικό</div></div>
+  <div class="field"><label>Προεπισκόπηση</label><div class="tpl-preview-box" id="tPrev">${esc(t?.content||'Γράψτε το μήνυμα...')}</div></div>`;}
+function swTC(ch){document.getElementById('tsS').classList.toggle('active',ch==='SMS');document.getElementById('tsE').classList.toggle('active',ch==='EMAIL');const sf=document.getElementById('tSubF');if(sf)sf.style.display=ch==='EMAIL'?'':'none';}
+function updTP(){const e=document.getElementById('ftC'),p=document.getElementById('tPrev');if(e&&p)p.textContent=e.value||'Γράψτε το μήνυμα...';}
+function useTpl(id){const t=tmpls.find(x=>x.id===id);switchTab('log');mode='notif-new';eid=null;document.getElementById('dTitle').textContent='Νέα Αποστολή';document.getElementById('dSub').textContent=`Από: ${t.title}`;document.getElementById('dFoot').style.display='';renderNF({channel:t.channel,message:t.content,subject:t.subject||''});showDrw();showToast(`Πρότυπο "${t.title}" φορτώθηκε`,'info');}
+
+/* SAVE */
+function saveDrw(){
+  if(mode==='notif-new'||mode==='notif-edit')saveN();
+  else if(mode==='tpl-new'||mode==='tpl-edit')saveT();
+  else if(mode==='grp-new'||mode==='grp-edit')saveG();
+}
+function saveN(){
+  const r=document.getElementById('fR')?.value.trim(),m=document.getElementById('fM')?.value.trim();
+  let ok=true;if(!r){sErr('fR','fRErr');ok=false;}if(!m){sErr('fM','fMErr');ok=false;}if(!ok)return;
+  const ch=document.getElementById('sgS')?.classList.contains('active')?'SMS':'EMAIL';
+  const d={recipient:r,channel:ch,message:m,subject:document.getElementById('fS')?.value.trim()||undefined,status:document.getElementById('fSt').value,cost:parseInt(document.getElementById('fC').value)||0,sentAt:new Date().toISOString()};
+  if(mode==='notif-edit'){const i=notifs.findIndex(x=>x.id===eid);notifs[i]={...notifs[i],...d};showToast('Ενημερώθηκε','success');}
+  else{notifs.unshift({id:'n'+Date.now(),...d});showToast('Καταχωρήθηκε','success');}
+  closeDrw();renderLog();
+}
+function saveT(){
+  const ti=document.getElementById('ftT')?.value.trim(),co=document.getElementById('ftC')?.value.trim();
+  let ok=true;if(!ti){sErr('ftT','ftTErr');ok=false;}if(!co){sErr('ftC','ftCErr');ok=false;}if(!ok)return;
+  const ch=document.getElementById('tsS')?.classList.contains('active')?'SMS':'EMAIL';
+  const d={title:ti,channel:ch,content:co,subject:document.getElementById('ftS')?.value.trim()||undefined,isSystemDefault:false};
+  if(mode==='tpl-edit'){const i=tmpls.findIndex(x=>x.id===eid);tmpls[i]={...tmpls[i],...d};showToast(`"${ti}" ενημερώθηκε`,'success');}
+  else{tmpls.unshift({id:'t'+Date.now(),...d});showToast(`"${ti}" δημιουργήθηκε`,'success');}
+  closeDrw();renderTpl();
+}
+function saveG(){
+  const n=document.getElementById('fgN')?.value.trim();if(!n){sErr('fgN','fgNErr');return;}
+  const d={name:n,templateId:document.getElementById('fgT').value||null,autoRule:document.getElementById('fgR').value.trim()||null,autoEvent:document.getElementById('fgE').value.trim()||null,autoTrigger:!!document.getElementById('fgE').value.trim()};
+  const ICN=['🌸','📣','💌','✨','🎀','📱'];
+  if(mode==='grp-edit'){const i=groups.findIndex(x=>x.id===eid);groups[i]={...groups[i],...d};showToast(`"${n}" ενημερώθηκε`,'success');}
+  else{groups.push({id:'g'+Date.now(),icon:ICN[groups.length%ICN.length],color:'rgba(196,135,79,0.1)',ic:'var(--c-accent)',subs:[],lastSent:null,lastCnt:0,...d});showToast(`"${n}" δημιουργήθηκε`,'success');}
+  closeDrw();renderGrp();
+}
+
+/* DELETE */
+function askDel(type,id){
+  delId=id;delType=type;
+  const n=type==='notif'?notifs.find(x=>x.id===id)?.recipient:tmpls.find(x=>x.id===id)?.title;
+  document.getElementById('confTitle').textContent=type==='notif'?'Διαγραφή αποστολής;':'Διαγραφή προτύπου;';
+  document.getElementById('confText').textContent=`"${n}" θα διαγραφεί οριστικά.`;
+  document.getElementById('confBtn').onclick=doDel;
+  document.getElementById('confOv').style.display='flex';
+}
+function doDel(){
+  const n=delType==='notif'?notifs.find(x=>x.id===delId)?.recipient:tmpls.find(x=>x.id===delId)?.title;
+  if(delType==='notif')notifs=notifs.filter(x=>x.id!==delId);else tmpls=tmpls.filter(x=>x.id!==delId);
+  closeConf();if(delType==='notif')renderLog();else renderTpl();
+  showToast(`"${n}" διαγράφηκε`,'error');
+}
+function closeConf(){document.getElementById('confOv').style.display='none';delId=null;delType=null;}
+
+/* DRAWER HELPERS */
+function showDrw(){document.getElementById('dOverlay').style.display='flex';setTimeout(()=>document.querySelector('#dBody input,#dBody textarea')?.focus(),120);}
+function closeDrw(){document.getElementById('dOverlay').style.display='none';eid=null;mode=null;activeGrp=null;}
+function closeDrwBg(e){if(e.target===document.getElementById('dOverlay'))closeDrw();}
+function sErr(ii,ei){document.getElementById(ii)?.classList.add('error');const e=document.getElementById(ei);if(e)e.style.display='block';}
+
+/* UTILS */
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function rd(iso){const d=new Date(iso),now=new Date(),df=(now-d)/1000;if(df<60)return'Μόλις τώρα';if(df<3600)return Math.floor(df/60)+' λεπτά πριν';if(df<86400)return Math.floor(df/3600)+' ώρες πριν';return d.toLocaleDateString('el-GR',{day:'2-digit',month:'2-digit',year:'2-digit'})+' '+d.toLocaleTimeString('el-GR',{hour:'2-digit',minute:'2-digit'});}
+function emptyH(ic,t,s){return`<div class="empty-state"><div class="empty-icon"><i class="fas ${ic}"></i></div><div class="empty-title">${t}</div><div class="empty-sub">${s}</div></div>`;}
+function showToast(msg,type='info'){const c=document.getElementById('toastContainer'),t=document.createElement('div');const ic={success:'fa-check-circle',error:'fa-times-circle',info:'fa-info-circle'};t.className=`toast ${type}`;t.innerHTML=`<i class="fas ${ic[type]} toast-icon"></i><span class="toast-msg">${msg}</span>`;t.onclick=()=>{t.classList.add('removing');setTimeout(()=>t.remove(),260);};c.appendChild(t);setTimeout(()=>{t.classList.add('removing');setTimeout(()=>t.remove(),260);},3500);}
+
+/* KEYBOARD */
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    if(document.getElementById('confOv').style.display!=='none')closeConf();
+    else if(document.getElementById('sendOv').style.display!=='none')closeSend();
+    else if(document.getElementById('dOverlay').style.display!=='none')closeDrw();
+  }
+  if((e.metaKey||e.ctrlKey)&&e.key==='n'){e.preventDefault();handleAdd();}
+});
+
+/* INIT */
+window.addEventListener('DOMContentLoaded',()=>{
+  if(localStorage.getItem('sc')==='true'&&window.innerWidth>768)document.getElementById('sidebar').classList.add('collapsed');
+  const t=localStorage.getItem('theme');if(t){document.documentElement.setAttribute('data-theme',t);document.getElementById('themeIcon').className=t==='dark'?'fas fa-sun':'fas fa-moon';}
+  renderLog();renderTpl();renderGrp();
+});
+</script>
+</body>
+</html>
