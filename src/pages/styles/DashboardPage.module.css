@@ -1,0 +1,92 @@
+/* DashboardPage.module.css */
+
+/* Main content panel */
+.contentPanel {
+  background: var(--c-surface);
+  border: 1.5px solid var(--c-light);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  animation: fadeUp 0.4s ease 0.1s both;
+}
+
+/* Panel header row */
+.panelHeader {
+  padding: 18px 22px 12px;
+  border-bottom: 1px solid var(--c-muted);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* Left side: title & subtitle */
+.panelTitleSection {
+  /* No extra styles needed, but kept for clarity */
+}
+
+.panelTitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--c-dark);
+}
+
+.panelSubtitle {
+  font-size: 11px;
+  color: var(--c-primary);
+  opacity: 0.6;
+  margin-top: 2px;
+}
+
+/* Right side: date picker + tabs */
+.controlsContainer {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Global tag styles (used also by child components) */
+:global {
+  .tag-red {
+    background: #fde8e8;
+    color: #c81e1e;
+  }
+  .tag-green {
+    background: #def7ec;
+    color: #03543f;
+  }
+  .tag-blue {
+    background: #e1effe;
+    color: #1e429f;
+  }
+  .tag-yellow {
+    background: #fdf6b2;
+    color: #723b13;
+  }
+
+  @media (max-width: 768px) {
+    .mobile-emp-label {
+      display: flex !important;
+    }
+    .timeline-header-row {
+      display: none !important;
+    }
+    .timeline-row-grid {
+      flex-direction: column !important;
+    }
+  }
+}
+
+/* Keyframe animation used in .contentPanel */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

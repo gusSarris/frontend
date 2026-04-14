@@ -1,0 +1,431 @@
+/* Animations */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Main container */
+.settingsPage {
+  animation: fadeUp 0.4s ease both;
+}
+
+/* Header */
+.header {
+  margin-bottom: 24px;
+}
+.title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--c-dark);
+}
+.subtitle {
+  font-size: 13px;
+  color: var(--c-primary);
+  opacity: 0.65;
+  margin-top: 4px;
+}
+
+/* Two-column layout */
+.layout {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+/* Vertical tabs navigation */
+.tabNav {
+  width: 200px;
+  flex-shrink: 0;
+  background: var(--c-surface);
+  border: 1.5px solid var(--c-light);
+  border-radius: var(--r-xl);
+  padding: 8px;
+  position: sticky;
+  top: 0;
+}
+.tabButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: var(--r-sm);
+  border: none;
+  cursor: pointer;
+  outline: none;
+  background: transparent;
+  color: var(--c-mid);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 2px;
+  text-align: left;
+  transition: all 0.15s;
+  position: relative;
+}
+.tabButtonActive {
+  background: rgba(196, 135, 79, 0.12);
+  color: var(--c-accent);
+  font-weight: 700;
+}
+.tabButton:hover:not(.tabButtonActive) {
+  background: rgba(196, 135, 79, 0.06);
+}
+.tabIndicator {
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  background: var(--c-accent);
+  border-radius: 0 3px 3px 0;
+}
+.tabIcon {
+  font-size: 13px;
+  width: 16px;
+  text-align: center;
+}
+.tabLabel {
+  /* no extra style needed */
+}
+
+/* Panel content area */
+.panelContainer {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Cards */
+.settingsCard {
+  background: var(--c-surface);
+  border: 1.5px solid var(--c-light);
+  border-radius: var(--r-xl);
+  padding: 24px 28px;
+  margin-bottom: 20px;
+  animation: fadeUp 0.35s ease both;
+}
+.cardHeader {
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--c-muted);
+}
+.cardTitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--c-dark);
+}
+.cardDescription {
+  font-size: 12px;
+  color: var(--c-primary);
+  opacity: 0.7;
+  margin-top: 4px;
+}
+
+/* Form rows */
+.fieldRow,
+.fieldRowLast {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 16px;
+  align-items: flex-start;
+}
+.fieldRow {
+  padding-bottom: 18px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--c-muted);
+}
+.fieldLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--c-dark);
+}
+.fieldHint {
+  font-size: 11px;
+  color: var(--c-primary);
+  opacity: 0.65;
+  margin-top: 3px;
+  line-height: 1.4;
+}
+.fieldControl {
+  /* container for input/select */
+}
+
+/* Input & Select base */
+.input,
+.select {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1.5px solid var(--c-light);
+  border-radius: var(--r-sm);
+  background: var(--c-bg);
+  color: var(--c-dark);
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.input:focus,
+.select:focus {
+  border-color: var(--c-accent);
+}
+.select {
+  appearance: none;
+  cursor: pointer;
+  padding-right: 32px;
+}
+.selectWrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+.selectIcon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px;
+  color: var(--c-mid);
+  pointer-events: none;
+}
+
+/* Toggle switch */
+.toggleItem {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--c-muted);
+}
+.toggleItemLast {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+.toggleText {
+  flex: 1;
+}
+.toggleLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--c-dark);
+}
+.toggleDescription {
+  font-size: 11px;
+  color: var(--c-primary);
+  opacity: 0.65;
+  margin-top: 3px;
+}
+.toggleButton {
+  width: 42px;
+  height: 24px;
+  border-radius: 99px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  transition: background 0.2s;
+  outline: none;
+}
+.toggleKnob {
+  position: absolute;
+  top: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  transition: left 0.2s;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+/* Save button */
+.saveButton {
+  padding: 10px 24px;
+  border-radius: var(--r-sm);
+  background: var(--c-accent);
+  color: #fff;
+  border: none;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  outline: none;
+}
+.saveButton:hover {
+  opacity: 0.85;
+}
+.saveButton i {
+  margin-right: 8px;
+}
+.saveButtonWrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Avatar section */
+.avatarSection {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--c-muted);
+}
+.avatarImage {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(196, 135, 79, 0.15);
+  border: 2px solid var(--c-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--c-accent);
+  flex-shrink: 0;
+}
+.avatarInfo {
+  flex: 1;
+}
+.avatarName {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--c-dark);
+}
+.avatarRole {
+  font-size: 12px;
+  color: var(--c-primary);
+  opacity: 0.7;
+  margin-top: 2px;
+}
+.avatarButton {
+  margin-top: 8px;
+  padding: 5px 14px;
+  border-radius: var(--r-sm);
+  border: 1.5px solid var(--c-light);
+  background: transparent;
+  color: var(--c-mid);
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.avatarButton i {
+  margin-right: 6px;
+}
+
+/* Theme selector buttons */
+.themeSelector {
+  display: flex;
+  gap: 12px;
+}
+.themeOption {
+  flex: 1;
+  padding: 14px 12px;
+  border-radius: var(--r-md);
+  border: 2px solid var(--c-light);
+  background: var(--c-bg);
+  cursor: pointer;
+  outline: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+.themeOptionActive {
+  border-color: var(--c-accent);
+  background: rgba(196, 135, 79, 0.08);
+}
+.themeIcon {
+  font-size: 22px;
+  color: var(--c-mid);
+}
+.themeIconActive {
+  color: var(--c-accent);
+}
+.themeLabel {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--c-mid);
+}
+.themeLabelActive {
+  color: var(--c-accent);
+}
+
+/* Session list */
+.sessionItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--c-muted);
+}
+.sessionItem:last-child {
+  padding-bottom: 0;
+  margin-bottom: 0;
+  border-bottom: none;
+}
+.sessionDeviceIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-sm);
+  background: var(--c-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sessionDeviceIcon i {
+  font-size: 14px;
+  color: var(--c-primary);
+}
+.sessionInfo {
+  flex: 1;
+  margin-left: 12px;
+}
+.sessionDeviceName {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--c-dark);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.sessionBadge {
+  font-size: 9px;
+  font-weight: 700;
+  background: rgba(90, 138, 106, 0.12);
+  color: var(--s-done);
+  padding: 2px 7px;
+  border-radius: 99px;
+  letter-spacing: 0.05em;
+}
+.sessionMeta {
+  font-size: 11px;
+  color: var(--c-primary);
+  opacity: 0.65;
+  margin-top: 2px;
+}
+.sessionLogoutBtn {
+  padding: 5px 12px;
+  border-radius: var(--r-sm);
+  border: 1.5px solid var(--c-light);
+  background: transparent;
+  color: var(--s-urgent);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
