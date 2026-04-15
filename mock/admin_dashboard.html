@@ -1,0 +1,412 @@
+
+<!DOCTYPE html>
+<html lang="el" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connect SaaS · Landlord</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700;9..40,900&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── DESIGN TOKENS (same as front.html) ── */
+    :root {
+      --c-bg:       #F9F6F3;
+      --c-surface:  #FFFFFF;
+      --c-dark:     #2E1A18;
+      --c-mid:      #6B3F3A;
+      --c-primary:  #9D6A65;
+      --c-accent:   #C4874F;
+      --c-light:    #E8C9BC;
+      --c-muted:    #F0EAE6;
+      --c-shadow:   rgba(46,26,24,0.10);
+
+      --s-active:   #C4874F;
+      --s-next:     #4A7FA5;
+      --s-done:     #5A8A6A;
+      --s-urgent:   #B85450;
+
+      --r-xs:6px; --r-sm:10px; --r-md:14px; --r-lg:20px; --r-xl:28px;
+      --sidebar-w:240px; --sidebar-w-col:64px;
+      --focus-ring: 0 0 0 3px rgba(196,135,79,0.4);
+
+      --sk-base:#ede8e4; --sk-shine:#f7f3f0;
+      --sb-bg:#2E1A18;
+    }
+
+    [data-theme="dark"] {
+      --c-bg:      #1A1210;
+      --c-surface: #231815;
+      --c-dark:    #F2EBE6;
+      --c-mid:     #C4A49F;
+      --c-primary: #B08A85;
+      --c-accent:  #D49A60;
+      --c-light:   #4A2E2A;
+      --c-muted:   #2E1E1B;
+      --c-shadow:  rgba(0,0,0,0.4);
+      --sk-base:   #2a1c19;
+      --sk-shine:  #3a2825;
+      --sb-bg:     #150e0d;
+    }
+
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:'DM Sans',sans-serif; background:var(--c-bg); color:var(--c-dark); min-height:100vh; display:flex; overflow:hidden; transition:background .3s, color .3s; }
+
+    .sr-only { position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0; }
+    .skip-link { position:absolute;top:-100%;left:16px;background:var(--c-accent);color:#fff;padding:8px 16px;border-radius:var(--r-sm);font-weight:700;font-size:13px;z-index:9999;text-decoration:none;transition:top .2s; }
+    .skip-link:focus { top:8px; }
+    :focus { outline:none; }
+    :focus-visible { box-shadow:var(--focus-ring) !important; outline:none; border-radius:var(--r-xs); }
+
+    /* ── SIDEBAR ── */
+    .sidebar { width:var(--sidebar-w); min-height:100vh; background:var(--sb-bg); display:flex; flex-direction:column; flex-shrink:0; position:relative; transition:width .3s cubic-bezier(.4,0,.2,1), background .3s; overflow:hidden; z-index:50; }
+    .sidebar.collapsed { width:var(--sidebar-w-col); }
+    .sidebar-logo { padding:24px 16px; display:flex; align-items:center; gap:12px; border-bottom:1px solid rgba(232,201,188,0.1); min-height:80px; }
+    .logo-img-wrap { width:40px; height:40px; border-radius:10px; overflow:hidden; flex-shrink:0; border:1.5px solid rgba(196,135,79,0.4); background: #2E1A18; display:flex; align-items:center; justify-content:center; color: var(--c-accent); font-size:20px; }
+    .logo-img-wrap img { width:100%; height:100%; object-fit:cover; }
+    .logo-text { white-space:nowrap; transition:opacity .2s; }
+    .sidebar.collapsed .logo-text { opacity:0; pointer-events:none; }
+    .logo-brand { font-family:'Cormorant Garamond',serif; font-size:17px; font-weight:700; color:var(--c-bg); }
+    .logo-tagline { font-size:9px; font-weight:700; color:var(--c-accent); text-transform:uppercase; margin-top:2px; }
+    .nav-section { padding:12px; }
+    .nav-label { font-size:9px; font-weight:900; letter-spacing:.2em; text-transform:uppercase; color:rgba(249,246,243,0.2); padding:12px 8px 6px; white-space:nowrap; }
+    .sidebar.collapsed .nav-label { opacity:0; }
+    .nav-item { display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:var(--r-sm); cursor:pointer; transition:background .2s; position:relative; text-decoration:none; margin-bottom:4px; }
+    .nav-item:hover { background:rgba(249,246,243,0.07); }
+    .nav-item.active { background:rgba(196,135,79,0.15); }
+    .nav-item.active::before { content:''; position:absolute; left:0; top:8px; bottom:8px; width:3px; background:var(--c-accent); border-radius:0 3px 3px 0; }
+    .nav-icon { width:24px; height:24px; display:flex; align-items:center; justify-content:center; font-size:14px; color:rgba(249,246,243,0.35); flex-shrink:0; }
+    .nav-item.active .nav-icon { color:var(--c-accent); }
+    .nav-lbl { font-size:13px; font-weight:500; color:rgba(249,246,243,0.8); transition:opacity .2s; white-space:nowrap; }
+    .nav-item.active .nav-lbl { color:var(--c-bg); font-weight:700; }
+    .sidebar.collapsed .nav-lbl { opacity:0; pointer-events:none; width:0; }
+    .nav-tip { position:absolute; left:70px; top:50%; transform:translateY(-50%); background:var(--sb-bg); color:white; padding:6px 12px; border-radius:6px; font-size:12px; font-weight:600; white-space:nowrap; opacity:0; pointer-events:none; transition:all .2s; border:1px solid rgba(255,255,255,0.1); box-shadow:0 4px 12px rgba(0,0,0,0.3); z-index:100; }
+    .sidebar.collapsed .nav-item:hover .nav-tip { opacity:1; left:60px; }
+    .collapse-btn { position:absolute; top:28px; right:-12px; width:24px; height:24px; border-radius:50%; background:var(--c-accent); border:2px solid var(--c-bg); color:#fff; font-size:9px; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:60; box-shadow:0 2px 8px rgba(0,0,0,0.2); outline:none; }
+    .sidebar.collapsed .collapse-btn .arrow { transform:rotate(180deg); display:inline-block; }
+    .sidebar-spacer { flex:1; }
+
+    /* ── MAIN LAYOUT ── */
+    .main-wrap { flex:1; display:flex; flex-direction:column; overflow:hidden; min-width:0; }
+    .topbar { height:60px; background:rgba(249,246,243,0.88); backdrop-filter:blur(24px) saturate(160%); border-bottom:1px solid rgba(232,201,188,0.45); display:flex; align-items:center; padding:0 28px; gap:16px; flex-shrink:0; position:sticky; top:0; z-index:30; transition:background .3s, border-color .3s; }
+    [data-theme="dark"] .topbar { background:rgba(26,18,16,0.92); border-color:rgba(74,46,42,0.5); }
+    .topbar-title { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:600; color:var(--c-dark); flex:1; }
+    .topbar-actions { display:flex; gap:8px; align-items:center; }
+    .btn-topbar { height:36px; padding:0 14px; border-radius:var(--r-sm); border:1.5px solid var(--c-light); background:var(--c-surface); color:var(--c-mid); font-family:inherit; font-size:12px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:7px; transition:all .2s; outline:none; }
+    .btn-topbar:hover { border-color:var(--c-dark); color:var(--c-dark); box-shadow:0 2px 8px var(--c-shadow); }
+    .theme-btn { width:36px; height:36px; border-radius:var(--r-sm); border:1.5px solid var(--c-light); background:var(--c-surface); color:var(--c-mid); cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:14px; transition:all .2s; outline:none; }
+    .theme-btn:hover { border-color:var(--c-accent); color:var(--c-accent); }
+
+    .context-badge { display:flex; align-items:center; gap:6px; background:var(--c-muted); padding:4px 12px; border-radius:99px; border:1px solid var(--c-light); font-size:12px; font-weight:700; color:var(--c-dark); }
+    .context-badge i { font-size:10px; color:var(--c-accent); }
+
+    .page-content { flex:1; overflow-y:auto; padding:28px; padding-bottom:40px; }
+
+    /* ── KPI RIBBON ── */
+    .kpi-ribbon { display:flex; align-items:stretch; gap:0; background:var(--c-surface); border:1.5px solid var(--c-light); border-radius:var(--r-md); margin-bottom:24px; overflow:hidden; animation:fadeUp .4s ease both; }
+    .kpi-stat { display:flex; align-items:center; gap:14px; padding:16px 24px; flex:1; position:relative; }
+    .kpi-stat + .kpi-stat { border-left:1px solid var(--c-muted); }
+    .kpi-icon-wrap { width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .kpi-icon-accent { background:rgba(196,135,79,0.12); color:var(--c-accent); }
+    .kpi-icon-done { background:rgba(90,138,106,0.12); color:var(--s-done); }
+    .kpi-icon-dark { background:rgba(46,26,24,0.08); color:var(--c-dark); }
+    .kpi-text { flex:1; }
+    .kpi-stat-val { font-size:22px; font-weight:900; color:var(--c-dark); line-height:1; }
+    .kpi-stat-lbl { font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--c-primary); opacity:.7; margin-top:2px; }
+
+    /* ── CONTENT PANEL ── */
+    .content-panel { background:var(--c-surface); border:1.5px solid var(--c-light); border-radius:var(--r-xl); overflow:hidden; transition:background .3s, border-color .3s; }
+    .panel-header { padding:18px 22px; border-bottom:1px solid var(--c-muted); display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+    .panel-title { font-family:'Cormorant Garamond',serif; font-size:17px; font-weight:600; color:var(--c-dark); }
+    .filter-tabs { display:flex; gap:4px; background:var(--c-muted); padding:3px; border-radius:99px; }
+    .filter-tab { padding:4px 14px; border-radius:99px; font-size:12px; font-weight:700; color:var(--c-mid); background:transparent; border:none; cursor:pointer; transition:all .2s; }
+    .filter-tab.active { background:var(--c-surface); color:var(--c-dark); box-shadow:0 2px 6px var(--c-shadow); }
+
+    /* ── TENANT TABLE ── */
+    .tenant-table { width:100%; border-collapse:collapse; font-size:13px; }
+    .tenant-table th { text-align:left; padding:14px 16px; font-size:10px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--c-primary); opacity:.7; border-bottom:1px solid var(--c-muted); }
+    .tenant-table td { padding:14px 16px; border-bottom:1px solid var(--c-muted); }
+    .tenant-row { cursor:pointer; transition:background .15s; }
+    .tenant-row:hover { background:rgba(196,135,79,0.04); }
+    .status-badge { display:inline-flex; align-items:center; gap:4px; padding:3px 8px; border-radius:99px; font-size:10px; font-weight:700; text-transform:uppercase; }
+    .status-active { background:rgba(90,138,106,0.12); color:var(--s-done); }
+    .status-pending { background:rgba(196,135,79,0.12); color:var(--c-accent); }
+    .status-suspended { background:rgba(184,84,80,0.12); color:var(--s-urgent); }
+    .action-btn { background:none; border:none; color:var(--c-mid); padding:6px 8px; border-radius:6px; cursor:pointer; transition:all .2s; margin:0 2px; }
+    .action-btn:hover { background:var(--c-muted); color:var(--c-dark); }
+
+    /* ── RECENT ACTIVITY ── */
+    .activity-feed { display:flex; flex-direction:column; }
+    .activity-item { display:flex; align-items:center; gap:12px; padding:14px 16px; border-bottom:1px solid var(--c-muted); }
+    .activity-icon { width:28px; height:28px; border-radius:8px; background:var(--c-muted); display:flex; align-items:center; justify-content:center; color:var(--c-primary); }
+    .activity-text { flex:1; font-size:13px; color:var(--c-dark); }
+    .activity-time { font-size:11px; color:var(--c-primary); opacity:.6; }
+
+    /* ── TOAST ── */
+    #toastContainer { position:fixed; bottom:24px; right:24px; z-index:9999; display:flex; flex-direction:column; gap:8px; pointer-events:none; }
+    .toast { display:flex; align-items:center; gap:12px; padding:12px 16px; border-radius:var(--r-md); background:var(--c-dark); color:var(--c-bg); font-size:13px; font-weight:600; min-width:240px; box-shadow:0 8px 32px rgba(0,0,0,0.25); pointer-events:all; cursor:pointer; animation:toastIn .35s cubic-bezier(.34,1.56,.64,1) both; }
+    .toast.removing { animation:toastOut .25s ease forwards; }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes toastIn { from{opacity:0;transform:translateY(12px) scale(0.95)} to{opacity:1;transform:none} }
+    @keyframes toastOut { to{opacity:0;transform:translateY(8px) scale(0.96)} }
+
+    /* Mobile */
+    .mobile-menu-btn { display:none; }
+    @media (max-width:768px) {
+      .sidebar { position:fixed; left:0; top:0; bottom:0; transform:translateX(-100%); transition:transform .3s; z-index:100; }
+      .sidebar.mobile-open { transform:translateX(0); box-shadow:8px 0 48px rgba(46,26,24,.3); }
+      .topbar { padding:0 16px; }
+      .mobile-menu-btn { display:flex !important; width:36px; height:36px; border-radius:var(--r-sm); border:1.5px solid var(--c-light); background:var(--c-surface); color:var(--c-mid); font-size:14px; cursor:pointer; align-items:center; justify-content:center; flex-shrink:0; }
+      .kpi-ribbon { flex-direction:column; }
+      .kpi-stat + .kpi-stat { border-left:none; border-top:1px solid var(--c-muted); }
+      .page-content { padding:16px; }
+    }
+  </style>
+</head>
+<body>
+  <a href="#mainContent" class="skip-link">Μετάβαση στο περιεχόμενο</a>
+  <div id="toastContainer" role="status" aria-live="polite"></div>
+
+  <!-- SIDEBAR (Platform) -->
+  <aside class="sidebar" id="sidebar">
+    <button class="collapse-btn" onclick="toggleCollapse()" aria-label="Σύμπτυξη"><span class="arrow">‹</span></button>
+    <div class="sidebar-logo">
+      <div class="logo-img-wrap"><i class="fas fa-cloud-upload-alt"></i></div>
+      <div class="logo-text">
+        <div class="logo-brand">Connect SaaS</div>
+        <div class="logo-tagline">Platform Admin</div>
+      </div>
+    </div>
+    <nav class="nav-section">
+      <div class="nav-label">Πλατφόρμα</div>
+      <a href="#" class="nav-item active">
+        <div class="nav-icon"><i class="fas fa-chart-pie"></i></div>
+        <span class="nav-lbl">Πίνακας Ελέγχου</span>
+        <span class="nav-tip">Πίνακας</span>
+      </a>
+      <a href="#" class="nav-item">
+        <div class="nav-icon"><i class="fas fa-building"></i></div>
+        <span class="nav-lbl">Tenants</span>
+        <span class="nav-badge" style="background:var(--c-accent);color:white;margin-left:auto;padding:0 5px;border-radius:99px;font-size:9px;">24</span>
+        <span class="nav-tip">Tenants</span>
+      </a>
+      <a href="#" class="nav-item">
+        <div class="nav-icon"><i class="fas fa-users-cog"></i></div>
+        <span class="nav-lbl">Χρήστες</span>
+        <span class="nav-tip">Χρήστες</span>
+      </a>
+      <a href="#" class="nav-item">
+        <div class="nav-icon"><i class="fas fa-sliders-h"></i></div>
+        <span class="nav-lbl">Ρυθμίσεις</span>
+        <span class="nav-tip">Ρυθμίσεις</span>
+      </a>
+    </nav>
+    <div class="sidebar-spacer"></div>
+    <div style="padding:12px; margin-top:auto;">
+      <div style="padding:12px; background:rgba(249,246,243,0.04); border-radius:var(--r-md); border:1px solid rgba(232,201,188,0.1);">
+        <div style="font-size:9px; font-weight:900; letter-spacing:.1em; color:rgba(249,246,243,0.3);">SUPER ADMIN</div>
+        <div style="font-size:12px; font-weight:600; color:var(--c-bg); margin-top:4px;">Ελένη Παππά</div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main-wrap">
+    <header class="topbar">
+      <button class="mobile-menu-btn" onclick="openMobile()"><i class="fas fa-bars"></i></button>
+      <div class="topbar-title">Καλώς ήρθες, Ελένη</div>
+      <div class="topbar-actions">
+        <div class="context-badge">
+          <i class="fas fa-database"></i> Landlord View
+        </div>
+        <button class="btn-topbar" onclick="switchToTenantView()"><i class="fas fa-store-alt"></i> Μετάβαση σε Tenant</button>
+        <button class="theme-btn" onclick="toggleTheme()" id="themeBtn"><i class="fas fa-moon" id="themeIcon"></i></button>
+      </div>
+    </header>
+
+    <main class="page-content" id="mainContent">
+      <!-- KPI cards -->
+      <div class="kpi-ribbon">
+        <div class="kpi-stat">
+          <div class="kpi-icon-wrap kpi-icon-accent"><i class="fas fa-building"></i></div>
+          <div class="kpi-text"><div class="kpi-stat-val">24</div><div class="kpi-stat-lbl">Σύνολο Tenants</div></div>
+        </div>
+        <div class="kpi-stat">
+          <div class="kpi-icon-wrap kpi-icon-done"><i class="fas fa-check-circle"></i></div>
+          <div class="kpi-text"><div class="kpi-stat-val">18</div><div class="kpi-stat-lbl">Ενεργοί</div></div>
+        </div>
+        <div class="kpi-stat">
+          <div class="kpi-icon-wrap kpi-icon-dark"><i class="fas fa-hourglass-half"></i></div>
+          <div class="kpi-text"><div class="kpi-stat-val">4</div><div class="kpi-stat-lbl">Pending</div></div>
+        </div>
+        <div class="kpi-stat">
+          <div class="kpi-icon-wrap" style="background:rgba(74,127,165,0.12);color:var(--s-next);"><i class="fas fa-euro-sign"></i></div>
+          <div class="kpi-text"><div class="kpi-stat-val">€12.8k</div><div class="kpi-stat-lbl">Μηνιαία έσοδα</div></div>
+        </div>
+      </div>
+
+      <!-- Two column layout -->
+      <div style="display:grid; grid-template-columns:2fr 1fr; gap:24px;">
+        <!-- Left: Tenants Table -->
+        <div class="content-panel">
+          <div class="panel-header">
+            <div class="panel-title">Διαχείριση Tenants</div>
+            <div class="filter-tabs">
+              <button class="filter-tab active" onclick="filterTenants('all')">Όλοι</button>
+              <button class="filter-tab" onclick="filterTenants('pending')">Pending</button>
+              <button class="filter-tab" onclick="filterTenants('active')">Active</button>
+              <button class="filter-tab" onclick="filterTenants('suspended')">Suspended</button>
+            </div>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="tenant-table" id="tenantTable">
+              <thead><tr><th>Tenant</th><th>Slug</th><th>Κατάσταση</th><th>Δημιουργία</th><th></th></tr></thead>
+              <tbody id="tenantBody"></tbody>
+            </table>
+          </div>
+          <div style="padding:12px 16px; border-top:1px solid var(--c-muted); font-size:12px; color:var(--c-primary);">
+            <i class="fas fa-chevron-right" style="margin-right:6px;opacity:.5;"></i>Προβολή όλων των tenants →
+          </div>
+        </div>
+
+        <!-- Right: Recent Activity & Quick actions -->
+        <div style="display:flex; flex-direction:column; gap:24px;">
+          <div class="content-panel">
+            <div class="panel-header"><div class="panel-title">Πρόσφατη δραστηριότητα</div></div>
+            <div class="activity-feed">
+              <div class="activity-item"><div class="activity-icon"><i class="fas fa-plus-circle"></i></div><div class="activity-text"><b>Glamour Nails</b> δημιουργήθηκε</div><div class="activity-time">5 λεπτά</div></div>
+              <div class="activity-item"><div class="activity-icon"><i class="fas fa-check-circle"></i></div><div class="activity-text"><b>Beauty Spot</b> ενεργοποιήθηκε</div><div class="activity-time">1 ώρα</div></div>
+              <div class="activity-item"><div class="activity-icon"><i class="fas fa-pause-circle"></i></div><div class="activity-text"><b>Hair Studio</b> ανεστάλη</div><div class="activity-time">3 ώρες</div></div>
+              <div class="activity-item"><div class="activity-icon"><i class="fas fa-user-plus"></i></div><div class="activity-text">Νέος Sales χρήστης <b>marketing@</b></div><div class="activity-time">Χθες</div></div>
+            </div>
+          </div>
+          <div class="content-panel">
+            <div class="panel-header"><div class="panel-title">Γρήγορες ενέργειες</div></div>
+            <div style="padding:16px; display:flex; flex-direction:column; gap:8px;">
+              <button class="btn-topbar" style="width:100%; justify-content:center;" onclick="showToast('Φόρμα νέου tenant','info')"><i class="fas fa-plus"></i> Νέος Tenant</button>
+              <button class="btn-topbar" style="width:100%; justify-content:center;" onclick="showToast('Πρόσκληση χρήστη','info')"><i class="fas fa-user-plus"></i> Πρόσκληση Sales/Support</button>
+              <button class="btn-topbar" style="width:100%; justify-content:center;" onclick="showToast('Μετάβαση σε ρυθμίσεις','info')"><i class="fas fa-cog"></i> Ρυθμίσεις πλατφόρμας</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Mobile overlay -->
+  <div class="mobile-overlay" id="mobileOverlay" onclick="closeMobile()" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:90;"></div>
+
+  <script>
+    // MOCK TENANTS
+    const tenants = [
+      { id:1, name:'Glamour Nails', slug:'glamour-nails', status:'active', createdAt:'2025-02-10', users:12 },
+      { id:2, name:'Beauty Spot', slug:'beauty-spot', status:'active', createdAt:'2025-01-15', users:8 },
+      { id:3, name:'Zen Massage', slug:'zen-massage', status:'pending', createdAt:'2026-04-01', users:2 },
+      { id:4, name:'Hair Studio', slug:'hair-studio', status:'suspended', createdAt:'2024-11-20', users:5 },
+      { id:5, name:'Nail Art Athens', slug:'nail-art-athens', status:'active', createdAt:'2025-06-05', users:15 },
+      { id:6, name:'Spa Retreat', slug:'spa-retreat', status:'pending', createdAt:'2026-03-28', users:1 },
+      { id:7, name:'Barber Club', slug:'barber-club', status:'active', createdAt:'2025-09-12', users:6 },
+    ];
+
+    let currentFilter = 'all';
+
+    function filterTenants(status) {
+      currentFilter = status;
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      event.target.classList.add('active');
+      renderTenants();
+    }
+
+    function renderTenants() {
+      const tbody = document.getElementById('tenantBody');
+      const filtered = tenants.filter(t => currentFilter === 'all' || t.status === currentFilter);
+      let html = '';
+      filtered.forEach(t => {
+        const statusClass = t.status === 'active' ? 'status-active' : (t.status === 'pending' ? 'status-pending' : 'status-suspended');
+        const statusText = t.status === 'active' ? 'ΕΝΕΡΓΟ' : (t.status === 'pending' ? 'PENDING' : 'ΑΝΕΣΤΑΛΜΕΝΟ');
+        html += `<tr class="tenant-row" onclick="openTenant(${t.id})">
+          <td><b>${t.name}</b><br><span style="font-size:10px;opacity:.6;">${t.users} χρήστες</span></td>
+          <td>${t.slug}</td>
+          <td><span class="status-badge ${statusClass}"><i class="fas ${t.status==='active'?'fa-check':(t.status==='pending'?'fa-clock':'fa-pause')}"></i> ${statusText}</span></td>
+          <td>${t.createdAt}</td>
+          <td>
+            <button class="action-btn" onclick="event.stopPropagation(); toggleTenantStatus('${t.id}')" title="Αλλαγή κατάστασης"><i class="fas fa-sync-alt"></i></button>
+            <button class="action-btn" onclick="event.stopPropagation(); impersonateTenant('${t.slug}')" title="Μετάβαση ως Owner"><i class="fas fa-sign-in-alt"></i></button>
+          </td>
+        </tr>`;
+      });
+      tbody.innerHTML = html;
+    }
+
+    function openTenant(id) {
+      const t = tenants.find(tt=>tt.id===id);
+      showToast(`Προβολή tenant: ${t.name} (${t.slug})`, 'info');
+    }
+    function toggleTenantStatus(id) {
+      const t = tenants.find(tt=>tt.id==id);
+      const newStatus = t.status === 'active' ? 'suspended' : 'active';
+      t.status = newStatus;
+      renderTenants();
+      showToast(`Ο tenant ${t.name} είναι τώρα ${newStatus === 'active' ? 'ενεργός' : 'ανεσταλμένος'}`, 'success');
+    }
+    function impersonateTenant(slug) {
+      showToast(`Μετάβαση στο tenant dashboard: ${slug} (προσομοίωση)`, 'info');
+      // Θα μπορούσε να ανακατευθύνει στο front.html με X-Tenant-ID
+      setTimeout(() => { window.location.href = 'front.html'; }, 800);
+    }
+
+    function switchToTenantView() {
+      showToast('Μετάβαση στην προβολή Tenant (Glamour Nails)…', 'info');
+      setTimeout(() => { window.location.href = 'front.html'; }, 600);
+    }
+
+    /* Theme / Sidebar / Mobile (reused) */
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      localStorage.setItem('gnTheme', isDark ? 'light' : 'dark');
+      document.getElementById('themeIcon').className = isDark ? 'fas fa-moon' : 'fas fa-sun';
+      showToast(isDark ? 'Light mode' : 'Dark mode', 'info');
+    }
+    (function initTheme() {
+      const saved = localStorage.getItem('gnTheme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = saved || (prefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+      const icon = document.getElementById('themeIcon');
+      if (icon) icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    })();
+
+    function toggleCollapse() {
+      document.getElementById('sidebar').classList.toggle('collapsed');
+    }
+    function openMobile() {
+      document.getElementById('sidebar').classList.add('mobile-open');
+      document.getElementById('mobileOverlay').style.display = 'block';
+      document.body.style.overflow = 'hidden';
+    }
+    function closeMobile() {
+      document.getElementById('sidebar').classList.remove('mobile-open');
+      document.getElementById('mobileOverlay').style.display = 'none';
+      document.body.style.overflow = '';
+    }
+
+    function showToast(msg, type='success') {
+      const icons = { success:'fa-check-circle', error:'fa-circle-xmark', info:'fa-circle-info' };
+      const t = document.createElement('div');
+      t.className = `toast ${type}`;
+      t.innerHTML = `<i class="fas ${icons[type]} toast-icon"></i><span>${msg}</span>`;
+      t.onclick = () => { t.classList.add('removing'); setTimeout(()=>t.remove(),250); };
+      document.getElementById('toastContainer').appendChild(t);
+      setTimeout(() => { if(t.parentNode) t.classList.add('removing'); setTimeout(()=>t.remove(),250); }, 3500);
+    }
+
+    window.onload = () => {
+      renderTenants();
+      if (localStorage.getItem('sidebar-collapsed') === 'true' && window.innerWidth>768)
+        document.getElementById('sidebar').classList.add('collapsed');
+    };
+  </script>
+</body>
+</html>
