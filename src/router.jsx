@@ -6,7 +6,7 @@ import CustomersPage from "./pages/CustomersPage";
 import SettingsPage from "./pages/SettingsPage";
 import StoresPage from "./pages/StoresPage";
 import ServicesPage from "./pages/ServicesPage";
-import AdminDashboardPage from "./pages/AdminDashboardPage";
+import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 import AdminTenantsPage from "./pages/admin/AdminTenantsPage";
 import AdminUsersPage from "./pages/admin/AdminUsersPage";
 import AdminSettingsPage from "./pages/admin/AdminSettingsPage";

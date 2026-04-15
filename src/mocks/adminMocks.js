@@ -351,3 +351,146 @@ export const getTenantStats = () => {
   
   return { total, active, pending, suspended, revenue };
 };
+
+// Dashboard-specific exports
+export const DASHBOARD_STATS = {
+  mrr: 12450,
+  activeTenants: 98,
+  totalUsers: 2450,
+  churnRate: 3.2,
+  totalRevenue: 38450,
+  avgDailyRevenue: 415,
+  newTenantsMTD: 12,
+  activationRate: 85.5,
+  planUpgrades: 8,
+  avgLTV: 1250
+};
+
+export const SYSTEM_ALERTS = [
+  {
+    id: 'alert_001',
+    severity: 'warning',
+    title: 'SMS Gateway Degraded',
+    message: 'Success rate dropped below 95%',
+    component: 'SMS Gateway',
+    time: '10 minutes ago'
+  },
+  {
+    id: 'alert_002',
+    severity: 'info',
+    title: 'Backup Completed',
+    message: 'Nightly backup completed successfully',
+    component: 'Backup Service',
+    time: '2 hours ago'
+  },
+  {
+    id: 'alert_003',
+    severity: 'critical',
+    title: 'High CPU Usage',
+    message: 'Database cluster CPU at 95%',
+    component: 'Database',
+    time: '5 minutes ago'
+  }
+];
+
+export const RECENT_ACTIVITIES = [
+  {
+    id: 'act_001',
+    type: 'tenant_signup',
+    icon: 'fa-user-plus',
+    description: 'New tenant "Acme Corp" signed up',
+    user: 'Sales Team',
+    time: '9:30 AM'
+  },
+  {
+    id: 'act_002',
+    type: 'payment',
+    icon: 'fa-credit-card',
+    description: 'Payment processed for Beta LLC',
+    user: 'System',
+    time: '9:15 AM'
+  },
+  {
+    id: 'act_003',
+    type: 'tenant_suspended',
+    icon: 'fa-pause',
+    description: 'Tenant "Gamma Spa" suspended',
+    user: 'Admin',
+    time: '8:45 AM'
+  },
+  {
+    id: 'act_004',
+    type: 'system_alert',
+    icon: 'fa-exclamation-triangle',
+    description: 'High CPU usage detected',
+    user: 'Monitoring',
+    time: '8:30 AM'
+  },
+  {
+    id: 'act_005',
+    type: 'user_login',
+    icon: 'fa-sign-in-alt',
+    description: 'Super Admin logged in',
+    user: 'Admin',
+    time: '8:00 AM'
+  }
+];
+
+export const REVENUE_TREND_DATA = [
+  { date: 'Day 1', revenue: 380 },
+  { date: 'Day 2', revenue: 420 },
+  { date: 'Day 3', revenue: 395 },
+  { date: 'Day 4', revenue: 450 },
+  { date: 'Day 5', revenue: 410 },
+  { date: 'Day 6', revenue: 480 },
+  { date: 'Day 7', revenue: 520 },
+  { date: 'Day 8', revenue: 490 },
+  { date: 'Day 9', revenue: 530 },
+  { date: 'Day 10', revenue: 510 },
+  { date: 'Day 11', revenue: 550 },
+  { date: 'Day 12', revenue: 580 },
+  { date: 'Day 13', revenue: 560 },
+  { date: 'Day 14', revenue: 590 },
+  { date: 'Day 15', revenue: 620 },
+  { date: 'Day 16', revenue: 600 },
+  { date: 'Day 17', revenue: 630 },
+  { date: 'Day 18', revenue: 650 },
+  { date: 'Day 19', revenue: 640 },
+  { date: 'Day 20', revenue: 670 },
+  { date: 'Day 21', revenue: 690 },
+  { date: 'Day 22', revenue: 680 },
+  { date: 'Day 23', revenue: 710 },
+  { date: 'Day 24', revenue: 730 },
+  { date: 'Day 25', revenue: 720 },
+  { date: 'Day 26', revenue: 750 },
+  { date: 'Day 27', revenue: 770 },
+  { date: 'Day 28', revenue: 760 },
+  { date: 'Day 29', revenue: 790 },
+  { date: 'Day 30', revenue: 820 }
+];
+
+export const TENANT_DISTRIBUTION = {
+  premium: 12,
+  standard: 28,
+  trial: 15
+};
+
+// Dashboard helper functions
+export const getPlatformStats = () => {
+  return {
+    ...DASHBOARD_STATS,
+    timestamp: new Date().toISOString()
+  };
+};
+
+export const getLiveMetrics = () => {
+  return {
+    uptime: 99.8,
+    avgResponseTime: 120,
+    activeSessions: 320,
+    errorRate: 0.2,
+    requestsPerMinute: 450,
+    storageUsed: 45.7,
+    timestamp: new Date().toISOString()
+  };
+};

@@ -6,7 +6,7 @@
  */
 
 import AdminLayout from "./layouts/AdminLayout";
-import AdminDashboardPage from "./pages/AdminDashboardPage";
+import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 
 export default function AdminApp({children}) {
   return (
